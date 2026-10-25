@@ -30,6 +30,7 @@ AI Rap Video 开源提示词模板站（英文 SEO 站）。提供可复制的�
 | `src/pages/pack.astro` | 开源 pack 说明页 |
 | `src/assets/` | 页面配图素材（AI 生成参考图，经 astro:assets 构建优化为 webp） |
 | `public/images/` | 固定路径资产（`og-ai-rap-video.jpg` 等 OG/分享图，路径不参与构建优化） |
+| `reports/` | 运营周报与调研产物（每周一早 9 点自动化生成；内部文档，gitignore 不入库，不参与构建） |
 | `pack/*.md` | 与站内 12 条模板同步的 markdown pack（MIT） |
 
 ## 项目约定

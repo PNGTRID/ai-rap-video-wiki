@@ -12,3 +12,4 @@ config/
 !.env.example
 BUILD_BRIEF.md
 ZCODE_PROMPT.txt
+reports/
