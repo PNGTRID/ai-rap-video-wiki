@@ -1,6 +1,7 @@
 node_modules/
 dist/
 .astro/
+.wrangler/
 .DS_Store
 zcode-*.log
 preview.log
@@ -9,3 +10,5 @@ config/
 .env
 .env.*
 !.env.example
+BUILD_BRIEF.md
+ZCODE_PROMPT.txt
