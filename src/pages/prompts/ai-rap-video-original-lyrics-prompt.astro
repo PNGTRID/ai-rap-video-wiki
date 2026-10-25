@@ -1,0 +1,96 @@
+---
+/**
+ * [WHY]: 原创歌词页——AI rap video 的音频层根基：hook/verse 结构、押韵、角色分配与生成 prompt。
+ * [INPUT]: prompts.ts 的 item（title/intent/description/related）。
+ * [OUTPUT]: 歌词结构教程（hook/verse/押韵/音节）+ 歌词生成 prompt + Article JSON-LD。
+ * [BOUND]: 只生成原创歌词结构，不引用、不改写任何商业歌曲歌词。
+ * [PROTOCOL]: 结构讲解或 prompt 变更时同步更新 pack/ai-rap-video-original-lyrics-prompt.md。
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import JsonLd from '../../components/JsonLd.astro';
+import RelatedPrompts from '../../components/RelatedPrompts.astro';
+import { bySlug } from '../../data/prompts';
+
+const item = bySlug('ai-rap-video-original-lyrics-prompt')!;
+const articleLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: item.title,
+  description: item.description,
+  url: `https://ai-rap-video.wiki/prompts/${item.slug}/`,
+  isPartOf: { '@type': 'WebSite', name: 'AI Rap Video Wiki', url: 'https://ai-rap-video.wiki/' },
+  license: 'https://opensource.org/licenses/MIT',
+  inLanguage: 'en'
+};
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AI Rap Video', item: 'https://ai-rap-video.wiki/' },
+    { '@type': 'ListItem', position: 2, name: 'Prompts', item: 'https://ai-rap-video.wiki/prompts/' },
+    { '@type': 'ListItem', position: 3, name: item.title, item: `https://ai-rap-video.wiki/prompts/${item.slug}/` }
+  ]
+};
+---
+
+<BaseLayout title={`${item.title} — Hook, Verse & Rhyme Structure | AI Rap Video`} description={item.description} canonicalPath={`/prompts/${item.slug}/`}>
+  <JsonLd data={[articleLd, breadcrumbLd]} />
+  <article class="prose hero">
+    <p class="tag">{item.intent}</p>
+    <h1>{item.title}</h1>
+    <p class="lead">The audio layer decides whether an AI rap video feels real or like a dubbed cartoon — and original bars are the only safe kind. This page teaches the minimum lyric structure an 8-12 second clip needs (a 4-line hook, an 8-bar verse, roles for each performer) and gives you a prompt that generates them about any subject, without ever quoting a commercial song.</p>
+
+    <h2>Why original bars only</h2>
+    <p>Pasting commercial lyrics into a render gets the clip muted, claimed, or taken down — and platforms increasingly detect AI music video audio automatically. Original lyrics carry zero claim risk, they're actually about <em>your</em> subject, and the model lip-syncs invented phrasing more reliably than famous lines it half-recognizes. The <a href="/ai-rap-video-vs-hotel-lobby-trend/">compliance guide</a> covers the full reasoning.</p>
+
+    <h2>The structure an 8-12 second clip needs</h2>
+    <h3>1. The 4-line hook (the whole clip's payload)</h3>
+    <p>Four short lines, roughly 6-10 syllables each, rhyming in an <strong>AABB</strong> scheme (line 1 rhymes with 2, line 3 rhymes with 4). In a duo, the left performer owns lines 1 and 3, the right performer owns 2 and 4 — that alternation is the call-and-response that makes the trade visible. The hook should name the occasion: the graduation year, the anniversary count, the team name. Specific beats clever.</p>
+    <h3>2. The 8-bar verse (optional, for longer cuts)</h3>
+    <p>If your model renders longer segments, an 8-bar verse extends the clip: four bars on the topic, four bars answering it, still alternating performers every two bars. Keep the vocabulary concrete — objects, places, names — because abstract lines give the lip-sync nothing to bite on.</p>
+    <h3>3. Roles, not just lines</h3>
+    <p>Write the lyrics <em>as a script</em>: <code>LEFT:</code> line, <code>RIGHT:</code> line. This script format is what you paste into the duo prompt's Audio section — it removes all ambiguity about who mouths which words, which is the top cause of both-mouths-moving renders.</p>
+
+    <h2>Copy-ready lyrics generation prompt</h2>
+    <p>Run this in any chat model, then paste the output into your video template:</p>
+    <pre class="prompt-box">Write ORIGINAL rap lyrics for a short AI-generated duo performance video.
+Subject: [the occasion — e.g. "our 5-year anniversary", "reunion after 10 years", "winning the league"]
+Tone: [hype / warm / playful — pick one]
+Requirements:
+1. A 4-line hook, 6-10 syllables per line, AABB rhyme scheme.
+2. An 8-bar verse, concrete nouns and places, alternating speakers every two bars.
+3. Format the output as a script with LEFT: and RIGHT: role labels on every line.
+4. Keep it PG: no profanity, no brand names, no celebrity or artist names.
+5. Everything must be original — do not quote, reference, or paraphrase any existing commercial song, and do not imitate any specific artist's signature phrases.
+Output only the script, nothing else.</pre>
+
+    <h2>Hook anatomy: a worked example</h2>
+    <p>For a "reunion after ten years" duo, the structure produces something like:</p>
+    <pre class="prompt-box">LEFT:  Ten years gone, still the same two names (8 syllables)
+RIGHT: Same two names, but the game has changed (8 syllables)
+LEFT:  We made it out, now we run the town (8 syllables)
+RIGHT: Run the town, and we're not coming down (9 syllables)</pre>
+    <p>Note the mechanics: AABB rhyme, an internal echo ("same two names" answered back), the occasion named in line one, and every line short enough for clean mouth movement. That's the whole craft at clip length.</p>
+
+    <h2>Feeding lyrics into the video prompt</h2>
+    <p>In the <a href="/prompts/ai-rap-video-duo-prompt/">duo template</a>, replace the Audio block's generic instruction with your script: <code>Audio: original upbeat rap cadence performing this script — LEFT: [lines] RIGHT: [lines]</code>. Keep the "write NEW lyrics, never quote commercial tracks" line as a guardrail even when you paste your own words; it stops the model from wandering toward famous cadences.</p>
+
+    <h2>Common failure modes</h2>
+    <ul class="list">
+      <li><strong>Lines too long</strong> → mouth movement smears; cut to 10 syllables max per line.</li>
+      <li><strong>Both performers rap everything</strong> → roles weren't labeled; use the LEFT/RIGHT script format, not a lyric block.</li>
+      <li><strong>Output drifts toward a famous song</strong> → your subject line was too close to an existing hit's theme; rename the subject with specifics only your clip would have.</li>
+      <li><strong>Model sings instead of raps</strong> → the cadence instruction matters: "rap cadence, conversational rhythm" beats "song".</li>
+    </ul>
+
+    <h2>FAQ</h2>
+    <h3>Do I need to rhyme?</h3>
+    <p>At clip length, yes — AABB rhyme is what makes eight seconds feel like rap rather than speech. Internal echoes (repeating the end of one line at the start of the next) buy a lot of polish for free.</p>
+    <h3>Can the model generate the audio too?</h3>
+    <p>Some video models generate ambient motion audio; dedicated music tools generate full tracks. Either way the workflow is the same: your script defines the words, the tool performs them. Never hand it a commercial track to "cover".</p>
+
+    <div class="notice"><strong>Compliance:</strong> generated lyrics must be original. Never quote or paraphrase commercial recordings — including the Hotel Lobby trend audio — and never imitate a specific artist's signature style or name.</div>
+
+    <RelatedPrompts slugs={item.related} />
+  </article>
+</BaseLayout>

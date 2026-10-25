@@ -1,0 +1,118 @@
+---
+/**
+ * [WHY]: 模型风格对比页——Wan 系 vs Seedance 系的措辞差异、参考图处理与移植方法。
+ * [INPUT]: prompts.ts 的 item（title/intent/description/related）。
+ * [OUTPUT]: 风格差异对照表 + 两个风格各自的主 prompt 变体 + 移植规则 + Article JSON-LD。
+ * [BOUND]: 讨论"风格族"而非锁定具体版本号；不做模型评测或推荐购买。
+ * [PROTOCOL]: 对比维度变更时同步更新 pack/ai-rap-video-wan-vs-seedance-prompts.md。
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import JsonLd from '../../components/JsonLd.astro';
+import RelatedPrompts from '../../components/RelatedPrompts.astro';
+import { bySlug } from '../../data/prompts';
+
+const item = bySlug('ai-rap-video-wan-vs-seedance-prompts')!;
+const articleLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: item.title,
+  description: item.description,
+  url: `https://ai-rap-video.wiki/prompts/${item.slug}/`,
+  isPartOf: { '@type': 'WebSite', name: 'AI Rap Video Wiki', url: 'https://ai-rap-video.wiki/' },
+  license: 'https://opensource.org/licenses/MIT',
+  inLanguage: 'en'
+};
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AI Rap Video', item: 'https://ai-rap-video.wiki/' },
+    { '@type': 'ListItem', position: 2, name: 'Prompts', item: 'https://ai-rap-video.wiki/prompts/' },
+    { '@type': 'ListItem', position: 3, name: item.title, item: `https://ai-rap-video.wiki/prompts/${item.slug}/` }
+  ]
+};
+
+const dims = [
+  ['Prompt order', 'Subject-first: open with "Left performer = photo 1..." and define roles before anything else.', 'Scene-first: open with the stage and atmosphere, then introduce who is in it.'],
+  ['Reference handling', 'Explicit slot language ("photo 1", "photo 2") maps cleanly to upload order.', 'Reference images are treated as a cast; name them by appearance ("the performer in the dark jacket").'],
+  ['Motion language', 'Tolerates dense choreography lists; instruction-following is strong.', 'Prefers fewer, stronger motion verbs; long choreography lists get partially dropped.'],
+  ['Negative prompts', 'Dedicated negative field is common in pipelines built around it.', 'Often no separate field — append the block as an "Avoid:" line in the main prompt.'],
+  ['Duration default', 'Usually explicit in the request; state 8-12s.', 'Often fixed per mode; check the tool, and keep prompts loop-ready either way.'],
+  ['Identity stability', 'Strong with slot-ordered references and restated "fixed sides".', 'Strong with appearance-named references and distinct outfit contrast.']
+];
+---
+
+<BaseLayout title={`${item.title} — Port One Prompt Across Both | AI Rap Video`} description={item.description} canonicalPath={`/prompts/${item.slug}/`}>
+  <JsonLd data={[articleLd, breadcrumbLd]} />
+  <article class="prose hero">
+    <p class="tag">{item.intent}</p>
+    <h1>{item.title}</h1>
+    <p class="lead">The same AI rap video render, run through a Wan-style pipeline and a Seedance-style pipeline, wants slightly different words. Not a different workflow — the templates on this wiki are deliberately portable — but a reordering: what goes first, how references are named, where the negative block lives. This page is the translation table plus a worked example in both dialects.</p>
+
+    <h2>The one structural difference</h2>
+    <p><strong>Wan-style pipelines are subject-first.</strong> They reward prompts that define the cast before the set: "Left performer = photo 1, right performer = photo 2", roles and rules up top, stage second. <strong>Seedance-style pipelines are scene-first.</strong> They reward atmosphere before cast: the stage, the light, the mood — then who's standing in it, described by appearance. Both understand the same vocabulary; they just weight the opening of the prompt most heavily, so the most important instruction goes first in each dialect.</p>
+
+    <h2>Dimension-by-dimension</h2>
+    <div style="overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;font-size:.95rem;">
+        <thead><tr style="text-align:left;border-bottom:2px solid var(--line);">
+          <th style="padding:.6rem .75rem;">Dimension</th>
+          <th style="padding:.6rem .75rem;">Wan-style</th>
+          <th style="padding:.6rem .75rem;">Seedance-style</th>
+        </tr></thead>
+        <tbody>
+          {dims.map(([dim, a, b]) => (
+            <tr style="border-bottom:1px solid var(--line);">
+              <td style="padding:.6rem .75rem;"><strong>{dim}</strong></td>
+              <td style="padding:.6rem .75rem;" class="muted">{a}</td>
+              <td style="padding:.6rem .75rem;">{b}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Copy-ready: the same duo prompt in both dialects</h2>
+    <h3>Wan-style (subject-first)</h3>
+    <pre class="prompt-box">Create an AI rap video duo performance from two separate portrait references.
+Left performer = photo 1, right performer = photo 2. Fixed sides for the whole clip.
+Rules: only one performer raps at a time; the other nods on beat. Faces stay sharp and centered.
+Stage: original studio booth, warm orange key light, one hanging microphone centered between them, dark backdrop.
+Action: energetic head nods, traded bars with clear mouth movement, one slow push-in during the final two seconds.
+Audio: original upbeat rap cadence, call-and-response — write NEW lyrics, never quote commercial tracks.
+Duration: 8-12 seconds, clean two-shot hold at the end.
+Negative: identity swap, merged faces, third person, blurry faces, on-screen text, logos, NSFW.</pre>
+    <h3>Seedance-style (scene-first)</h3>
+    <pre class="prompt-box">An original studio booth stage: warm orange key light falls from the front-left, a single vintage microphone hangs centered in frame, the dark backdrop carries a soft rim light.
+Two performers stand on either side of the mic: on the left, the person from the first reference photo in their own outfit; on the right, the person from the second reference photo. They trade bars in a call-and-response — one raps while the other nods on beat — energetic but locked to their sides, faces sharp and front-lit.
+The camera holds a medium two-shot, pushing in slowly over the final two seconds to a clean hold. The performance runs 8-12 seconds to an original upbeat rap cadence with NEW lyrics — never commercial songs.
+Avoid: identity swap, merged faces, third person, blurry faces, on-screen text, logos, NSFW.</pre>
+    <p>Notice what stayed identical: fixed sides, one-rapper-at-a-time, the mic anchor, the loop hold, the original-lyrics guardrail, the negative terms. The dialect is ordering and naming — the <a href="/prompts/ai-rap-video-camera-and-stage-prompt/">stage vocabulary</a> ports verbatim.</p>
+
+    <h2>Porting rules</h2>
+    <ol class="list">
+      <li><strong>Move the crown jewel to line one.</strong> Subject roles first for Wan-style; stage atmosphere first for Seedance-style.</li>
+      <li><strong>Rename references.</strong> "photo 1" becomes "the person from the first reference photo" — appearance-based naming survives both.</li>
+      <li><strong>Halve the choreography list for Seedance-style.</strong> Keep the two strongest gestures; fold the rest into "traded bars with clear mouth movement".</li>
+      <li><strong>Relocate the negative block.</strong> Dedicated field if it exists; otherwise "Avoid:" as the final line — never the opening.</li>
+      <li><strong>Re-render, don't assume.</strong> The first render in a new dialect is a calibration shot; expect one wording pass.</li>
+    </ol>
+
+    <h2>Common failure modes</h2>
+    <ul class="list">
+      <li><strong>Scene-first prompt in a Wan-style tool drifts sides</strong> → the role definition buried too deep; hoist "Left = photo 1" back to the top.</li>
+      <li><strong>Subject-first prompt in a Seedance-style tool renders a flat stage</strong> → atmosphere arrived last and got clipped; open with the stage.</li>
+      <li><strong>Choreography half-applied</strong> → the list was long for the dialect; cut to two named gestures.</li>
+    </ul>
+
+    <h2>FAQ</h2>
+    <h3>Which style is better for AI rap videos?</h3>
+    <p>Neither universally — identity-heavy renders (self-duo, pets) tend to favor the explicit slot naming of Wan-style; atmospheric stages (rooftop couple) favor scene-first. The wiki's templates are written neutral so they run in both with the porting rules above.</p>
+    <h3>Do these rules apply to specific model versions?</h3>
+    <p>They describe behavior patterns shared across pipeline families, not pinned versions. Check your tool's own docs for its negative-field and duration specifics — the porting rules absorb the rest.</p>
+
+    <div class="notice"><strong>Compliance:</strong> identical in every dialect — original staging and lyrics only; never bind protected recordings or celebrity likenesses, whichever model renders the clip.</div>
+
+    <RelatedPrompts slugs={item.related} />
+  </article>
+</BaseLayout>

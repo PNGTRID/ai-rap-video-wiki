@@ -1,0 +1,98 @@
+---
+/**
+ * [WHY]: 照片准备清单页——渲染前唯一的"输入质量"守门人，决定人脸在成片里的稳定性。
+ * [INPUT]: prompts.ts 的 item（title/intent/description/related）。
+ * [OUTPUT]: 照片准备指南（分辨率/裁剪/光线/背景/权限）+ 校验 prompt + Article JSON-LD。
+ * [BOUND]: 不做照片编辑服务；只给检查标准与 prompt 侧补偿手段。
+ * [PROTOCOL]: 清单变更时同步更新 pack/ai-rap-video-photo-prep-checklist.md。
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import JsonLd from '../../components/JsonLd.astro';
+import RelatedPrompts from '../../components/RelatedPrompts.astro';
+import { bySlug } from '../../data/prompts';
+
+const item = bySlug('ai-rap-video-photo-prep-checklist')!;
+const articleLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: item.title,
+  description: item.description,
+  url: `https://ai-rap-video.wiki/prompts/${item.slug}/`,
+  isPartOf: { '@type': 'WebSite', name: 'AI Rap Video Wiki', url: 'https://ai-rap-video.wiki/' },
+  license: 'https://opensource.org/licenses/MIT',
+  inLanguage: 'en'
+};
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AI Rap Video', item: 'https://ai-rap-video.wiki/' },
+    { '@type': 'ListItem', position: 2, name: 'Prompts', item: 'https://ai-rap-video.wiki/prompts/' },
+    { '@type': 'ListItem', position: 3, name: item.title, item: `https://ai-rap-video.wiki/prompts/${item.slug}/` }
+  ]
+};
+---
+
+<BaseLayout title={`${item.title} — Resolution, Crops & Lighting | AI Rap Video`} description={item.description} canonicalPath={`/prompts/${item.slug}/`}>
+  <JsonLd data={[articleLd, breadcrumbLd]} />
+  <article class="prose hero">
+    <p class="tag">{item.intent}</p>
+    <h1>{item.title}</h1>
+    <p class="lead">Most AI rap video failures are photo failures wearing a prompt's clothes. A blurry identity, a face that morphs at second six, a duo where one performer always looks "further away" — all of them trace back to the input images. This checklist is the five minutes of prep that saves five re-renders.</p>
+
+    <h2>Why prep beats prompting</h2>
+    <p>Image-to-video models treat your portrait as ground truth for identity. Anything ambiguous in the photo — soft focus, a tilted head, a busy background, sunglasses — gets resolved by the model's imagination, and imagination drifts frame by frame. A sharp, front-lit, plain-background photo pins the identity; the prompt's job is then only staging and choreography. Run this checklist <em>before</em> touching any template.</p>
+
+    <h2>The checklist</h2>
+    <ol class="list">
+      <li><strong>Resolution: at least 512px on the face.</strong> The face should fill a meaningful part of the frame; a face occupying 5% of a group photo does not carry an 8-second render.</li>
+      <li><strong>Front-facing, eyes visible.</strong> Three-quarter angles work; full profile and heavily tilted heads do not. Eyes open, no heavy shadow across them.</li>
+      <li><strong>Even front light.</strong> Daylight from a window or a bright room beats a dim party flash. Harsh side shadows confuse the identity mapping.</li>
+      <li><strong>Plain or blurred background.</strong> The model can read background objects as props to render. A clean wall keeps the stage under prompt control.</li>
+      <li><strong>Upper body in frame.</strong> The booth performance shows chests and shoulders; a face-only crop forces the model to invent a body, and it will change clothes mid-clip.</li>
+      <li><strong>Glasses: keep them only if they're identity.</strong> Clear lenses with no glare usually survive; strong glare or sunglasses usually do not.</li>
+      <li><strong>Similar scale across photos.</strong> For a duo, both faces should be cropped to roughly the same size, angle, and distance so neither performer reads as "the far one".</li>
+      <li><strong>One face per photo.</strong> Never split a group shot into two uploads — the model keeps the coupling and merges faces.</li>
+      <li><strong>Recent and representative.</strong> A photo from ten years ago renders a person the subject won't recognize. Pick something they'd approve of.</li>
+      <li><strong>Permission.</strong> Every face in a photo you upload must have agreed to be in the video. No exceptions, including your own group chats.</li>
+    </ol>
+
+    <h2>Copy-ready prep verification prompt</h2>
+    <p>Use this in any image-capable chat model to audit your photos before rendering. It is the one prompt in this wiki that runs against images instead of video:</p>
+    <pre class="prompt-box">Audit these portrait photos for an AI rap video render. For each photo, answer strictly:
+1. Is exactly one clear face visible? (yes/no)
+2. Is the face front-facing with both eyes visible? (yes/no)
+3. Is lighting even across the face with no harsh shadows? (yes/no)
+4. Approximate face resolution in pixels (width of the face region).
+5. Is the background plain or clearly separated from the subject? (yes/no)
+6. Is the upper body (chest and shoulders) visible? (yes/no)
+7. Any glare on glasses, heavy motion blur, or heavy compression artifacts? (list them)
+Then give a verdict per photo: RENDER-READY or FIX FIRST, and for any FIX FIRST photo, name the single highest-impact fix.
+Do not edit the images. Do not generate video. Audit only.</pre>
+
+    <h2>How the audit maps to fixes</h2>
+    <ul class="list">
+      <li><strong>Low face resolution</strong> → re-crop tighter around the face rather than upscaling; interpolation adds the softness you're trying to remove.</li>
+      <li><strong>Harsh shadows</strong> → reshoot near a window, or pick a different photo from the same set.</li>
+      <li><strong>Two faces in frame</strong> → crop to one, or use the second face as the other performer's reference if they consent.</li>
+      <li><strong>Glare on glasses</strong> → tilt the head slightly in a reshoot, or accept the risk and plan for a re-render.</li>
+    </ul>
+
+    <h2>Common failure modes</h2>
+    <ul class="list">
+      <li><strong>"My render looks nothing like them"</strong> → almost always resolution or angle. Re-crop to 512px+ face width, front-facing.</li>
+      <li><strong>"The two performers look like different distances away"</strong> → scale mismatch between photos; re-crop both to the same face size.</li>
+      <li><strong>"The wardrobe keeps changing"</strong> → face-only crop; widen to chest-up so the outfit is real reference data, not invention.</li>
+    </ul>
+
+    <h2>FAQ</h2>
+    <h3>Does a higher-resolution photo always help?</h3>
+    <p>Up to a point. What matters is the face region's sharpness, not the file's megapixels. A 12MP photo where the subject is small in frame loses to a 2MP selfie where the face is large and sharp.</p>
+    <h3>Can I prep photos with AI enhancement tools?</h3>
+    <p>Light cleanup (denoise, exposure) is fine. Heavy face "beautification" or upscalers rewrite identity features — the render will then faithfully animate a face that isn't quite theirs.</p>
+
+    <div class="notice"><strong>Compliance:</strong> prep photos only for people who consented to the video. Do not prepare celebrity or public-figure photos for AI rap video renders.</div>
+
+    <RelatedPrompts slugs={item.related} />
+  </article>
+</BaseLayout>

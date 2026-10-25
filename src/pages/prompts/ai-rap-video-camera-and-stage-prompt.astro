@@ -1,0 +1,125 @@
+---
+/**
+ * [WHY]: 舞台与镜头语言页——提供可替换的舞台/机位词汇库，让任何模板都能换景不换骨架。
+ * [INPUT]: prompts.ts 的 item（title/intent/description/related）。
+ * [OUTPUT]: 舞台词汇库（三种舞台、麦克风、机位、灯光）+ 可换装的主 prompt + Article JSON-LD。
+ * [BOUND]: 只做原创舞台描述词汇，不引用任何具体 MV 画面或受保护美术设计。
+ * [PROTOCOL]: 词汇库扩充时同步更新 pack/ai-rap-video-camera-and-stage-prompt.md。
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import JsonLd from '../../components/JsonLd.astro';
+import RelatedPrompts from '../../components/RelatedPrompts.astro';
+import { bySlug } from '../../data/prompts';
+
+const item = bySlug('ai-rap-video-camera-and-stage-prompt')!;
+const articleLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: item.title,
+  description: item.description,
+  url: `https://ai-rap-video.wiki/prompts/${item.slug}/`,
+  isPartOf: { '@type': 'WebSite', name: 'AI Rap Video Wiki', url: 'https://ai-rap-video.wiki/' },
+  license: 'https://opensource.org/licenses/MIT',
+  inLanguage: 'en'
+};
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AI Rap Video', item: 'https://ai-rap-video.wiki/' },
+    { '@type': 'ListItem', position: 2, name: 'Prompts', item: 'https://ai-rap-video.wiki/prompts/' },
+    { '@type': 'ListItem', position: 3, name: item.title, item: `https://ai-rap-video.wiki/prompts/${item.slug}/` }
+  ]
+};
+---
+
+<BaseLayout title={`${item.title} — Stage, Mic & Camera Vocabulary | AI Rap Video`} description={item.description} canonicalPath={`/prompts/${item.slug}/`}>
+  <JsonLd data={[articleLd, breadcrumbLd]} />
+  <article class="prose hero">
+    <p class="tag">{item.intent}</p>
+    <h1>{item.title}</h1>
+    <p class="lead">The stage and camera block is the visual soul of an AI rap video prompt — and the part most people write too vaguely. "Cool stage, nice camera" gives the model total freedom; "warm orange key light, hanging mic, slow push-in" gives it a shot list. This page is a vocabulary library you can swap into any template to change the scene without breaking the workflow.</p>
+
+    <h2>When to use this template</h2>
+    <p>Use it in two ways. First, as a reference: steal vocabulary from the tables below into whichever duo template you're running. Second, as a swap block: the copy-ready prompt below is a complete staging section you can paste over the Stage and Camera lines of the <a href="/prompts/ai-rap-video-duo-prompt/">core duo prompt</a> or the <a href="/prompts/ai-rap-video-vertical-tiktok-prompt/">vertical variant</a>. It also shows how to describe a booth-style stage in original words — the format convention without any specific production's shot list.</p>
+
+    <h2>The vocabulary that controls the render</h2>
+    <h3>Stage environments (pick one, name it concretely)</h3>
+    <ul class="list">
+      <li><strong>Studio booth:</strong> "original studio booth, warm orange key light, dark backdrop, soft rim light" — the classic AI rap video read.</li>
+      <li><strong>Neon warehouse:</strong> "industrial warehouse, magenta and cyan neon strips, faint haze, concrete floor" — colder, more nightlife energy.</li>
+      <li><strong>Rooftop dusk:</strong> "city rooftop at dusk, practical string lights, sky gradient behind, gentle wind" — softer, works well for couple and friends variants.</li>
+    </ul>
+    <p>Describe lighting color and source, not brand aesthetics. "Warm orange key light" is a physics description; naming a specific artist's video is a shot-for-shot copy, which this wiki's <a href="/ai-rap-video-vs-hotel-lobby-trend/">compliance guide</a> rules out.</p>
+    <h3>The microphone</h3>
+    <ul class="list">
+      <li><strong>Hanging mic</strong> — one mic suspended between the performers; the strongest anchor for a two-shot, and it keeps faces from drifting toward frame edges.</li>
+      <li><strong>Handheld mics</strong> — one per performer; adds choreography (mic swaps, leans) but gives the model two more objects to track.</li>
+      <li><strong>No mic</strong> — pure performance framing; cleanest renders, weakest "rap video" read.</li>
+    </ul>
+    <h3>Camera moves (one or two, never three)</h3>
+    <ul class="list">
+      <li><strong>Locked shot</strong> — tripod-still; maximum identity stability, use it for first attempts.</li>
+      <li><strong>Slow push-in</strong> — the workhorse: motion energy without instability.</li>
+      <li><strong>Static + orbit at midpoint</strong> — a single slow arc around the pair mid-clip; keep it under two seconds.</li>
+      <li><strong>Whip pan</strong> — only as a transition between two locked shots; as a continuous move it smears faces.</li>
+    </ul>
+    <h3>Lighting words that actually bite</h3>
+    <p><code>key light</code>, <code>rim light</code>, <code>practical lights in frame</code>, <code>haze</code>, <code>high contrast</code>, <code>soft fill</code>. Two or three of these beat a paragraph of adjectives.</p>
+
+    <h2>Copy-ready staging swap block</h2>
+    <pre class="prompt-box">Stage (original description, no reference to any existing music video):
+- Setting: original studio booth, dark backdrop with one soft vertical light strip, faint haze.
+- Key light: warm orange from the front-left, gentle falloff; cool rim light from behind on both performers.
+- Prop: a single vintage-style microphone hanging on a cable, centered between the two performers at chest height.
+- Floor: dark, slightly reflective, no text or logos anywhere in the scene.
+
+Camera:
+- Shot 1 (0-8s): locked medium two-shot, both performers waist-up, microphone centered.
+- Shot 2 (8-11s): slow push-in toward the mic, ending on a clean hold.
+- No pans, no rotation, no cutaways; faces stay sharp and centered throughout.
+Template focus: Stage & Camera Prompt for AI Rap Video (swap block for duo templates).</pre>
+
+    <h2>Beat &amp; camera breakdown</h2>
+    <ol class="list">
+      <li><strong>0-2s — Establish the geometry.</strong> Locked shot lets the viewer (and the model) lock the left/right map. Resist opening with movement.</li>
+      <li><strong>2-6s — Perform on the locked frame.</strong> All the traded bars happen here; stillness sells the lip-sync.</li>
+      <li><strong>6-9s — One move, maximum.</strong> The push-in or orbit lands during the shared moment.</li>
+      <li><strong>9-11s — Return to stillness.</strong> End locked and clean; it reads as intentional and loops well.</li>
+    </ol>
+
+    <h2>Negative prompt</h2>
+    <pre class="prompt-box">camera shake, rapid cuts, scene changes, zoom bursts, spinning camera, Dutch angle, fisheye distortion, text or signage in scene, brand logos, stage crowd, confetti, fireworks, identity swap, merged faces, extra limbs, blurry faces, celebrity lookalike, NSFW</pre>
+
+    <h2>Photo prep for this template</h2>
+    <ul class="list">
+      <li>Match the wardrobe to the stage: streetwear reads naturally in booth and warehouse sets; formalwear belongs on the rooftop variant.</li>
+      <li>If your photos have a strong colored background, pick a stage palette that doesn't clash — or the model will repaint it.</li>
+      <li>Full prep rules in the <a href="/prompts/ai-rap-video-photo-prep-checklist/">photo prep checklist</a>.</li>
+    </ul>
+
+    <h2>Render steps (any model)</h2>
+    <ol class="list">
+      <li>Take your base template and replace its Stage and Camera lines with the swap block above.</li>
+      <li>Keep one camera move. If the render comes back shaky, cut to a fully locked shot before changing anything else.</li>
+      <li>Render, then audit the scene: is the mic centered, is the backdrop stable, did any signage appear? Scene instability means the stage description was too vague — add one concrete noun (light strip, haze, reflective floor), not more adjectives.</li>
+    </ol>
+
+    <h2>Common failure modes</h2>
+    <ul class="list">
+      <li><strong>Stage morphs mid-clip</strong> → too many named elements; cut the description to setting + key light + one prop.</li>
+      <li><strong>Camera moves too fast</strong> → "slow" wasn't anchored; write the move's duration ("push-in across the final two seconds").</li>
+      <li><strong>Signs or logos appear</strong> → the "no text or logos anywhere" line is missing; add it to both the prompt and the negative block.</li>
+    </ul>
+
+    <h2>FAQ</h2>
+    <h3>Can I describe a specific famous music video's stage?</h3>
+    <p>No — that's a shot-for-shot recreation of an audiovisual work, and this wiki's templates deliberately don't do it. Describe the physics (colors, light sources, props) and you'll get the vibe with original wording.</p>
+    <h3>Does a fancier stage improve the render?</h3>
+    <p>Usually the opposite: every named element is something the model must keep stable for eight seconds. Simple stages render cleaner; add elements one per re-render.</p>
+
+    <div class="notice"><strong>Compliance:</strong> all stage language here is original physical description. Do not instruct models to recreate specific copyrighted music videos, bind protected recordings, or render celebrity likenesses.</div>
+
+    <RelatedPrompts slugs={item.related} />
+  </article>
+</BaseLayout>

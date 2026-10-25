@@ -1,0 +1,96 @@
+---
+/**
+ * [WHY]: 负面提示词总库页——按类别组织的负向词库 + 各工具负面字段的放置方法。
+ * [INPUT]: prompts.ts 的 item（title/intent/description/related）。
+ * [OUTPUT]: 分类负面词库（身份/解剖/伪影/品牌/安全）+ 主负面块 + Article JSON-LD。
+ * [BOUND]: 只做负面词组织与放置指导，不替代各模型自身的负面字段实现差异。
+ * [PROTOCOL]: 词库扩充时同步更新 pack/ai-rap-video-negative-prompt-guide.md。
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import JsonLd from '../../components/JsonLd.astro';
+import RelatedPrompts from '../../components/RelatedPrompts.astro';
+import { bySlug } from '../../data/prompts';
+
+const item = bySlug('ai-rap-video-negative-prompt-guide')!;
+const articleLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: item.title,
+  description: item.description,
+  url: `https://ai-rap-video.wiki/prompts/${item.slug}/`,
+  isPartOf: { '@type': 'WebSite', name: 'AI Rap Video Wiki', url: 'https://ai-rap-video.wiki/' },
+  license: 'https://opensource.org/licenses/MIT',
+  inLanguage: 'en'
+};
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AI Rap Video', item: 'https://ai-rap-video.wiki/' },
+    { '@type': 'ListItem', position: 2, name: 'Prompts', item: 'https://ai-rap-video.wiki/prompts/' },
+    { '@type': 'ListItem', position: 3, name: item.title, item: `https://ai-rap-video.wiki/prompts/${item.slug}/` }
+  ]
+};
+
+const categories = [
+  { name: 'Identity', why: 'The face failures that end a duo clip.', terms: 'identity swap, faces changing sides, merged faces, faces fusing, third person appearing, clone afterimage, mirrored kaleidoscope effect, outfit colors swapping between sides' },
+  { name: 'Anatomy', why: 'Hands, limbs, and the high-five class of bugs.', terms: 'extra limbs, extra arms, extra fingers, deformed hands, fused legs, distorted anatomy' },
+  { name: 'Image quality', why: 'The renders that look broken before anything else is judged.', terms: 'blurry faces, motion smear, compression artifacts, flicker, frame jitter, low resolution, oversharpened skin' },
+  { name: 'Set & props', why: 'The stage morphing or inventing branded set dressing.', terms: 'on-screen lyrics or captions, karaoke text, watermarks, brand logos, signage, text in scene, crowd, confetti, stage change, scene changes' },
+  { name: 'Camera', why: 'Instability that smears the lip-sync you worked for.', terms: 'camera shake, rapid cuts, zoom bursts, spinning camera, Dutch angle, fisheye distortion' },
+  { name: 'Safety & likeness', why: 'The compliance layer, enforced at the prompt level.', terms: 'celebrity lookalike, real artist likeness, NSFW, weapons, alcohol' }
+];
+---
+
+<BaseLayout title={`${item.title} — The Category-Negative Library | AI Rap Video`} description={item.description} canonicalPath={`/prompts/${item.slug}/`}>
+  <JsonLd data={[articleLd, breadcrumbLd]} />
+  <article class="prose hero">
+    <p class="tag">{item.intent}</p>
+    <h1>{item.title}</h1>
+    <p class="lead">A positive prompt says what you want; the negative block says what you refuse to watch. Face swaps, merged identities, karaoke text burned into the frame, a logo that appeared from nowhere — every one of these is cheaper to prevent than to fix. This page is the full negative library for AI rap video renders, organized by what each category protects, plus exactly where the block goes in different tools.</p>
+
+    <h2>How to use negatives (three rules)</h2>
+    <ol class="list">
+      <li><strong>Use the dedicated field when there is one.</strong> Most image-to-video tools have a negative prompt input separate from the main prompt. Put the block there. When there isn't one, append it to the main prompt as its own line: <code>Avoid: ...terms...</code>.</li>
+      <li><strong>Comma-separated terms, no sentences.</strong> Negatives are a blocklist, not prose. "Please do not make the faces blurry" wastes tokens; "blurry faces" bites.</li>
+      <li><strong>Match negatives to the failure you actually saw.</strong> Start with the master block below; add a term only when a render shows that failure. A 40-term blocklist dilutes the terms doing real work.</li>
+    </ol>
+
+    <h2>The category library</h2>
+    {categories.map((c) => (
+      <div style="margin-top:1.25rem;">
+        <h3>{c.name}</h3>
+        <p class="muted" style="margin:.2rem 0 .4rem;">{c.why}</p>
+        <p><code style="font-size:.85rem;">{c.terms}</code></p>
+      </div>
+    ))}
+
+    <h2>Copy-ready master negative block</h2>
+    <pre class="prompt-box">Avoid: identity swap, faces changing sides, merged faces, faces fusing, third person appearing, extra limbs, deformed hands, blurry faces, motion smear, frame flicker, on-screen lyrics or karaoke text, watermarks, brand logos, text in scene, camera shake, rapid cuts, scene changes, celebrity lookalike, NSFW
+Template focus: Negative Prompts for Cleaner AI Rap Video (master block — paste into the negative field or append after "Avoid:").</pre>
+    <p>This is the same block shipped in every template page's negative section — the per-template blocks are this list with two or three scenario-specific terms swapped in (the pet template adds paw terms; the vertical template adds letterboxing terms).</p>
+
+    <h2>What each category actually prevents</h2>
+    <p>Identity terms are the expensive ones: a face swap can't be cropped or captioned away, only re-rendered. Anatomy terms matter most in choreographed templates (the <a href="/prompts/ai-rap-video-best-friends-duo/">high-five</a>, the <a href="/prompts/ai-rap-video-pet-duo-prompt/">pet paws</a>). Quality terms are insurance — they cost nothing and quietly raise the floor. Set terms mostly defend against the model inventing branded set dressing on a booth stage. Camera terms trade away flair for stability; on first renders, keep them all. The safety terms are the prompt-level enforcement of this site's <a href="/ai-rap-video-vs-hotel-lobby-trend/">compliance rules</a> — no celebrity likenesses, no unsafe content.</p>
+
+    <h2>Ordering and length</h2>
+    <p>Lead with the terms protecting your current weakness: identity terms first for duo renders, letterboxing terms first for vertical, paw terms first for pets. Most models weight early terms slightly more, and past the ~30-term mark returns diminish — trim terms for failures you've never actually hit.</p>
+
+    <h2>Common failure modes</h2>
+    <ul class="list">
+      <li><strong>Negatives seem ignored</strong> → the block went into the main prompt of a tool that has a real negative field; move it.</li>
+      <li><strong>Render got worse after adding negatives</strong> → too many terms or contradictory ones (e.g. blocking "motion" while asking for "energetic action"); cut the block back to the master list.</li>
+      <li><strong>A failure keeps recurring</strong> → negatives reduce probability, they don't guarantee. Pair the block with the structural fixes in the <a href="/prompts/ai-rap-video-troubleshooting-faces/">troubleshooting guide</a>.</li>
+    </ul>
+
+    <h2>FAQ</h2>
+    <h3>Do all video models support negative prompts?</h3>
+    <p>No — support varies by tool and pipeline stage. Where a dedicated field is missing, the "Avoid:" line still measurably helps in most prompt-following models, but treat it as mitigation, not enforcement.</p>
+    <h3>Should negatives describe what I DO want, inverted?</h3>
+    <p>No. "Not blurry" is weaker than "blurry faces" as a blocklist term. Keep positives in the main prompt and negatives as pure refusal terms.</p>
+
+    <div class="notice"><strong>Compliance:</strong> the safety terms above (celebrity lookalike, NSFW) belong in every render, not just the first. Original lyrics and staging only; never bind protected recordings or real people's likenesses.</div>
+
+    <RelatedPrompts slugs={item.related} />
+  </article>
+</BaseLayout>

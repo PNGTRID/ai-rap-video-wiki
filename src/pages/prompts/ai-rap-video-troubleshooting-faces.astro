@@ -1,0 +1,112 @@
+---
+/**
+ * [WHY]: 人脸翻车排查页——症状→根因→修复对照表 + 重渲检查单，模板工作流的售后层。
+ * [INPUT]: prompts.ts 的 item（title/intent/description/related）。
+ * [OUTPUT]: 症状对照表（换边/糊脸/第三人/变形）+ 分层修复阶梯 + Article JSON-LD。
+ * [BOUND]: 只覆盖人脸/身份类故障；舞台与音频问题分流到对应模板页。
+ * [PROTOCOL]: 症状表扩充时同步更新 pack/ai-rap-video-troubleshooting-faces.md。
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import JsonLd from '../../components/JsonLd.astro';
+import RelatedPrompts from '../../components/RelatedPrompts.astro';
+import { bySlug } from '../../data/prompts';
+
+const item = bySlug('ai-rap-video-troubleshooting-faces')!;
+const articleLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: item.title,
+  description: item.description,
+  url: `https://ai-rap-video.wiki/prompts/${item.slug}/`,
+  isPartOf: { '@type': 'WebSite', name: 'AI Rap Video Wiki', url: 'https://ai-rap-video.wiki/' },
+  license: 'https://opensource.org/licenses/MIT',
+  inLanguage: 'en'
+};
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AI Rap Video', item: 'https://ai-rap-video.wiki/' },
+    { '@type': 'ListItem', position: 2, name: 'Prompts', item: 'https://ai-rap-video.wiki/prompts/' },
+    { '@type': 'ListItem', position: 3, name: item.title, item: `https://ai-rap-video.wiki/prompts/${item.slug}/` }
+  ]
+};
+
+const symptoms = [
+  { s: 'Faces swap sides mid-clip', c: 'Left/right assignment was stated once, early, then lost as motion ramps up — or the two references look too similar.', f: 'Restate "fixed sides for the whole clip" late in the prompt, not just the top. If both outfits are close in color, re-crop references with stronger contrast (see the self-duo contrast dials).' },
+  { s: 'One face goes soft or "melts" after a few seconds', c: 'That performer\'s reference is lower resolution or smaller in frame, so the model is interpolating identity it can\'t see.', f: 'Re-crop that photo so the face is ≥512px and brighter. Don\'t upscale — interpolation adds the same softness back.' },
+  { s: 'A third face appears briefly', c: 'The model invented a background onlooker when the stage description was vague during a camera move.', f: 'Lock the camera (drop to a static shot) and add "no other people" plus the stage\'s "dark backdrop, empty stage" language. Then re-add movement one piece at a time.' },
+  { s: 'Faces fuse during a lean or embrace', c: 'Contact choreography — the couple lean, a high-five hold — puts the two identity regions adjacent, and the model blends them.', f: 'Keep contact shoulder-level and brief ("one brief shoulder-to-shoulder lean"), or remove contact entirely. Distance is the anti-fusion tool.' },
+  { s: 'Both performers rap every line', c: 'The call-and-response roles weren\'t labeled per line, so the model plays the audio on both faces.', f: 'Rewrite the audio direction as a LEFT:/RIGHT: script (one line each, alternating) instead of a lyric paragraph.' },
+  { s: 'A face changes but stays plausible', c: 'Wrong-person substitution: the slot order in the tool didn\'t match the prompt\'s "photo 1 = left" assignment.', f: 'Check the upload order first — it overrides wording in most tools. Swap slots to match, don\'t rewrite the prompt.' },
+  { s: 'The whole pair morphs (self-duo)', c: 'Identical faces on both sides with insufficient outfit contrast — the model can\'t hold "two" of the same person.', f: 'Push outfit colors to maximum separation, add hairstyle/headwear difference, and keep a visible gap between the performers. Full dial list in the self-duo template.' }
+];
+---
+
+<BaseLayout title={`${item.title} — Symptom-to-Fix Table | AI Rap Video`} description={item.description} canonicalPath={`/prompts/${item.slug}/`}>
+  <JsonLd data={[articleLd, breadcrumbLd]} />
+  <article class="prose hero">
+    <p class="tag">{item.intent}</p>
+    <h1>{item.title}</h1>
+    <p class="lead">The render came back and something's wrong with the faces. Don't rewrite the whole prompt — diagnose. Face failures in AI rap video renders have about seven shapes, each with a specific cause and a one-change fix. This page is the map: find your symptom, apply its fix, re-render once.</p>
+
+    <h2>Symptom → cause → fix</h2>
+    <div style="overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;font-size:.92rem;">
+        <thead><tr style="text-align:left;border-bottom:2px solid var(--line);">
+          <th style="padding:.6rem .7rem;width:26%;">Symptom</th>
+          <th style="padding:.6rem .7rem;width:32%;">Likely cause</th>
+          <th style="padding:.6rem .7rem;">Fix (one change)</th>
+        </tr></thead>
+        <tbody>
+          {symptoms.map((row) => (
+            <tr style="border-bottom:1px solid var(--line);vertical-align:top;">
+              <td style="padding:.6rem .7rem;"><strong>{row.s}</strong></td>
+              <td style="padding:.6rem .7rem;" class="muted">{row.c}</td>
+              <td style="padding:.6rem .7rem;">{row.f}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <h2>The layered-fix ladder</h2>
+    <p>When a symptom has multiple candidate fixes, change layers in this order — cheapest and most causal first:</p>
+    <ol class="list">
+      <li><strong>Layer 1 — Slot order.</strong> Check which reference went into which upload slot. This silently overrides wording in most tools and explains "wrong person" renders instantly.</li>
+      <li><strong>Layer 2 — Photo quality.</strong> Resolution, lighting, crop. A better input fixes more than any wording change (see the <a href="/prompts/ai-rap-video-photo-prep-checklist/">prep checklist</a>).</li>
+      <li><strong>Layer 3 — One prompt clause.</strong> Add or reinforce the single sentence that names the failure ("fixed sides for the whole clip", "the microphone is never held"). Never rewrite the whole prompt.</li>
+      <li><strong>Layer 4 — Negative terms.</strong> Add the matching blocklist term if it's missing (start from the <a href="/prompts/ai-rap-video-negative-prompt-guide/">negative library</a>).</li>
+      <li><strong>Layer 5 — Choreography.</strong> Cut the riskiest gesture (high-five, lean, spin). Simplify before you escalate.</li>
+      <li><strong>Layer 6 — Duration.</strong> Drop from 12s to 8s. Most morphing is a late-clip decay; a shorter clip sidesteps it.</li>
+    </ol>
+    <p>If a failure survives all six layers, the render request is at the edge of what the model can hold — usually three-plus faces or an ambitious continuous camera move. Split the scene into two renders and cut them together.</p>
+
+    <h2>The 60-second review checklist</h2>
+    <p>Before posting — or before deciding anything is wrong — watch the clip once, frame by frame through the midpoint:</p>
+    <ul class="list">
+      <li>Left performer stays left, right stays right, from first frame to last.</li>
+      <li>Both faces sharp at the midpoint (the most common decay point).</li>
+      <li>Exactly the number of people you cast — no background cameos.</li>
+      <li>Mouths move only on the rapping performer's lines.</li>
+      <li>Wardrobe and sides match between the first and last frame (loop integrity).</li>
+    </ul>
+
+    <h2>Common failure modes (meta)</h2>
+    <ul class="list">
+      <li><strong>Fix-shuffling:</strong> changing three things per re-render, so you never learn what worked. One change, one render, one observation.</li>
+      <li><strong>Prompt-blaming:</strong> most identity failures are input failures; the checklist above starts at slots and photos for a reason.</li>
+      <li><strong>Escalating choreography:</strong> adding moves to "make it better" while diagnosing. Freeze the choreography until the faces are stable, then decorate.</li>
+    </ul>
+
+    <h2>FAQ</h2>
+    <h3>Can I fix a face swap in post instead of re-rendering?</h3>
+    <p>Small fixes (one soft frame, a flicker) can be trimmed or masked. An identity swap can't — the wrong face is baked through the clip. Diagnose and re-render; it's faster than it sounds once you're fixing one layer at a time.</p>
+    <h3>Is there a prompt that just never fails?</h3>
+    <p>No — but the failure rate drops an order of magnitude with sharp photos, fixed-side wording, one camera move, and the negative block. That's what every template on this wiki ships with.</p>
+
+    <div class="notice"><strong>Compliance:</strong> diagnose only your own consented renders. Do not re-render, edit, or redistribute clips of people (or celebrities) who didn't agree to be in them.</div>
+
+    <RelatedPrompts slugs={item.related} />
+  </article>
+</BaseLayout>

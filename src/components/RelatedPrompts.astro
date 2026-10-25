@@ -1,0 +1,20 @@
+---
+/**
+ * [WHY]: 相关模板内链区——每个模板页末尾的导流区块，集中渲染避免 12 处重复。
+ * [INPUT]: slugs（prompts.ts 中的 slug 数组）。
+ * [OUTPUT]: 4 张模板卡片网格；内链锚文本即模板标题。
+ * [BOUND]: 不做分页与过滤；slug 不存在时静默跳过。
+ * [PROTOCOL]: 新增模板时在 prompts.ts 配置 related 即可，无需改本组件。
+ */
+import { bySlug } from '../data/prompts';
+interface Props { slugs: string[] }
+const { slugs } = Astro.props;
+const items = slugs.map(bySlug).filter((p) => !!p);
+---
+
+<section>
+  <h2>Related AI Rap Video templates</h2>
+  <div class="grid">
+    {items.map((p) => (<a class="card" href={`/prompts/${p!.slug}/`}><h3>{p!.title}</h3><p class="muted">{p!.summary}</p></a>))}
+  </div>
+</section>

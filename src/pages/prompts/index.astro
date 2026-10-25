@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { prompts } from '../../data/prompts';
+
+const groups: { heading: string; note: string; slugs: string[] }[] = [
+  { heading: 'Core build', note: 'The two-photo workflow everything else builds on.', slugs: ['ai-rap-video-duo-prompt', 'ai-rap-video-self-duo-two-outfits'] },
+  { heading: 'Social framing', note: 'Get the clip shaped for the platform you post to.', slugs: ['ai-rap-video-vertical-tiktok-prompt', 'ai-rap-video-camera-and-stage-prompt'] },
+  { heading: 'Audio & words', note: 'Original bars — never commercial lyrics.', slugs: ['ai-rap-video-original-lyrics-prompt'] },
+  { heading: 'Casting variants', note: 'Same core workflow, different relationship energy.', slugs: ['ai-rap-video-best-friends-duo', 'ai-rap-video-couple-prompt', 'ai-rap-video-pet-duo-prompt'] },
+  { heading: 'Quality control', note: 'Prep before the render, fixes after it.', slugs: ['ai-rap-video-photo-prep-checklist', 'ai-rap-video-negative-prompt-guide', 'ai-rap-video-troubleshooting-faces', 'ai-rap-video-wan-vs-seedance-prompts'] }
+];
+const bySlug = (s: string) => prompts.find((p) => p.slug === s)!;
+---
+
+<BaseLayout
+  title="12 AI Rap Video Prompt Templates (Free, Copy-Ready)"
+  description="Browse all 12 free AI rap video prompt templates: duo from two photos, vertical TikTok framing, original lyrics, stage and camera language, negative prompts, and face fixes."
+  canonicalPath="/prompts/"
+>
+  <section class="hero">
+    <p class="tag">Template index</p>
+    <h1>AI Rap Video prompt templates</h1>
+    <p class="lead">Twelve deep templates covering the full AI rap video workflow — from the core two-photo duo render to vertical social framing, original lyrics, model-specific wording, and the fixes for face mix-ups. Every page includes a copy-ready prompt, a beat and camera breakdown, negative prompts, and photo prep. All of it is on the wiki and in the MIT <a href="/pack/">markdown pack</a>.</p>
+  </section>
+  {groups.map((g) => (
+    <section style="margin-top:2rem;">
+      <h2>{g.heading}</h2>
+      <p class="muted" style="margin:.25rem 0 1rem;">{g.note}</p>
+      <div class="grid">
+        {g.slugs.map((s) => { const p = bySlug(s); return (
+          <a class="card" href={`/prompts/${p.slug}/`}><span class="tag">{p.intent}</span><h3 style="margin-top:.55rem;">{p.title}</h3><p class="muted">{p.summary}</p></a>
+        ); })}
+      </div>
+    </section>
+  ))}
+  <section style="margin-top:2.5rem;"><div class="notice"><strong>New here?</strong> Follow the <a href="/how-to-make-ai-rap-video/">10-step workflow</a> first, then pull templates as each step needs them.</div></section>
+</BaseLayout>

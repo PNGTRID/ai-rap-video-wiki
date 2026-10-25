@@ -1,0 +1,103 @@
+---
+/**
+ * [WHY]: 好友对唱模板页——高五、并肩、损友互怼能量的友情场景变体。
+ * [INPUT]: prompts.ts 的 item（title/intent/description/related）。
+ * [OUTPUT]: 好友模板指南（场景、主 prompt、分镜、负面、照片准备、步骤、FAQ）+ Article JSON-LD。
+ * [BOUND]: 不提供渲染服务；正文全部原创舞台/歌词描述，不绑定受保护音源或名人脸。
+ * [PROTOCOL]: 改 prompt 结构时同步更新 pack/ai-rap-video-best-friends-duo.md。
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import JsonLd from '../../components/JsonLd.astro';
+import RelatedPrompts from '../../components/RelatedPrompts.astro';
+import { bySlug } from '../../data/prompts';
+
+const item = bySlug('ai-rap-video-best-friends-duo')!;
+const articleLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: item.title,
+  description: item.description,
+  url: `https://ai-rap-video.wiki/prompts/${item.slug}/`,
+  isPartOf: { '@type': 'WebSite', name: 'AI Rap Video Wiki', url: 'https://ai-rap-video.wiki/' },
+  license: 'https://opensource.org/licenses/MIT',
+  inLanguage: 'en'
+};
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AI Rap Video', item: 'https://ai-rap-video.wiki/' },
+    { '@type': 'ListItem', position: 2, name: 'Prompts', item: 'https://ai-rap-video.wiki/prompts/' },
+    { '@type': 'ListItem', position: 3, name: item.title, item: `https://ai-rap-video.wiki/prompts/${item.slug}/` }
+  ]
+};
+---
+
+<BaseLayout title={`${item.title} — Hype Energy & Handshake Cues | AI Rap Video`} description={item.description} canonicalPath={`/prompts/${item.slug}/`}>
+  <JsonLd data={[articleLd, breadcrumbLd]} />
+  <article class="prose hero">
+    <p class="tag">{item.intent}</p>
+    <h1>{item.title}</h1>
+    <p class="lead">The best-friends variant turns the standard duo render into a <em>bromance hype video</em>: matching jackets, a high-five on the drop, shoulders bumping on the beat, and bars that roast each other just enough to be funny. It's the template for reunions, birthdays, fantasy-league wins, and "we've been friends since" posts.</p>
+
+    <h2>When to use this template</h2>
+    <p>Use it when the two performers are friends and the clip should feel like an inside joke the whole feed is allowed to hear. The <a href="/prompts/ai-rap-video-duo-prompt/">core duo template</a> is neutral; this one dials energy up and warmth sideways — bigger gestures, synchronized moments, playful competition between the two performers.</p>
+
+    <h2>Hook &amp; verse structure</h2>
+    <p>Friendship bars work best as <strong>roast-and-toast</strong>: the left performer opens with a light jab ("still late to everything"), the right performer fires back and then both land a togetherness line. Write it with the <a href="/prompts/ai-rap-video-original-lyrics-prompt/">lyrics template</a> using tone <code>playful</code> — one jab each, one shared punchline, hooks that name the friendship's milestone ("fifteen years, zero arrests" energy).</p>
+
+    <h2>Copy-ready main prompt</h2>
+    <pre class="prompt-box">Create an AI rap video duo performance with best-friends energy from two separate portrait references.
+Left performer = photo 1, right performer = photo 2, fixed sides for the whole clip.
+Stage: original booth-style set, warm orange key light, one hanging microphone between them, dark backdrop with soft rim light.
+Wardrobe: matching varsity-style jackets over each performer's own look, same color scheme on both.
+Action: high-energy best-friend performance — traded bars with sharp mouth movement, synchronized head nods on the beat, one high-five on the beat drop, shoulders bumping once mid-clip, big grins throughout.
+Choreography rule: the high-five happens exactly once, at the midpoint; hands meet in the center of frame and return to sides immediately.
+Camera: locked medium two-shot, subtle push-in during the final two seconds.
+Audio: original playful rap cadence, roast-and-toast call-and-response — write NEW original lyrics; never quote commercial songs.
+Duration: 8-12 seconds, ending on a shared confident pose for the loop hold.
+Template focus: Best-Friends AI Rap Video Prompt.</pre>
+
+    <h2>Beat &amp; camera breakdown</h2>
+    <ol class="list">
+      <li><strong>0-2s — Hype open.</strong> Both performers already nodding, grins on. Left spits the opening jab.</li>
+      <li><strong>2-5s — Jab and counter.</strong> Right performer's answer lands with a shoulder bump — the friendship's physical signature.</li>
+      <li><strong>5-7s — The high-five.</strong> On the beat drop, hands meet center frame. One take, one clap, back to position. More than one reads as chaos.</li>
+      <li><strong>7-12s — Shared toast.</strong> Both performers lean into the mic for the final together-line, then hit the matching pose for the loop hold.</li>
+    </ol>
+
+    <h2>Negative prompt</h2>
+    <pre class="prompt-box">identity swap, merged faces, third person appearing, extra arms during high-five, deformed hands, extra fingers, blurry faces, aggressive expressions, weapons, alcohol, on-screen lyrics or captions, watermarks, brand logos, celebrity lookalike, NSFW, scene changes, camera shake</pre>
+
+    <h2>Photo prep for this template</h2>
+    <ul class="list">
+      <li>Photos where each friend is already smiling — the model amplifies the baseline expression; neutral inputs read as stern in a hype clip.</li>
+      <li>Similar heights read best in the two-shot; if heights differ a lot, say "both performers standing at similar depth" to keep framing stable.</li>
+      <li>The high-five needs visible hands: crop both photos to include arms where possible (see the <a href="/prompts/ai-rap-video-photo-prep-checklist/">prep checklist</a>).</li>
+    </ul>
+
+    <h2>Render steps (any model)</h2>
+    <ol class="list">
+      <li>Upload both references in slot order and paste the main prompt; add the roast-and-toast script lines from the <a href="/prompts/ai-rap-video-original-lyrics-prompt/">lyrics template</a> into the Audio block.</li>
+      <li>Render once with the full choreography. If the high-five produces extra arms, cut it from the prompt (keep just shoulder bumps) before touching anything else — handshake-class motion is the most failure-prone gesture.</li>
+      <li>Check the midpoint frame: one clean clap, four hands total. Then check the ending pose matches the opening for the loop.</li>
+    </ol>
+
+    <h2>Common failure modes</h2>
+    <ul class="list">
+      <li><strong>Extra arms during the high-five</strong> → the gesture fired twice; enforce "exactly once, at the midpoint" or drop to shoulder bumps.</li>
+      <li><strong>Reads aggressive instead of playful</strong> → the jab lines were too sharp or the faces too neutral; soften the script and pick smiling inputs.</li>
+      <li><strong>Matching jackets invented differently</strong> → "matching varsity-style jackets, same color scheme" must name the color; vague matching drifts per performer.</li>
+    </ul>
+
+    <h2>FAQ</h2>
+    <h3>Can I do a trio of friends?</h3>
+    <p>Render two pairs and cut them — three simultaneous identities is beyond what most image-to-video models hold stable for eight seconds.</p>
+    <h3>The roast lines feel risky. How sharp is too sharp?</h3>
+    <p>Roast the situation, never the person: "always losing his keys" lands, anything about appearance or relationships doesn't. You know your friend; render what they'd repost about themselves.</p>
+
+    <div class="notice"><strong>Compliance:</strong> original staging and lyrics only. Do not commercially bind protected recordings — including the Hotel Lobby trend audio — or celebrity likenesses. Both friends must consent to the render and the post.</div>
+
+    <RelatedPrompts slugs={item.related} />
+  </article>
+</BaseLayout>

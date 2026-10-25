@@ -1,0 +1,98 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import JsonLd from '../components/JsonLd.astro';
+import { prompts } from '../data/prompts';
+
+const faqs = [
+  {
+    q: 'How do I make an AI rap video from photos?',
+    a: 'Pick one clear, front-lit photo per performer, assign each photo to a fixed left or right role, paste a copy-ready AI rap video prompt from this wiki, and render the clip in any image-to-video model you already use. Then review the result for face mix-ups and re-render with our fixes if needed.'
+  },
+  {
+    q: 'Do I need two photos for a duo AI rap video?',
+    a: 'Two separate photos give the cleanest left/right duo. If you only have photos of yourself, the self-duo template turns two different outfits of the same person into a two-performer clip.'
+  },
+  {
+    q: 'Is there a free AI rap video generator on this site?',
+    a: 'No — and that is deliberate. This wiki is an open-source prompt library, not a paid render tool. You bring your own model or app; we supply the prompt structures, photo prep, negative prompts, and troubleshooting that make the output usable.'
+  },
+  {
+    q: 'Can I use the Hotel Lobby song or a celebrity face in my AI rap video?',
+    a: 'Our templates never do, and we recommend you avoid binding protected commercial recordings or celebrity likenesses to rendered videos, especially for anything commercial or monetized. Every template here uses original staging descriptions and original lyrics, so your clip stays yours.'
+  },
+  {
+    q: 'How long should an AI rap video clip be?',
+    a: 'Most image-to-video models produce 5-12 second segments. Our templates target an 8-12 second loop: a two-second establishing shot, traded bars in the middle, and a clean hold at the end that loops back to the start.'
+  }
+];
+
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a }
+  }))
+};
+
+const websiteLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'AI Rap Video Wiki',
+  url: 'https://ai-rap-video.wiki/',
+  description: 'Open-source AI rap video prompt templates: duo clips from two photos, vertical TikTok framing, original lyrics, negative prompts, and troubleshooting.',
+  license: 'https://opensource.org/licenses/MIT'
+};
+---
+
+<BaseLayout
+  title="AI Rap Video: Free Prompt Templates, Duo Workflow & Open Pack"
+  description="Free AI rap video prompt templates: turn two photos into a duo performance clip. Copy-ready prompts for vertical TikTok framing, original lyrics, negative prompts, and face fixes."
+  canonicalPath="/"
+>
+  <JsonLd data={[faqLd, websiteLd]} />
+  <section class="hero">
+    <p class="tag">Open-source prompt wiki · MIT licensed</p>
+    <h1>AI Rap Video</h1>
+    <p class="lead">An <strong>AI rap video</strong> is a short, lip-synced duo performance generated from one or two portrait photos — two performers on a booth stage, trading bars into a hanging mic, looping for TikTok, Reels, and Shorts. This site is a deep, free prompt template library for exactly that workflow: copy-ready prompts, photo prep checklists, original lyric structures, negative prompt libraries, and step-by-step fixes for the face mix-ups every render eventually throws at you.</p>
+    <p class="lead" style="margin-top:.75rem;">It is not a paid generator. There are no credits, no upload queue, no watermark paywall — you keep your model, we keep the templates.</p>
+    <p style="margin-top:1.25rem;display:flex;gap:.75rem;flex-wrap:wrap;">
+      <a class="btn" href="/prompts/">Browse the 12 prompt templates</a>
+      <a class="btn" href="/how-to-make-ai-rap-video/" style="background:#243043;color:#fff;">How to make an AI rap video</a>
+    </p>
+  </section>
+
+  <section>
+    <h2>What goes into a good AI rap video prompt</h2>
+    <p>Every template in this wiki breaks the render into four controllable layers. Get each one right and the clip looks intentional; skip one and the model invents it for you.</p>
+    <div class="grid" style="margin-top:1rem;">
+      <div class="card"><h3>1. Portrait references</h3><p class="muted">One clear face per photo, fixed to a left or right role. Photo quality decides identity stability more than any prompt trick — see the <a href="/prompts/ai-rap-video-photo-prep-checklist/">photo prep checklist</a>.</p></div>
+      <div class="card"><h3>2. Stage &amp; camera language</h3><p class="muted">Booth lighting, hanging mic, locked two-shot, slow push-in. Concrete staging words stop the model from wandering between scenes — see the <a href="/prompts/ai-rap-video-camera-and-stage-prompt/">stage &amp; camera prompt</a>.</p></div>
+      <div class="card"><h3>3. Original bars</h3><p class="muted">A 4-line hook and an 8-bar verse written for your subject. Original lyrics keep the clip postable and monetizable — see the <a href="/prompts/ai-rap-video-original-lyrics-prompt/">original lyrics prompt</a>.</p></div>
+      <div class="card"><h3>4. Negative prompts</h3><p class="muted">Face swaps, blur, on-screen karaoke text, and brand logos are the usual failures. Cut them before they render — see the <a href="/prompts/ai-rap-video-negative-prompt-guide/">negative prompt guide</a>.</p></div>
+    </div>
+  </section>
+
+  <section style="margin-top:2.5rem;">
+    <h2>All 12 AI rap video templates</h2>
+    <p class="muted">Each page is a full build guide — scenario, copy-ready prompt, beat and camera breakdown, negative prompt, photo prep, and common failures.</p>
+    <div class="grid" style="margin-top:1rem;">
+      {prompts.map((p) => (
+        <a class="card" href={`/prompts/${p.slug}/`}><span class="tag">{p.intent}</span><h3 style="margin-top:.55rem;">{p.title}</h3><p class="muted">{p.summary}</p></a>
+      ))}
+    </div>
+  </section>
+
+  <section style="margin-top:2.5rem;">
+    <h2>AI rap video FAQ</h2>
+    {faqs.map((f) => (
+      <div style="margin-top:1.25rem;">
+        <h3>{f.q}</h3>
+        <p>{f.a}</p>
+      </div>
+    ))}
+  </section>
+
+  <section style="margin-top:2.5rem;"><div class="notice"><strong>Compliance first.</strong> Every template on this site uses original staging descriptions and original lyrics. Do not commercially bind protected recordings — including the Hotel Lobby trend audio — or celebrity likenesses to your renders. The <a href="/ai-rap-video-vs-hotel-lobby-trend/">compliance guide</a> explains why and what to do instead.</div></section>
+</BaseLayout>

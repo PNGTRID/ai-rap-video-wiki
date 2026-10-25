@@ -1,0 +1,72 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const comparison = [
+  ['What you get', 'A fixed booth stage wrapped around a credit-based render queue.', '12 open prompt templates you run in your own model, unlimited re-renders.'],
+  ['Audio', 'Usually bound to one trending commercial track (the Hotel Lobby trend audio).', 'Original bars you generate per clip — nothing to get muted or claimed.'],
+  ['Faces', 'Upload-driven; identity rules are the site\'s problem, not yours.', 'Photo prep + left/right wording + negative prompts give you direct control.'],
+  ['Cost', 'Credits per render, watermarks and HD behind a paywall.', 'Free and MIT licensed. Pack the markdown files, reuse them anywhere.'],
+  ['Commercial use', 'Commercial binding of the protected track is a takedown and claim risk.', 'Original staging and lyrics keep the clip yours; still get consent for every face.'],
+  ['Lock-in', 'Your prompts live on their platform.', 'Plain-text prompts in a git repository. Fork it, extend it, translate it.']
+];
+---
+
+<BaseLayout
+  title="AI Rap Video vs Hotel Lobby Trend: Template Wiki vs Trend Generator"
+  description="An honest AI rap video comparison: what trend-generator sites do, what this open prompt wiki does, and the compliance lines around protected audio and celebrity faces."
+  canonicalPath="/ai-rap-video-vs-hotel-lobby-trend/"
+>
+  <article class="prose hero">
+    <p class="tag">Compliance & comparison</p>
+    <h1>AI Rap Video vs the Hotel Lobby trend</h1>
+    <p class="lead">The "Hotel Lobby" format — two performers trading bars in an orange-lit booth with a hanging mic — made AI rap videos a trend, and a wave of generator sites monetized it with credits and a locked commercial track. This wiki takes the other path: the same visual grammar as open prompt templates, original audio, and no paid render pipeline. Here is the honest comparison.</p>
+
+    <h2>Side-by-side</h2>
+    <div style="overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;font-size:.95rem;">
+        <thead><tr style="text-align:left;border-bottom:2px solid var(--line);">
+          <th style="padding:.6rem .75rem;">Dimension</th>
+          <th style="padding:.6rem .75rem;">Trend generator sites</th>
+          <th style="padding:.6rem .75rem;">This prompt wiki</th>
+        </tr></thead>
+        <tbody>
+          {comparison.map(([dim, gen, wiki]) => (
+            <tr style="border-bottom:1px solid var(--line);">
+              <td style="padding:.6rem .75rem;"><strong>{dim}</strong></td>
+              <td style="padding:.6rem .75rem;" class="muted">{gen}</td>
+              <td style="padding:.6rem .75rem;">{wiki}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <h2>The compliance lines we hold (and why)</h2>
+    <h3>1. No commercial binding of protected recordings</h3>
+    <p>The trend audio is a licensed commercial recording. Attaching a monetized or branded video to it exposes you to content ID claims, muting, and takedowns — and platforms increasingly flag AI-rendered music videos automatically. Every template here generates <strong>original bars</strong> about your subject instead. Same energy, none of the claim risk. This is general information, not legal advice.</p>
+    <h3>2. No celebrity or artist likenesses</h3>
+    <p>Asking a model to render "a famous rapper" imports a real person's likeness without consent — the fastest way to get a video removed, and worse if it is commercial. Templates reference only the faces you upload with permission, plus original wardrobe and staging descriptions.</p>
+    <h3>3. Original staging, not shot-for-shot copies</h3>
+    <p>We keep the visual grammar (booth, hanging mic, traded bars, warm key light) because it is a generic performance setup, and we write it as original description language rather than instructing the model to recreate any specific music video. The <a href="/prompts/ai-rap-video-camera-and-stage-prompt/">stage &amp; camera prompt</a> is built entirely from generic vocabulary.</p>
+    <h3>4. Consent for every face</h3>
+    <p>Before rendering anyone's portrait — friend, partner, or your own — make sure they actually want the clip to exist and to be posted. This costs nothing and prevents the most common way these videos blow up badly.</p>
+
+    <h2>What you can absolutely do</h2>
+    <ul class="list">
+      <li>Render a duo clip of yourself and a consenting friend in an original booth-style stage.</li>
+      <li>Write original birthday, anniversary, or reunion bars with the <a href="/prompts/ai-rap-video-original-lyrics-prompt/">lyrics template</a>.</li>
+      <li>Post to TikTok, Reels, and Shorts with a vertical <a href="/prompts/ai-rap-video-vertical-tiktok-prompt/">9:16 render</a>.</li>
+      <li>Fork the MIT <a href="/pack/">prompt pack</a> and build your own variants.</li>
+    </ul>
+
+    <h2>FAQ</h2>
+    <h3>Is the Hotel Lobby format itself copyrighted?</h3>
+    <p>A generic performance setup — two people, a mic, warm lighting — is a scene convention, not protectable on its own. What carries risk is the specific commercial recording, the specific music video as an audiovisual work, and identifiable people. Our templates use the convention with original wording and skip everything protected.</p>
+    <h3>Can I still reference the trend by name in my caption?</h3>
+    <p>Referencing a trend by name in a caption is different from binding the protected audio to your render. We keep this wiki's templates audio-neutral so the choice stays yours — but if your clip is commercial, original audio is the safer bet either way.</p>
+    <h3>Where do model-specific wording differences come in?</h3>
+    <p>Compliance is model-independent; prompt structure is not. The <a href="/prompts/ai-rap-video-wan-vs-seedance-prompts/">Wan vs Seedance guide</a> handles the porting details.</p>
+
+    <div class="notice"><strong>Standing rule:</strong> original lyrics and staging only. Do not commercially bind protected recordings — including the Hotel Lobby trend audio — or celebrity likenesses. General information, not legal advice.</div>
+  </article>
+</BaseLayout>

@@ -1,0 +1,72 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import JsonLd from '../components/JsonLd.astro';
+
+const steps = [
+  { name: 'Pick your performers and get permission', text: 'One face per photo, and a real yes from every person in it. Duo clips from two separate portraits are the cleanest start; two outfits of one person work too.' },
+  { name: 'Prep the photos', text: 'Front-lit, eyes visible, upper body in frame, plain background. Crop each face to roughly the same size before uploading.' },
+  { name: 'Choose the frame', text: 'Vertical 9:16 for TikTok, Reels, and Shorts; 16:9 for YouTube. Decide before you prompt — retrofitting framing after a render wastes a generation.' },
+  { name: 'Write original bars', text: 'A 4-line hook plus an 8-bar verse about your subject. Never paste commercial song lyrics — they get clips muted or taken down.' },
+  { name: 'Assemble the main prompt', text: 'Combine the lyric direction with stage and camera language: booth stage, hanging mic, locked two-shot, slow push-in, loop ending.' },
+  { name: 'Add negative prompts', text: 'Paste the negative block for your template: identity swap, merged faces, on-screen text, logos, NSFW.' },
+  { name: 'Render in your own model', text: 'Drop the two photos into your image-to-video tool of choice, set 8-12 seconds at 9:16 or 16:9, and run the render. This wiki does not render — any Wan-style or Seedance-style workflow works.' },
+  { name: 'Review for identity drift', text: 'Watch the full clip once. Check that the left performer stays left, both faces stay sharp, and no third face appears mid-clip.' },
+  { name: 'Fix and re-render if needed', text: 'Most failures trace back to photo prep or ambiguous left/right wording. Apply the matching fix, not a full prompt rewrite.' },
+  { name: 'Loop and post', text: 'End the clip on a clean two-shot hold so it loops seamlessly, then caption it. Keep the audio original and the faces permissioned.' }
+];
+
+const howToLd = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: 'How to make an AI rap video',
+  description: 'A prompt-first workflow for making an AI rap video from portrait photos: photo prep, left/right roles, original bars, negative prompts, rendering, and identity review.',
+  totalTime: 'PT20M',
+  step: steps.map((s, i) => ({
+    '@type': 'HowToStep',
+    position: i + 1,
+    name: s.name,
+    text: s.text
+  }))
+};
+---
+
+<BaseLayout
+  title="How to Make an AI Rap Video: 10-Step Prompt Workflow"
+  description="How to make an AI rap video from photos, step by step: photo prep, left/right roles, original bars, negative prompts, rendering in any model, and fixing face mix-ups."
+  canonicalPath="/how-to-make-ai-rap-video/"
+>
+  <JsonLd data={howToLd} />
+  <article class="prose hero">
+    <p class="tag">Workflow guide</p>
+    <h1>How to make an AI rap video</h1>
+    <p class="lead">A prompt-first workflow that works in any image-to-video model: prepare photos, lock left/right roles, write original bars, render an 8-12 second clip, then review it for the identity drift that ruins most first attempts. No credits, no upload queue — this wiki supplies templates, your model supplies the render.</p>
+
+    <h2>Before you start: three decisions</h2>
+    <ul class="list">
+      <li><strong>Duo or self-duo?</strong> Two people from two photos, or one person from two outfits. Both work; the <a href="/prompts/ai-rap-video-self-duo-two-outfits/">self-duo template</a> handles the contrast rules for one person.</li>
+      <li><strong>Vertical or landscape?</strong> TikTok, Reels, and Shorts want 9:16. YouTube handles 16:9. The <a href="/prompts/ai-rap-video-vertical-tiktok-prompt/">vertical template</a> bakes the framing into the prompt.</li>
+      <li><strong>What is the clip about?</strong> A birthday, a reunion, a couple milestone, a pet. The theme drives the original bars, so decide it now.</li>
+    </ul>
+
+    <h2>The 10-step workflow</h2>
+    <ol class="list">
+      {steps.map((s) => (<li><strong>{s.name}.</strong> {s.text}</li>))}
+    </ol>
+
+    <h2>What each step feeds</h2>
+    <p>The steps chain into each other. Photo prep feeds identity stability, left/right wording feeds side consistency, original bars feed the audio direction, stage language feeds the visual, and negatives protect all four from common render failures. If a render disappoints, diagnose by layer instead of rewriting the whole prompt — the <a href="/prompts/ai-rap-video-troubleshooting-faces/">face troubleshooting guide</a> maps symptoms to the layer that caused them.</p>
+
+    <h2>Which model should you use?</h2>
+    <p>This wiki is deliberately tool-agnostic. The templates are written in plain descriptive English, so they port between Wan-style and Seedance-style image-to-video workflows with small wording shifts. The <a href="/prompts/ai-rap-video-wan-vs-seedance-prompts/">Wan vs Seedance prompt guide</a> covers exactly what to change — reference image handling, duration defaults, and where the negative block goes in each style.</p>
+
+    <h2>FAQ</h2>
+    <h3>How long does the whole workflow take?</h3>
+    <p>First run: about 20 minutes of prep plus your model's render time. Re-runs are faster because the photos and prompt structure are already done — usually one wording tweak and one re-render.</p>
+    <h3>Can I make an AI rap video with just one photo?</h3>
+    <p>Yes, as a solo performer, or as a self-duo if you have a second photo in a different outfit. The prompt changes one block: assign the single reference and drop the left/right trade.</p>
+    <h3>Why not just use a trend generator site?</h3>
+    <p>Trend generators lock you to their stage, their credits, and often a specific commercial audio. Our <a href="/ai-rap-video-vs-hotel-lobby-trend/">compliance comparison</a> breaks down why prompt templates keep you in control and on the safe side of music and likeness rights.</p>
+
+    <div class="notice"><strong>Remember:</strong> this is an open-source prompt workflow, not a paid AI rap video generator. Original lyrics and staging only; never bind protected recordings or celebrity faces.</div>
+  </article>
+</BaseLayout>

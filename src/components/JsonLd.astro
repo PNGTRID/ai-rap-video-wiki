@@ -1,0 +1,17 @@
+---
+/**
+ * [WHY]: 结构化数据注入器——把 schema.org 对象渲染成 JSON-LD，供搜索引擎与 LLM 抓取。
+ * [INPUT]: 调用方传入任意 Record（或数组）形式的 JSON-LD 数据。
+ * [OUTPUT]: 单个 application/ld+json script 标签；被各页面 frontmatter 消费。
+ * [BOUND]: 只做序列化与转义，不校验 schema 语义。
+ * [PROTOCOL]: 序列化逻辑变更时同步检查各页面 JSON-LD 用法。
+ */
+interface Props {
+  data: Record<string, unknown> | Record<string, unknown>[];
+}
+const { data } = Astro.props;
+// JSON.stringify 不会转义 `<`，字面 `</script>` 会截断 script 块，统一替换为 \u003c。
+const json = JSON.stringify(data).replace(/</g, '\\u003c');
+---
+
+<script type="application/ld+json" set:html={json} is:inline />

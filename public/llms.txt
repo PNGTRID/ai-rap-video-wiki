@@ -1,0 +1,29 @@
+# AI Rap Video Wiki
+
+> Open-source prompt templates for AI rap video workflows: turn two portrait photos into a duo performance clip. Not a paid video generator — MIT licensed, tool-agnostic, original staging and lyrics only.
+
+Site: https://ai-rap-video.wiki
+
+## Start here
+
+- Home: https://ai-rap-video.wiki/
+- How to make an AI rap video (10-step workflow): https://ai-rap-video.wiki/how-to-make-ai-rap-video/
+- AI Rap Video vs Hotel Lobby trend (compliance comparison): https://ai-rap-video.wiki/ai-rap-video-vs-hotel-lobby-trend/
+- Prompt pack (12 markdown files, MIT): https://ai-rap-video.wiki/pack/
+
+## Templates (/prompts/)
+
+- Core duo (two photos): https://ai-rap-video.wiki/prompts/ai-rap-video-duo-prompt/
+- Vertical 9:16 for TikTok: https://ai-rap-video.wiki/prompts/ai-rap-video-vertical-tiktok-prompt/
+- Photo prep checklist: https://ai-rap-video.wiki/prompts/ai-rap-video-photo-prep-checklist/
+- Stage & camera vocabulary: https://ai-rap-video.wiki/prompts/ai-rap-video-camera-and-stage-prompt/
+- Original lyrics structure: https://ai-rap-video.wiki/prompts/ai-rap-video-original-lyrics-prompt/
+- Best-friends duo: https://ai-rap-video.wiki/prompts/ai-rap-video-best-friends-duo/
+- Couple duo: https://ai-rap-video.wiki/prompts/ai-rap-video-couple-prompt/
+- Self-duo (two outfits): https://ai-rap-video.wiki/prompts/ai-rap-video-self-duo-two-outfits/
+- Pet duo (experimental): https://ai-rap-video.wiki/prompts/ai-rap-video-pet-duo-prompt/
+- Negative prompt library: https://ai-rap-video.wiki/prompts/ai-rap-video-negative-prompt-guide/
+- Wan-style vs Seedance-style prompts: https://ai-rap-video.wiki/prompts/ai-rap-video-wan-vs-seedance-prompts/
+- Fix face mix-ups: https://ai-rap-video.wiki/prompts/ai-rap-video-troubleshooting-faces/
+
+Compliance: original staging and lyrics descriptions only. Do not commercially bind protected music tracks (including the Hotel Lobby trend audio) or celebrity likenesses. Consent for every rendered face.

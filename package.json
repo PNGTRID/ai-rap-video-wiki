@@ -1,0 +1,18 @@
+{
+  "name": "ai-rap-video-wiki",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev --host",
+    "build": "astro build",
+    "preview": "astro preview --host"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.6.0",
+    "astro": "^5.14.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.2"
+  }
+}

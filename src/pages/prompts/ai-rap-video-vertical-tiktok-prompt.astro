@@ -1,0 +1,104 @@
+---
+/**
+ * [WHY]: 竖版 9:16 社交模板页——把 TikTok/Reels/Shorts 的画幅、安全区与循环诉求写进 prompt。
+ * [INPUT]: prompts.ts 的 item（title/intent/description/related）。
+ * [OUTPUT]: 竖版模板指南（场景、主 prompt、分镜、负面、照片准备、步骤、FAQ）+ Article JSON-LD。
+ * [BOUND]: 不提供渲染服务；正文全部原创舞台/歌词描述，不绑定受保护音源或名人脸。
+ * [PROTOCOL]: 改 prompt 结构时同步更新 pack/ai-rap-video-vertical-tiktok-prompt.md。
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import JsonLd from '../../components/JsonLd.astro';
+import RelatedPrompts from '../../components/RelatedPrompts.astro';
+import { bySlug } from '../../data/prompts';
+
+const item = bySlug('ai-rap-video-vertical-tiktok-prompt')!;
+const articleLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: item.title,
+  description: item.description,
+  url: `https://ai-rap-video.wiki/prompts/${item.slug}/`,
+  isPartOf: { '@type': 'WebSite', name: 'AI Rap Video Wiki', url: 'https://ai-rap-video.wiki/' },
+  license: 'https://opensource.org/licenses/MIT',
+  inLanguage: 'en'
+};
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AI Rap Video', item: 'https://ai-rap-video.wiki/' },
+    { '@type': 'ListItem', position: 2, name: 'Prompts', item: 'https://ai-rap-video.wiki/prompts/' },
+    { '@type': 'ListItem', position: 3, name: item.title, item: `https://ai-rap-video.wiki/prompts/${item.slug}/` }
+  ]
+};
+---
+
+<BaseLayout title={`${item.title} — 9:16 Framing & Loop Prompt | AI Rap Video`} description={item.description} canonicalPath={`/prompts/${item.slug}/`}>
+  <JsonLd data={[articleLd, breadcrumbLd]} />
+  <article class="prose hero">
+    <p class="tag">{item.intent}</p>
+    <h1>{item.title}</h1>
+    <p class="lead">The same duo performance, rebuilt for the feed: a vertical 9:16 AI rap video where heads stay inside the caption-safe area, the hook lands in the first two seconds, and the final frame loops into the first one. This is the template to start from if the destination is TikTok, Reels, or Shorts.</p>
+
+    <h2>When to use this template</h2>
+    <p>Use it when the clip's home is a vertical feed. Portrait photos in vertical feeds get cropped by UI chrome — usernames, captions, and progress bars eat the top and bottom of the frame — so this template pushes both performers into the middle band of the shot and plans the loop from the first frame. For landscape YouTube renders, the <a href="/prompts/ai-rap-video-duo-prompt/">core duo template</a> is the better base.</p>
+
+    <h2>Hook &amp; verse structure</h2>
+    <p>Vertical feeds decide in under two seconds, so the lyric structure inverts: <strong>hook first, verse later</strong>. Open with the two most quotable lines of your <a href="/prompts/ai-rap-video-original-lyrics-prompt/">original bars</a> — the left performer spits the hook opener, the right performer lands the punchline — and only then settle into the traded verse. Write the hook to name the occasion ("class of 26", "ten years down") so the clip is instantly legible without sound.</p>
+
+    <h2>Copy-ready main prompt</h2>
+    <pre class="prompt-box">Create a vertical 9:16 AI rap video duo performance from two separate portrait references.
+Left performer = photo 1, right performer = photo 2, fixed sides for the entire clip.
+Aspect and framing: strict vertical 9:16, both performers framed from the chest up, heads in the middle third of the frame — leave the top 15% and bottom 20% clear of faces for platform UI and captions.
+Stage: original booth-style set, warm orange key light, one hanging microphone centered between the performers, dark backdrop with a soft vertical light strip.
+Action: the clip opens mid-energy — both performers already nodding on beat; left performer delivers the opening hook line with sharp mouth movement, right performer lands the answer line, then they trade short bars.
+Camera: static vertical framing with one subtle push-in at the midpoint; no pans, no rotation.
+Audio: original upbeat rap cadence, hook-first structure, call-and-response roles — write NEW original lyrics; never quote commercial songs.
+Duration: 8-11 seconds; the final two-shot hold matches the opening framing so the clip loops seamlessly.
+Template focus: Vertical AI Rap Video Prompt for TikTok.</pre>
+
+    <h2>Beat &amp; camera breakdown</h2>
+    <ol class="list">
+      <li><strong>0-2s — Hook cold open.</strong> No establishing shot. Left performer already mid-line on the first frame; the right performer answers by second two. This is the part viewers decide on.</li>
+      <li><strong>2-6s — Traded verse.</strong> Short bars alternate, both performers stay inside the middle band of frame. The hanging mic stays centered as the visual anchor.</li>
+      <li><strong>6-9s — Shared moment.</strong> Both performers lean into the mic together for a two-line run — the most clip-able moment.</li>
+      <li><strong>9-11s — Loop reset.</strong> Static hold that mirrors frame one: same poses, same head angle. When the feed replays, the cut is invisible.</li>
+    </ol>
+
+    <h2>Negative prompt</h2>
+    <pre class="prompt-box">horizontal letterboxing, black bars, 16:9 crop, cropped foreheads or chins, faces outside safe area, identity swap, merged faces, third person, extra limbs, blurry faces, on-screen lyrics or captions burned in, watermarks, brand logos, celebrity lookalike, NSFW, camera rotation, scene changes</pre>
+
+    <h2>Photo prep for this template</h2>
+    <ul class="list">
+      <li>Crop both photos with headroom — a portrait cut tight at the hair forces the model to invent forehead in a vertical frame.</li>
+      <li>Similar subject distance in both photos so neither performer reads as "further away" in the two-shot.</li>
+      <li>Avoid wide landscape backgrounds; plain backdrops survive a 9:16 center crop best.</li>
+      <li>Full checklist in the <a href="/prompts/ai-rap-video-photo-prep-checklist/">photo prep guide</a>.</li>
+    </ul>
+
+    <h2>Render steps (any model)</h2>
+    <ol class="list">
+      <li>Set the aspect ratio to 9:16 in the tool <em>before</em> pasting the prompt — many models treat the aspect setting as stronger than prompt wording, but stating both costs nothing.</li>
+      <li>Upload the two references in slot order (photo 1 = left) and paste the main prompt; put the negative block in the negative field or append after "Avoid:".</li>
+      <li>Render 8-11 seconds. Shorter loops replay more on vertical feeds, which is what the algorithm reads.</li>
+      <li>Check the first and last frame side by side — if they do not match, the loop will visibly jump. Re-render with "final hold matches the opening framing" reinforced.</li>
+    </ol>
+
+    <h2>Common failure modes</h2>
+    <ul class="list">
+      <li><strong>Heads cropped by UI on the platform</strong> → the safe-area clause was ignored; restate "top 15% and bottom 20% clear" and lower the framing to chest-up.</li>
+      <li><strong>Render came back 16:9 anyway</strong> → the tool's aspect setting overrode nothing; fix the setting, not the prompt.</li>
+      <li><strong>Visible loop jump</strong> → the hold didn't mirror frame one; strengthen "final two-shot hold matches the opening framing".</li>
+    </ul>
+
+    <h2>FAQ</h2>
+    <h3>Does the loop need to be seamless?</h3>
+    <p>It is the single highest-leverage vertical trick: a seamless loop doubles watch time per impression, and feed algorithms read replay as quality. Two seconds of planning beats a fancy camera move.</p>
+    <h3>Can I add my own captions after?</h3>
+    <p>Yes — the negative block explicitly refuses burned-in text so the platform's caption tools (or yours) get a clean plate. That is also why the top and bottom bands stay clear.</p>
+
+    <div class="notice"><strong>Compliance:</strong> original staging and lyrics only. Do not commercially bind protected recordings — including the Hotel Lobby trend audio — or celebrity likenesses. Get consent from everyone in the photos.</div>
+
+    <RelatedPrompts slugs={item.related} />
+  </article>
+</BaseLayout>

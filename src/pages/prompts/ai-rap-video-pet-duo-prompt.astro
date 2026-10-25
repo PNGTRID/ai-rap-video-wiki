@@ -1,0 +1,111 @@
+---
+/**
+ * [WHY]: 宠物对唱模板页——猫狗与主人同台的实验性变体，重点在爪部解剖与短时长兜底。
+ * [INPUT]: prompts.ts 的 item（title/intent/description/related）。
+ * [OUTPUT]: 宠物模板指南（两种配对模式、主 prompt、分镜、负面、照片准备、步骤、FAQ）+ Article JSON-LD。
+ * [BOUND]: 实验性模板，明示质量预期；不做动物拟人化肖像权风险内容。
+ * [PROTOCOL]: 改 prompt 结构时同步更新 pack/ai-rap-video-pet-duo-prompt.md。
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import JsonLd from '../../components/JsonLd.astro';
+import RelatedPrompts from '../../components/RelatedPrompts.astro';
+import { bySlug } from '../../data/prompts';
+
+const item = bySlug('ai-rap-video-pet-duo-prompt')!;
+const articleLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: item.title,
+  description: item.description,
+  url: `https://ai-rap-video.wiki/prompts/${item.slug}/`,
+  isPartOf: { '@type': 'WebSite', name: 'AI Rap Video Wiki', url: 'https://ai-rap-video.wiki/' },
+  license: 'https://opensource.org/licenses/MIT',
+  inLanguage: 'en'
+};
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AI Rap Video', item: 'https://ai-rap-video.wiki/' },
+    { '@type': 'ListItem', position: 2, name: 'Prompts', item: 'https://ai-rap-video.wiki/prompts/' },
+    { '@type': 'ListItem', position: 3, name: item.title, item: `https://ai-rap-video.wiki/prompts/${item.slug}/` }
+  ]
+};
+---
+
+<BaseLayout title={`${item.title} — Pet + Owner Duets (Experimental) | AI Rap Video`} description={item.description} canonicalPath={`/prompts/${item.slug}/`}>
+  <JsonLd data={[articleLd, breadcrumbLd]} />
+  <article class="prose hero">
+    <p class="tag">{item.intent} · experimental</p>
+    <h1>{item.title}</h1>
+    <p class="lead">The pet variant is the funniest and least predictable template in this wiki: your dog or cat on the booth stage next to you (or opposite another pet), nodding along like they've heard the beat before. Expect charm, not polish — this page says honestly what holds up, what doesn't, and how to stack the odds.</p>
+
+    <h2>Two pairing modes</h2>
+    <ol class="list">
+      <li><strong>Pet + owner (recommended).</strong> The human side anchors identity and lip-sync; the pet side carries the comedy. This mode renders reliably because only one face needs lyric-sync.</li>
+      <li><strong>Pet + pet.</strong> Two animals trading "verses" — chaos mode. Since animals don't rap, the prompt asks for bobbing heads and open-mouth "delivery" on the beat. Funniest output, highest failure rate; budget for re-renders.</li>
+    </ol>
+
+    <h2>Honest quality caveats</h2>
+    <ul class="list">
+      <li><strong>Human lip-sync is the only reliable sync.</strong> Pets don't form words on camera convincingly; any "rapping dog" will read as puppetry. Lean into it — the nodding-along bit is the joke.</li>
+      <li><strong>Paws are the weak point.</strong> If the prompt asks a pet to grip a mic, expect extra toes or fused paws. The fix: put the mic between the performers on its stand, never in a paw.</li>
+      <li><strong>Shorter is safer.</strong> 6-8 seconds beats 12 for animal anatomy stability.</li>
+      <li><strong>Coat patterns drift.</strong> Complex markings (brindle, tabby swirls) may simplify mid-clip. Flatter-coated pets hold best.</li>
+    </ul>
+
+    <h2>Copy-ready main prompt</h2>
+    <pre class="prompt-box">Create an AI rap video duo performance: a person and their pet performing together on stage.
+Left performer = photo 1 (the owner, human). Right performer = photo 2 (the pet).
+Keep the owner's face recognizable and the pet's breed, coat pattern, and markings exactly as in the reference, for the whole clip.
+Stage: original booth-style set, warm orange key light, one vintage-style microphone on a floor stand centered BETWEEN the performers — the microphone is never held by the pet.
+Action: the owner delivers short bars with clear mouth movement and rhythmic head nods; the pet bobs its head on the beat beside them, ears perked, mouth closed or gently open — the pet does not speak or form words.
+Camera: locked medium two-shot framing both performers from the waist up (owner) and full head (pet), subtle push-in at the end.
+Audio: original upbeat rap cadence performed by the owner; a simple bass-heavy beat underneath — write NEW original lyrics; never quote commercial songs.
+Duration: 6-8 seconds, ending on a clean two-shot hold.
+Template focus: Pet Duo AI Rap Video Prompt.</pre>
+
+    <h2>Beat &amp; camera breakdown</h2>
+    <ol class="list">
+      <li><strong>0-2s — Establish the odd couple.</strong> Locked shot; the height difference between owner and pet is the visual gag — let the framing carry it, don't zoom.</li>
+      <li><strong>2-5s — Owner performs, pet nods.</strong> Two bars from the owner while the pet bobs on the beat. This is the reliable 80% of the clip.</li>
+      <li><strong>5-6s — The pet moment.</strong> One beat where the pet's head-bob peaks — ears up, one exaggerated nod. Don't script more than that.</li>
+      <li><strong>6-8s — Clean hold.</strong> Both performers still, loop point.</li>
+    </ol>
+
+    <h2>Negative prompt</h2>
+    <pre class="prompt-box">pet holding the microphone, extra paws, extra toes, deformed limbs, fused legs, pet mouth forming words, human teeth on the pet, changed coat color, altered breed features, extra animals, third person, blurry faces, on-screen lyrics or captions, watermarks, brand logos, celebrity lookalike, NSFW, scene changes</pre>
+
+    <h2>Photo prep for this template</h2>
+    <ul class="list">
+      <li>Pet photo: eye-level (get on the floor), full head visible, even light, coat pattern clearly readable.</li>
+      <li>Owner photo: follow the standard <a href="/prompts/ai-rap-video-photo-prep-checklist/">prep checklist</a> — front-lit, chest-up, one face.</li>
+      <li>Calm expressions both sides: mid-yawn or mid-bark pet photos render as chaos; alert and relaxed wins.</li>
+    </ul>
+
+    <h2>Render steps (any model)</h2>
+    <ol class="list">
+      <li>Upload the owner photo first (slot 1 = left), the pet photo second. Slot order matters even more here — the prompt's roles follow it.</li>
+      <li>Paste the main prompt with the negative block in the negative field. The paw and "pet doesn't speak" negatives are load-bearing.</li>
+      <li>Render 6-8 seconds. Audit the paws first, the coat pattern second, the owner's sync third — in that order of fragility.</li>
+      <li>If the render fights you twice in a row, simplify: drop the pet-moment beat and run the plain nod-along version. A clean simple pet clip beats a broken ambitious one.</li>
+    </ol>
+
+    <h2>Common failure modes</h2>
+    <ul class="list">
+      <li><strong>Pet grips the mic</strong> → the "floor stand between performers" clause was skipped; restate it and keep the paw negatives.</li>
+      <li><strong>Breed features drift</strong> → reference photo too small in frame or side-lit; re-crop eye-level and brighter.</li>
+      <li><strong>Pet "raps" with human mouth</strong> → the "does not speak" line was overridden; reinforce "mouth closed or gently open" and keep the human-teeth negative.</li>
+    </ul>
+
+    <h2>FAQ</h2>
+    <h3>Can the pet be the lead?</h3>
+    <p>Not credibly. Without human lip-sync, a lead pet reads as puppetry within two seconds. Pet-as-hype-side, owner-as-lead is the format that actually lands.</p>
+    <h3>What about smaller pets — hamsters, birds?</h3>
+    <p>The smaller the animal relative to the human, the harder the scale matching. Birds handle head-bob surprisingly well; rodents tend to morph. Render short and expect selection bias — one good clip in three tries is a normal outcome for this template.</p>
+
+    <div class="notice"><strong>Compliance:</strong> original staging and lyrics only; render only your own pets. Do not commercially bind protected recordings or celebrity likenesses, and don't anthropomorphize other people's pets without their sign-off.</div>
+
+    <RelatedPrompts slugs={item.related} />
+  </article>
+</BaseLayout>

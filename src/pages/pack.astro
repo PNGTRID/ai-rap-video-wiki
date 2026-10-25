@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { prompts } from '../data/prompts';
+---
+
+<BaseLayout
+  title="AI Rap Video Prompt Pack: 12 Open-Source Markdown Templates (MIT)"
+  description="Download the open-source AI rap video prompt pack: 12 markdown templates synced with the wiki — duo, vertical, lyrics, negatives, model guides, and fixes. MIT licensed."
+  canonicalPath="/pack/"
+>
+  <article class="prose hero">
+    <p class="tag">MIT · versioned in git</p>
+    <h1>The open-source AI rap video prompt pack</h1>
+    <p class="lead">Every template on this wiki ships as a plain markdown file in the repository's <code>pack/</code> directory — same prompts, same beat breakdowns, same negative blocks. Copy them into your notes app, your team wiki, or your own project. No accounts, no attribution walls, no API keys.</p>
+
+    <h2>What's inside</h2>
+    <p>12 files, one per wiki template. Each file contains: intent, when to use it, the copy-ready main prompt, beat and camera notes, the negative prompt block, photo prep, tool-agnostic render steps, common failure modes, and the compliance note.</p>
+    <ul class="list">
+      {prompts.map((p) => (<li><code>pack/{p.slug}.md</code> — <a href={`/prompts/${p.slug}/`}>{p.title}</a></li>))}
+    </ul>
+
+    <h2>How to use it</h2>
+    <ol class="list">
+      <li><strong>Grab the files.</strong> Clone the repository or download <code>pack/</code> directly from GitHub (<code>PNGTRID/ai-rap-video-wiki</code>).</li>
+      <li><strong>Pick a template.</strong> Start with the <a href="/prompts/ai-rap-video-duo-prompt/">core duo prompt</a> for two people, or the <a href="/prompts/ai-rap-video-self-duo-two-outfits/">self-duo</a> if it is just you.</li>
+      <li><strong>Copy the main prompt block.</strong> Replace the bracketed placeholders (subject, occasion) with your own words. Everything else is meant to stay as-is.</li>
+      <li><strong>Render in your model.</strong> The steps section in each file is tool-agnostic — any Wan-style or Seedance-style image-to-video workflow works.</li>
+      <li><strong>Keep the compliance note.</strong> It travels with the file on purpose. If you fork the pack, keep original lyrics and staging in your derivatives.</li>
+    </ol>
+
+    <h2>Stays in sync</h2>
+    <p>The pack and the wiki are generated from the same source of truth. When a prompt on the site changes, the matching markdown file changes in the same commit, so a file you downloaded months ago still matches the page it came from.</p>
+
+    <h2>License & compliance</h2>
+    <p>The pack is <strong>MIT licensed</strong>: use it commercially, modify it, embed it in your own tool. The one condition the templates carry themselves — original staging descriptions and original lyrics only. Do not commercially bind protected recordings (including the Hotel Lobby trend audio) or celebrity likenesses, in the pack or in anything you build from it. Faces you render should always be permissioned.</p>
+    <div class="notice"><strong>Not a render service.</strong> The pack is prompts and process. It does not generate video, and it never uploads your photos anywhere.</div>
+  </article>
+</BaseLayout>

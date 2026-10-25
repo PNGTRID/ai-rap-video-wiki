@@ -1,0 +1,105 @@
+---
+/**
+ * [WHY]: 核心双人对唱模板页——12 条模板的主入口，覆盖"两张照片 → 左右对唱"全流程。
+ * [INPUT]: prompts.ts 的 item（title/intent/description/related）。
+ * [OUTPUT]: 完整模板指南（场景、主 prompt、分镜、负面、照片准备、步骤、FAQ）+ Article JSON-LD。
+ * [BOUND]: 不提供渲染服务；正文全部原创舞台/歌词描述，不绑定受保护音源或名人脸。
+ * [PROTOCOL]: 改 prompt 结构时同步更新 pack/ai-rap-video-duo-prompt.md。
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import JsonLd from '../../components/JsonLd.astro';
+import RelatedPrompts from '../../components/RelatedPrompts.astro';
+import { bySlug } from '../../data/prompts';
+
+const item = bySlug('ai-rap-video-duo-prompt')!;
+const articleLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: item.title,
+  description: item.description,
+  url: `https://ai-rap-video.wiki/prompts/${item.slug}/`,
+  isPartOf: { '@type': 'WebSite', name: 'AI Rap Video Wiki', url: 'https://ai-rap-video.wiki/' },
+  license: 'https://opensource.org/licenses/MIT',
+  inLanguage: 'en'
+};
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AI Rap Video', item: 'https://ai-rap-video.wiki/' },
+    { '@type': 'ListItem', position: 2, name: 'Prompts', item: 'https://ai-rap-video.wiki/prompts/' },
+    { '@type': 'ListItem', position: 3, name: item.title, item: `https://ai-rap-video.wiki/prompts/${item.slug}/` }
+  ]
+};
+---
+
+<BaseLayout title={`${item.title} — Copy-Ready Prompt & Beat Breakdown | AI Rap Video`} description={item.description} canonicalPath={`/prompts/${item.slug}/`}>
+  <JsonLd data={[articleLd, breadcrumbLd]} />
+  <article class="prose hero">
+    <p class="tag">{item.intent}</p>
+    <h1>{item.title}</h1>
+    <p class="lead">The flagship AI rap video prompt: two separate portraits become a left/right duo performance — traded bars, fixed sides, a hanging mic between them, and a clean 8-12 second loop. Every other template in this wiki is a variation of this structure.</p>
+
+    <h2>When to use this template</h2>
+    <p>Use it when you have two people, two clear portrait photos, and permission from both — a friendship, a partnership, a birthday duo, a "we actually did it" post. If both photos are of you, switch to the <a href="/prompts/ai-rap-video-self-duo-two-outfits/">self-duo template</a>; if the energy is romantic rather than hype, the <a href="/prompts/ai-rap-video-couple-prompt/">couple template</a> reframes it.</p>
+
+    <h2>Hook &amp; verse structure</h2>
+    <p>The duo format lives on <strong>call-and-response</strong>. Before prompting, write four short lines: the left performer owns lines 1 and 3 (the setup), the right performer owns lines 2 and 4 (the answer). That alternation is what makes the clip feel like a real trade instead of two people talking over each other. Keep each line under 10 syllables — image-to-video models hold lip-sync best on short phrases, and the <a href="/prompts/ai-rap-video-original-lyrics-prompt/">original lyrics template</a> generates them to fit.</p>
+
+    <h2>Copy-ready main prompt</h2>
+    <pre class="prompt-box">Create an AI rap video duo performance from two separate portrait references.
+Left performer = photo 1, right performer = photo 2.
+Keep both faces recognizable, front-lit, and assigned to fixed sides for the whole clip — the left performer never crosses to the right, and vice versa.
+Stage: original studio booth, warm orange key light, a single hanging microphone centered between them, dark background with soft rim light.
+Wardrobe: keep each performer's outfit exactly as shown in their reference photo.
+Action: energetic head nods on the beat, traded bars with clear mouth movement per line, confident posture, occasional shoulder lean toward the mic.
+Camera: locked medium two-shot framing both from the waist up, slow push-in during the final two seconds.
+Audio: original upbeat rap cadence, call-and-response — left performer leads, right performer answers. Write NEW original lyrics; never quote commercial songs.
+Duration: 8-12 seconds, ending on a clean two-shot hold.
+Template focus: AI Rap Video Duo Prompt (Two Photos).</pre>
+
+    <h2>Beat &amp; camera breakdown</h2>
+    <ol class="list">
+      <li><strong>0-2s — Establish.</strong> Locked two-shot. Both faces lit, the hanging mic reads clearly between them. No movement except a shared head nod on the first beat.</li>
+      <li><strong>2-5s — Left leads.</strong> Line 1 and part of line 2 land on the left performer: mouth movement, forward lean, right performer nods along silently.</li>
+      <li><strong>5-9s — Right answers.</strong> The trade reverses. Right performer takes the answering lines with the same energy; left drops back to nodding.</li>
+      <li><strong>9-12s — Push-in hold.</strong> Slow push toward the mic, both performers land a final shared pose. The hold is the loop point.</li>
+    </ol>
+
+    <h2>Negative prompt</h2>
+    <pre class="prompt-box">identity swap, faces changing sides, merged faces, third person appearing, extra limbs, deformed hands, blurry faces, sunglasses, masks, group photo input, on-screen lyrics or karaoke text, watermarks, brand logos, celebrity lookalike, NSFW, camera shake, scene changes</pre>
+
+    <h2>Photo prep for this template</h2>
+    <ul class="list">
+      <li>One face per photo — no pairs, no group crops split into two uploads.</li>
+      <li>Both photos shot from a similar angle and distance so the two performers read at the same scale.</li>
+      <li>Distinct outfits or colors; two near-identical looks invite side swaps.</li>
+      <li>The full <a href="/prompts/ai-rap-video-photo-prep-checklist/">photo prep checklist</a> covers crops, glasses, and lighting.</li>
+    </ul>
+
+    <h2>Render steps (any model)</h2>
+    <ol class="list">
+      <li>Upload photo 1 and photo 2 into your model's two reference slots, in that order — the prompt's left/right assignment follows slot order.</li>
+      <li>Paste the main prompt. If your tool has a separate negative field, put the negative block there; otherwise append it after "Avoid:" in the same prompt.</li>
+      <li>Set duration 8-12s and aspect 9:16 (or 16:9 for YouTube), then render.</li>
+      <li>Review the full clip against the beat breakdown. If sides drift, apply the fixes in the <a href="/prompts/ai-rap-video-troubleshooting-faces/">face troubleshooting guide</a> — usually one wording change, not a rewrite.</li>
+    </ol>
+
+    <h2>Common failure modes</h2>
+    <ul class="list">
+      <li><strong>Faces swap sides mid-clip</strong> → restate "fixed sides for the whole clip" and make the outfits more distinct. Full fix list in the <a href="/prompts/ai-rap-video-troubleshooting-faces/">troubleshooting guide</a>.</li>
+      <li><strong>One face goes soft</strong> → that performer's photo is lower quality or smaller in frame; re-crop closer and brighter.</li>
+      <li><strong>Both mouths move on every line</strong> → the call-and-response roles are too vague; name which performer owns which lines explicitly in the Action block.</li>
+    </ul>
+
+    <h2>FAQ</h2>
+    <h3>Can I use three or more performers?</h3>
+    <p>Two is the reliable ceiling for most image-to-video models — each extra face multiplies identity drift. For groups, render two-person pairs and cut them together.</p>
+    <h3>Which performer should lead?</h3>
+    <p>Whoever has the sharper photo. The lead gets more close framing and more mouth movement, so their reference does more work.</p>
+
+    <div class="notice"><strong>Compliance:</strong> original staging and lyrics only. Do not commercially bind protected recordings — including the Hotel Lobby trend audio — or celebrity likenesses. Get consent from everyone in the photos.</div>
+
+    <RelatedPrompts slugs={item.related} />
+  </article>
+</BaseLayout>

@@ -1,0 +1,103 @@
+---
+/**
+ * [WHY]: 情侣对唱模板页——纪念日/情人节场景，暖光慢推近、共用 hook 的温柔变体。
+ * [INPUT]: prompts.ts 的 item（title/intent/description/related）。
+ * [OUTPUT]: 情侣模板指南（场景、主 prompt、分镜、负面、照片准备、步骤、FAQ）+ Article JSON-LD。
+ * [BOUND]: 不提供渲染服务；正文全部原创舞台/歌词描述，不绑定受保护音源或名人脸。
+ * [PROTOCOL]: 改 prompt 结构时同步更新 pack/ai-rap-video-couple-prompt.md。
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import JsonLd from '../../components/JsonLd.astro';
+import RelatedPrompts from '../../components/RelatedPrompts.astro';
+import { bySlug } from '../../data/prompts';
+
+const item = bySlug('ai-rap-video-couple-prompt')!;
+const articleLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: item.title,
+  description: item.description,
+  url: `https://ai-rap-video.wiki/prompts/${item.slug}/`,
+  isPartOf: { '@type': 'WebSite', name: 'AI Rap Video Wiki', url: 'https://ai-rap-video.wiki/' },
+  license: 'https://opensource.org/licenses/MIT',
+  inLanguage: 'en'
+};
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AI Rap Video', item: 'https://ai-rap-video.wiki/' },
+    { '@type': 'ListItem', position: 2, name: 'Prompts', item: 'https://ai-rap-video.wiki/prompts/' },
+    { '@type': 'ListItem', position: 3, name: item.title, item: `https://ai-rap-video.wiki/prompts/${item.slug}/` }
+  ]
+};
+---
+
+<BaseLayout title={`${item.title} — Warm Light, Traded Verses, Shared Hook | AI Rap Video`} description={item.description} canonicalPath={`/prompts/${item.slug}/`}>
+  <JsonLd data={[articleLd, breadcrumbLd]} />
+  <article class="prose hero">
+    <p class="tag">{item.intent}</p>
+    <h1>{item.title}</h1>
+    <p class="lead">The couple variant slows the tempo down and warms the light up: two performers trading soft verses, one shared hook they lean into together, and a camera that pushes in like the clip itself is falling for them. Built for anniversaries, date-night posts, and "first dance, but make it a rap" moments.</p>
+
+    <h2>When to use this template</h2>
+    <p>Use it when the emotional payload is tenderness, not hype. The structure stays the <a href="/prompts/ai-rap-video-duo-prompt/">core duo workflow</a> — fixed sides, traded bars, loop ending — but every layer is re-tuned: amber instead of orange, a slower cadence, choreography that touches once instead of constantly. If the pair bickers for fun, the <a href="/prompts/ai-rap-video-best-friends-duo/">best-friends template</a> may honestly fit better.</p>
+
+    <h2>Hook &amp; verse structure</h2>
+    <p>Couple bars run on <strong>setup-and-harmony</strong>. The left performer carries the setup lines (how you met, the small details), the right performer carries the answer lines (what it became), and both share the final hook line — the only line in the clip where both mouths move together. Write it with the <a href="/prompts/ai-rap-video-original-lyrics-prompt/">lyrics template</a> at tone <code>warm</code>, and put one concrete shared memory in the hook ("the midnight drive", "your terrible parking").</p>
+
+    <h2>Copy-ready main prompt</h2>
+    <pre class="prompt-box">Create an AI rap video duo performance with a warm couple dynamic from two separate portrait references.
+Left performer = photo 1, right performer = photo 2, fixed sides for the whole clip.
+Stage: original intimate studio set, amber and rose-toned key light, soft falloff, one hanging microphone centered between them, dark backdrop with a faint warm glow behind each performer.
+Wardrobe: keep each performer's outfit from their reference photo; coordinated warm tones preferred.
+Action: relaxed confident performance — traded verses with clear, gentle mouth movement, soft head nods slightly behind the beat, one brief shoulder-to-shoulder lean at the midpoint, warm eye contact toward the camera between lines.
+Choreography rule: the lean happens exactly once; no hand-holding, no embrace — keep both faces fully visible for the entire clip.
+Camera: locked medium two-shot, very slow push-in across the final three seconds, no cuts.
+Audio: original mellow rap cadence, setup-and-answer roles, one shared hook line performed together at the end — write NEW original lyrics; never quote commercial songs.
+Duration: 9-12 seconds, ending on the shared hook pose as the loop hold.
+Template focus: Couple AI Rap Video Prompt.</pre>
+
+    <h2>Beat &amp; camera breakdown</h2>
+    <ol class="list">
+      <li><strong>0-2s — Warm establish.</strong> Locked two-shot, amber light reads immediately. Left performer opens the setup line.</li>
+      <li><strong>2-6s — Setup and answer.</strong> Traded verses at half the duo template's energy; nods land just behind the beat for a laid-back feel.</li>
+      <li><strong>6-8s — The lean.</strong> One shoulder-to-shoulder moment at the midpoint — the clip's whole romantic thesis in one frame.</li>
+      <li><strong>8-12s — Shared hook.</strong> Both performers lean into the mic together for the final line while the camera pushes in slowly. That frame is the poster and the loop point.</li>
+    </ol>
+
+    <h2>Negative prompt</h2>
+    <pre class="prompt-box">identity swap, merged faces, faces fusing during the lean, third person, extra limbs, blurry faces, closed eyes for more than one beat, harsh shadows, cold blue lighting, on-screen lyrics or captions, watermarks, brand logos, celebrity lookalike, NSFW, scene changes, fast cuts</pre>
+
+    <h2>Photo prep for this template</h2>
+    <ul class="list">
+      <li>Warm-toned or neutral photos cut best; a cold blue party photo fights the amber grade and the model splits the difference badly.</li>
+      <li>Soft smiles, not open laughs — the render amplifies baseline expression, and full laughs hold poorly across twelve seconds.</li>
+      <li>If the couple has a photo <em>together</em>, still use two separate crops as separate references; coupled input photos cause exactly the face-fusing this template's negatives guard against. Prep details in the <a href="/prompts/ai-rap-video-photo-prep-checklist/">checklist</a>.</li>
+    </ul>
+
+    <h2>Render steps (any model)</h2>
+    <ol class="list">
+      <li>Upload each partner's photo to its own slot (slot order = left/right), paste the main prompt, and place the negative block in the negative field.</li>
+      <li>Drop the setup-and-answer script from the <a href="/prompts/ai-rap-video-original-lyrics-prompt/">lyrics template</a> into the Audio block, with the shared hook line labeled "BOTH:".</li>
+      <li>Render 9-12 seconds. Check the midpoint lean frame for face fusion first — that's this template's signature failure — then check the push-in ended clean.</li>
+    </ol>
+
+    <h2>Common failure modes</h2>
+    <ul class="list">
+      <li><strong>Faces fuse during the lean</strong> → reinforce "no hand-holding, no embrace" and keep the lean shoulder-only; distance is the anti-fusion tool.</li>
+      <li><strong>Reads as hype, not tender</strong> → the cadence word "mellow" was overridden by the energy of the photos; swap in calmer references or slow the nods further.</li>
+      <li><strong>Lighting comes back cold</strong> → name the palette twice ("amber and rose-toned") and add "cold blue lighting" to negatives.</li>
+    </ul>
+
+    <h2>FAQ</h2>
+    <h3>Should the couple touch in the clip?</h3>
+    <p>Resist it. Contact gestures (embraces, hand-holding) are where faces merge and identities drift; a single shoulder lean reads just as intimate and renders far cleaner.</p>
+    <h3>Which anniversary angles work best?</h3>
+    <p>Specific small memories beat grand statements: the first trip, the terrible first apartment, the song from the first date (described, never quoted). The <a href="/prompts/ai-rap-video-original-lyrics-prompt/">lyrics template</a> turns any of these into four lines.</p>
+
+    <div class="notice"><strong>Compliance:</strong> original staging and lyrics only. Do not commercially bind protected recordings — including the Hotel Lobby trend audio — or celebrity likenesses. Both partners must consent to the render and to posting it.</div>
+
+    <RelatedPrompts slugs={item.related} />
+  </article>
+</BaseLayout>

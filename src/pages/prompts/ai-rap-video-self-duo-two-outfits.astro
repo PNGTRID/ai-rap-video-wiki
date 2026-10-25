@@ -1,0 +1,109 @@
+---
+/**
+ * [WHY]: 自我对唱模板页——同一人两套穿搭分饰左右两个表演者，重点防"身份合并"。
+ * [INPUT]: prompts.ts 的 item（title/intent/description/related）。
+ * [OUTPUT]: 自我对唱指南（对比规则、主 prompt、分镜、负面、照片准备、步骤、FAQ）+ Article JSON-LD。
+ * [BOUND]: 不提供渲染服务；正文全部原创舞台/歌词描述，不绑定受保护音源或名人脸。
+ * [PROTOCOL]: 改 prompt 结构时同步更新 pack/ai-rap-video-self-duo-two-outfits.md。
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import JsonLd from '../../components/JsonLd.astro';
+import RelatedPrompts from '../../components/RelatedPrompts.astro';
+import { bySlug } from '../../data/prompts';
+
+const item = bySlug('ai-rap-video-self-duo-two-outfits')!;
+const articleLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: item.title,
+  description: item.description,
+  url: `https://ai-rap-video.wiki/prompts/${item.slug}/`,
+  isPartOf: { '@type': 'WebSite', name: 'AI Rap Video Wiki', url: 'https://ai-rap-video.wiki/' },
+  license: 'https://opensource.org/licenses/MIT',
+  inLanguage: 'en'
+};
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AI Rap Video', item: 'https://ai-rap-video.wiki/' },
+    { '@type': 'ListItem', position: 2, name: 'Prompts', item: 'https://ai-rap-video.wiki/prompts/' },
+    { '@type': 'ListItem', position: 3, name: item.title, item: `https://ai-rap-video.wiki/prompts/${item.slug}/` }
+  ]
+};
+---
+
+<BaseLayout title={`${item.title} — Two Looks, One Performer | AI Rap Video`} description={item.description} canonicalPath={`/prompts/${item.slug}/`}>
+  <JsonLd data={[articleLd, breadcrumbLd]} />
+  <article class="prose hero">
+    <p class="tag">{item.intent}</p>
+    <h1>{item.title}</h1>
+    <p class="lead">No partner photo? No problem. The self-duo renders <em>you twice</em>: two outfits of the same person become a left and right performer trading bars with themselves — a version battle, an old-you vs new-you cypher, the "both halves of my personality" clip. The catch: identical faces on both sides is exactly the condition models fail at, so this template's entire craft is <strong>contrast engineering</strong>.</p>
+
+    <h2>When to use this template</h2>
+    <p>Use it when you have two or more photos of one person and want the duo format anyway — solo creators, alt-account content, "me vs me" jokes, or an anniversary where you want to feature yourself and your partner <em>separately</em> rather than fused. The <a href="/prompts/ai-rap-video-duo-prompt/">core duo template</a> stays the right base for two different people.</p>
+
+    <h2>Contrast engineering: the three dials</h2>
+    <p>Same face on both sides means the model's only anchor for "two performers" is difference. Give it three:</p>
+    <ol class="list">
+      <li><strong>Outfit color — the big dial.</strong> Maximum separation: black vs white, red vs teal. Two near-identical hoodies is the number-one cause of mid-clip merging.</li>
+      <li><strong>Hairstyle or headwear — the medium dial.</strong> Hood up vs hood down, cap vs bare, hair tied vs loose. A silhouette difference survives even when colors get close.</li>
+      <li><strong>Energy — the small dial.</strong> Assign personalities in the prompt: left is calm and laid-back, right is animated and loud. Different body language keeps the pair readable even in stills.</li>
+    </ol>
+    <p>Set all three dials before prompting; the <a href="/prompts/ai-rap-video-photo-prep-checklist/">photo prep checklist</a> covers picking the source photos.</p>
+
+    <h2>Copy-ready main prompt</h2>
+    <pre class="prompt-box">Create an AI rap video self-duo performance: the SAME person appears twice, as two distinct performers.
+Left performer = photo 1 (hood up, dark outfit), right performer = photo 2 (hood down, light outfit).
+Both performers share one face; keep that face identical to the references and keep the two performers visually separate at all times — they never touch, overlap, or blend.
+Stage: original booth-style set, warm orange key light, one hanging microphone centered between them, dark backdrop.
+Action: traded bars with sharp mouth movement — only one performer raps at a time; the other nods on beat. Left performer is calm and laid-back; right performer is animated and loud.
+Camera: locked medium two-shot, slow push-in during the final two seconds.
+Audio: original upbeat rap cadence, call-and-response between the two versions of the same person — write NEW original lyrics; never quote commercial songs.
+Duration: 8-12 seconds, ending on a clean two-shot hold where both versions are clearly separate.
+Template focus: Self-Duo AI Rap Video (Two Outfits).</pre>
+
+    <h2>Beat &amp; camera breakdown</h2>
+    <ol class="list">
+      <li><strong>0-2s — Establish the pair.</strong> Locked shot, both versions visible with clear outfit contrast. The mic splits them physically.</li>
+      <li><strong>2-6s — Left (calm) leads.</strong> Hood-up version raps low-energy; the loud version bounces silently — the contrast is the joke and the anchor.</li>
+      <li><strong>6-10s — Right (loud) answers.</strong> Energies swap. The stillness of the calm side sells the "two people" read.</li>
+      <li><strong>10-12s — Separate hold.</strong> Both versions land their pose with a visible gap between them. No lean-in on this template — the gap is the effect.</li>
+    </ol>
+
+    <h2>Negative prompt</h2>
+    <pre class="prompt-box">faces merging into one person, performers overlapping, clone afterimage, twin silhouette blending, outfit colors swapping between sides, third person, extra limbs, blurry face, mirrored kaleidoscope effect, on-screen lyrics or captions, watermarks, brand logos, celebrity lookalike, NSFW, scene changes</pre>
+
+    <h2>Photo prep for this template</h2>
+    <ul class="list">
+      <li>Pick two photos from <em>different days</em> with genuinely different looks — the wardrobe dials must already exist in the references, not be invented.</li>
+      <li>Same face angle in both (front or three-quarter) so the model maps one identity instead of wondering.</li>
+      <li>Matching photo quality: if one reference is sharper, that side stays stable and the other drifts.</li>
+      <li>No sunglasses in either photo — with one identity split in two, you need every identity signal visible.</li>
+    </ul>
+
+    <h2>Render steps (any model)</h2>
+    <ol class="list">
+      <li>Upload outfit photo 1 then outfit photo 2, in that slot order; the prompt's left/right assignment follows it.</li>
+      <li>Paste the main prompt with your contrast dials filled in (color, hairstyle, energy). Put the negative block in the negative field — the merge-related negatives are doing the heavy lifting here.</li>
+      <li>Render 8-12 seconds. Audit frame by frame at the midpoint: are there still clearly two people? If merging starts, strengthen outfit contrast in the references before touching the prompt wording.</li>
+    </ol>
+
+    <h2>Common failure modes</h2>
+    <ul class="list">
+      <li><strong>The two versions merge mid-clip</strong> → insufficient contrast; push outfit colors further apart, and if that fails, remove any lean or overlap choreography.</li>
+      <li><strong>Kaleidoscope/mirror artifacts</strong> → the model read it as symmetry art; reinforce "two distinct performers trading bars" and add the kaleidoscope negative.</li>
+      <li><strong>Outfits swap sides</strong> → restate "outfit colors never swap between sides"; this is the self-duo version of identity drift.</li>
+    </ul>
+
+    <h2>FAQ</h2>
+    <h3>Can I add my partner as a third performer?</h3>
+    <p>Not in one render. Render your self-duo and their solo (or self-duo) separately and cut them together — three faces in one generation is where identity stability goes to die.</p>
+    <h3>Is a "me vs me" battle format different?</h3>
+    <p>Only in the script: give each version a stance (old you vs new you) with the <a href="/prompts/ai-rap-video-original-lyrics-prompt/">lyrics template</a>, tone <code>playful</code>. The video prompt stays exactly this template.</p>
+
+    <div class="notice"><strong>Compliance:</strong> original staging and lyrics only. Do not commercially bind protected recordings — including the Hotel Lobby trend audio — or celebrity likenesses. This template is for your own face with your own consent.</div>
+
+    <RelatedPrompts slugs={item.related} />
+  </article>
+</BaseLayout>
