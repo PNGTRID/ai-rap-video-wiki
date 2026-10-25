@@ -9,7 +9,9 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import JsonLd from '../../components/JsonLd.astro';
 import RelatedPrompts from '../../components/RelatedPrompts.astro';
+import VideoGallery from '../../components/VideoGallery.astro';
 import { bySlug } from '../../data/prompts';
+import { videosFor } from '../../data/videos';
 
 const item = bySlug('ai-rap-video-negative-prompt-guide')!;
 const articleLd = {
@@ -90,6 +92,8 @@ Template focus: Negative Prompts for Cleaner AI Rap Video (master block — past
     <p>No. "Not blurry" is weaker than "blurry faces" as a blocklist term. Keep positives in the main prompt and negatives as pure refusal terms.</p>
 
     <div class="notice"><strong>Compliance:</strong> the safety terms above (celebrity lookalike, NSFW) belong in every render, not just the first. Original lyrics and staging only; never bind protected recordings or real people's likenesses.</div>
+
+    <VideoGallery videos={videosFor(item.slug)} heading="See it in action" sub="Real videos from the web built in this exact format." viewAll={true} />
 
     <RelatedPrompts slugs={item.related} />
   </article>

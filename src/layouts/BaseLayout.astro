@@ -2,8 +2,8 @@
 /**
  * [WHY]: 全站唯一 HTML 壳——负责 title/meta/canonical/OG 等 SEO 头部与导航、页脚。
  * [INPUT]: 每个页面传入 title、description（meta 用）、canonicalPath（规范链接路径）。
- * [OUTPUT]: 完整 HTML 文档；页面插槽内容渲染在 main.wrap 内。
- * [BOUND]: 不注入页面级 JSON-LD（由页面经 JsonLd 组件自行添加）；不做主题切换。
+ * [OUTPUT]: 完整 HTML 文档；玻璃感 sticky 导航（品牌块 + 链接 + Pack CTA）与页脚；og:image/twitter 大图卡（public/images/og-ai-rap-video.jpg）。
+ * [BOUND]: 不注入页面级 JSON-LD（由页面经 JsonLd 组件自行添加）；不做主题切换；移动端收起 nav-links（页脚有全量链接兜底）。
  * [PROTOCOL]: 新增导航入口或 meta 字段时更新各页面 Props 传参。
  */
 import '../styles/global.css';
@@ -25,22 +25,38 @@ const canonical = `${site}${canonicalPath.startsWith('/') ? canonicalPath : '/' 
     <meta property="og:url" content={canonical} />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="AI Rap Video Wiki" />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content={`${site}/images/og-ai-rap-video.jpg`} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Two performers trading bars into a hanging studio mic under blue and orange stage light — AI rap video reference still." />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={`${site}/images/og-ai-rap-video.jpg`} />
   </head>
   <body>
     <header class="site-header"><div class="wrap nav">
-      <a class="brand" href="/">AI Rap Video</a>
-      <a href="/prompts/">Prompts</a>
-      <a href="/how-to-make-ai-rap-video/">How-to</a>
-      <a href="/ai-rap-video-vs-hotel-lobby-trend/">Compare</a>
-      <a href="/pack/">Pack</a>
+      <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">AI</span>Rap Video</a>
+      <nav class="nav-links" aria-label="Main">
+        <a href="/prompts/">Prompts</a>
+        <a href="/examples/">Examples</a>
+        <a href="/how-to-make-ai-rap-video/">How-to</a>
+        <a href="/ai-rap-video-vs-hotel-lobby-trend/">Compare</a>
+      </nav>
+      <a class="btn btn-sm nav-cta" href="/pack/">Get the Pack</a>
     </div></header>
     <main class="wrap"><slot /></main>
-    <footer class="site-footer"><div class="wrap" style="padding:1.25rem 0 2rem;">
-      <p class="muted">Open-source AI Rap Video prompt templates. Not a paid generator. Original staging &amp; lyrics only.</p>
-      <p class="muted">MIT · GitHub PNGTRID/ai-rap-video-wiki</p>
+    <footer class="site-footer"><div class="wrap footer-inner">
+      <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">AI</span>Rap Video</a>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="/prompts/">Prompts</a>
+        <a href="/examples/">Examples</a>
+        <a href="/how-to-make-ai-rap-video/">How-to</a>
+        <a href="/ai-rap-video-vs-hotel-lobby-trend/">Compare</a>
+        <a href="/pack/">Pack</a>
+      </nav>
+      <p class="footer-note">Open-source AI Rap Video prompt templates. Not a paid generator. Original staging &amp; lyrics only.</p>
+      <p class="footer-note">MIT · GitHub PNGTRID/ai-rap-video-wiki</p>
     </div></footer>
   </body>
 </html>

@@ -9,7 +9,9 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import JsonLd from '../../components/JsonLd.astro';
 import RelatedPrompts from '../../components/RelatedPrompts.astro';
+import VideoGallery from '../../components/VideoGallery.astro';
 import { bySlug } from '../../data/prompts';
+import { videosFor } from '../../data/videos';
 
 const item = bySlug('ai-rap-video-best-friends-duo')!;
 const articleLd = {
@@ -97,6 +99,8 @@ Template focus: Best-Friends AI Rap Video Prompt.</pre>
     <p>Roast the situation, never the person: "always losing his keys" lands, anything about appearance or relationships doesn't. You know your friend; render what they'd repost about themselves.</p>
 
     <div class="notice"><strong>Compliance:</strong> original staging and lyrics only. Do not commercially bind protected recordings — including the Hotel Lobby trend audio — or celebrity likenesses. Both friends must consent to the render and the post.</div>
+
+    <VideoGallery videos={videosFor(item.slug)} heading="See it in action" sub="Real videos from the web built in this exact format." viewAll={true} />
 
     <RelatedPrompts slugs={item.related} />
   </article>

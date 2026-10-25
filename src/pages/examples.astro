@@ -1,0 +1,58 @@
+---
+/**
+ * [WHY]: 视频示例总览页——全站收集的真实 AI rap 视频统一入口，按类别分组，承接各模板页视频区块的全览跳转。
+ * [INPUT]: videos.ts 全量数据 + videoKinds 分组元数据。
+ * [OUTPUT]: 按类别分组的视频画廊 + 归属/合规声明 + CollectionPage JSON-LD。
+ * [BOUND]: 不自托管任何视频；不收录以名人脸或受保护音源为卖点的视频；不写教程正文（模板页负责）。
+ * [PROTOCOL]: videos.ts 增删条目时检查本页分组文案与计数是否仍然成立。
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import JsonLd from '../components/JsonLd.astro';
+import VideoFacade from '../components/VideoFacade.astro';
+import { videos, videoKinds, type VideoItem } from '../data/videos';
+
+const groups = videoKinds
+  .map((g) => ({ ...g, items: videos.filter((v) => v.kind === g.kind) }))
+  .filter((g) => g.items.length > 0) as { kind: string; label: string; blurb: string; items: VideoItem[] }[];
+
+const collectionLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: 'AI Rap Video Examples — Real Videos From the Web',
+  description: 'A curated gallery of real AI rap videos and build tutorials embedded from YouTube: trend explainers, full workflow walkthroughs, Wan vs Seedance deep dives, and music lip-sync builds.',
+  url: 'https://ai-rap-video.wiki/examples/',
+  isPartOf: { '@type': 'WebSite', name: 'AI Rap Video Wiki', url: 'https://ai-rap-video.wiki/' },
+  inLanguage: 'en'
+};
+---
+
+<BaseLayout
+  title="AI Rap Video Examples: Real Trend Videos & Build Tutorials | AI Rap Video"
+  description="Watch real AI rap video examples embedded from YouTube: the Hotel Lobby trend origin, full photo-to-clip workflow tutorials, Wan and Seedance deep dives, and Suno lip-sync builds."
+  canonicalPath="/examples/"
+>
+  <JsonLd data={[collectionLd]} />
+  <article class="prose hero">
+    <p class="tag tag-brand">Video notes</p>
+    <h1>AI rap video examples from the public web</h1>
+    <p class="lead">Prompt templates are easier to trust once you have seen the format working. This gallery embeds <strong>{videos.length} real videos</strong> — the trend's origin clip, full workflow tutorials, engine deep dives, and experiments — all public YouTube content, embedded from their original channels. Every video also has <strong>its own written breakdown</strong>: click any card to read what it teaches, how it maps to our templates, and what to watch for.</p>
+    <p class="muted">A note on curation: we deliberately skipped renders built around celebrity likenesses or commercial tracks as the selling point. That is the same line our <a href="/ai-rap-video-vs-hotel-lobby-trend/">compliance guide</a> holds in the templates. The original COLORS performance below is embedded for context — as an official embed, not as audio to copy.</p>
+
+    <div class="notice" style="margin-top:1.25rem;"><strong>How to use this page:</strong> skim a category, find the video closest to your goal, then jump to the matching <a href="/prompts/">prompt template</a> for the copy-ready wording.</div>
+
+    {groups.map((g) => (
+      <section style="margin-top:2.25rem;">
+        <h2>{g.label}</h2>
+        <p class="muted">{g.blurb}</p>
+        <div class="grid video-grid">
+          {g.items.map((v) => (<VideoFacade {...v} href={`/examples/${v.slug}/`} />))}
+        </div>
+      </section>
+    ))}
+
+    <section style="margin-top:2.5rem;">
+      <h2>Attribution &amp; takedowns</h2>
+      <p>All videos above are embedded via YouTube's official player from their creators' channels; titles, channels, and links stay attached to each card. If you are a creator and want your video removed from this gallery, it is a one-line deletion in our open repository — open an issue on <span class="muted">GitHub PNGTRID/ai-rap-video-wiki</span> and it goes.</p>
+    </section>
+  </article>
+</BaseLayout>

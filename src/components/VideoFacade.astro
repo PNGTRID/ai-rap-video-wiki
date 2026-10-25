@@ -1,0 +1,46 @@
+---
+/**
+ * [WHY]: YouTube 懒加载播放卡——站点引入真实视频示例的核心组件，点击前零 iframe、零第三方请求。
+ * [INPUT]: id（YouTube 视频 ID）、title、channel、duration、note（一句话说明为何相关）、href（可选，文章页链接）。
+ * [OUTPUT]: 16:9 封面卡（ytimg 缩略图 + 播放键 + 时长角标），点击后原位换成 youtube-nocookie 自动播放 iframe；带 href 时标题与"Read the full notes"链接到文章页。
+ * [BOUND]: 不下载不分发任何视频/图片资产（缩略图热链 ytimg）；不做播放列表；不含跳转链接（链接由外层 figcaption 提供）。
+ * [PROTOCOL]: 改嵌入域名或交互方式时同步检查 /examples 页的归属声明。
+ */
+interface Props { id: string; title: string; channel?: string; duration?: string; note?: string; href?: string }
+const { id, title, channel, duration, note, href } = Astro.props;
+const safeId = id.replace(/[^A-Za-z0-9_-]/g, '');
+---
+<figure class="video-card">
+  <div class="video-frame" data-yt-frame={safeId}>
+    <button type="button" class="video-play" aria-label={`Play video: ${title}`} data-yt-play={safeId} data-yt-title={title}>
+      <img src={`https://i.ytimg.com/vi/${safeId}/hqdefault.jpg`} alt={`Thumbnail for: ${title}`} loading="lazy" width="480" height="270" />
+      <span class="video-btn" aria-hidden="true">
+        <svg width="64" height="44" viewBox="0 0 64 44" role="presentation"><rect width="64" height="44" rx="12" fill="rgba(255,122,26,.94)"/><path d="M26 13.5v17l14.5-8.5z" fill="#111"/></svg>
+      </span>
+      {duration && <span class="video-dur">{duration}</span>}
+    </button>
+  </div>
+  <figcaption>
+    <strong>{href ? <a href={href}>{title}</a> : title}</strong>
+    {channel && <span class="muted video-channel">— {channel}</span>}
+    {note && <p class="muted video-note">{note}</p>}
+    {href && <p style="margin:.45rem 0 0;font-size:.9rem;"><a href={href}>Read the full notes →</a></p>}
+  </figcaption>
+</figure>
+
+<script>
+  document.addEventListener('click', (e) => {
+    const btn = (e.target as Element | null)?.closest?.('[data-yt-play]');
+    if (!btn) return;
+    const id = btn.getAttribute('data-yt-play')!;
+    const title = btn.getAttribute('data-yt-title') ?? 'YouTube video';
+    const frame = document.querySelector(`[data-yt-frame="${id}"]`);
+    if (!frame) return;
+    const iframe = document.createElement('iframe');
+    iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`;
+    iframe.title = title;
+    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+    iframe.allowFullscreen = true;
+    frame.replaceChildren(iframe);
+  });
+</script>

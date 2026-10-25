@@ -1,5 +1,14 @@
 ---
+/**
+ * [WHY]: 合规对比页——承接"Hotel Lobby 趋势"搜索流量，讲清本站与趋势生成器的差异与红线。
+ * [INPUT]: videosFor('hotel-lobby-trend')（趋势原片与解说，官方嵌入仅供语境参考）。
+ * [OUTPUT]: 对比表 + 四条合规线 + 趋势视频区 + FAQ。
+ * [BOUND]: 视频嵌入不构成对受保护音源/名人脸的使用许可；非法律意见。
+ * [PROTOCOL]: 合规口径变化时同步首页 FAQ notice 与 pack/README.md Rules。
+ */
 import BaseLayout from '../layouts/BaseLayout.astro';
+import VideoGallery from '../components/VideoGallery.astro';
+import { videosFor } from '../data/videos';
 
 const comparison = [
   ['What you get', 'A fixed booth stage wrapped around a credit-based render queue.', '12 open prompt templates you run in your own model, unlimited re-renders.'],
@@ -66,6 +75,13 @@ const comparison = [
     <p>Referencing a trend by name in a caption is different from binding the protected audio to your render. We keep this wiki's templates audio-neutral so the choice stays yours — but if your clip is commercial, original audio is the safer bet either way.</p>
     <h3>Where do model-specific wording differences come in?</h3>
     <p>Compliance is model-independent; prompt structure is not. The <a href="/prompts/ai-rap-video-wan-vs-seedance-prompts/">Wan vs Seedance guide</a> handles the porting details.</p>
+
+    <VideoGallery
+      videos={videosFor('hotel-lobby-trend')}
+      heading="The trend, embedded for context"
+      sub="The original COLORS performance that started the format, plus explainers and tutorials — official embeds from their channels, kept here so you can see exactly what the templates re-stage with original wording."
+      viewAll={true}
+    />
 
     <div class="notice"><strong>Standing rule:</strong> original lyrics and staging only. Do not commercially bind protected recordings — including the Hotel Lobby trend audio — or celebrity likenesses. General information, not legal advice.</div>
   </article>

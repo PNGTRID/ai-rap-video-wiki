@@ -1,0 +1,23 @@
+---
+/**
+ * [WHY]: 视频示例区块——模板页/专题页统一的"看真实示例"入口，集中过滤与空态处理，避免每页手写。
+ * [INPUT]: videos（videos.ts 的 VideoItem 数组）、heading、sub、viewAll（是否附 /examples 全览链接）。
+ * [OUTPUT]: 有视频时渲染标题 + 懒加载播放卡网格（标题与"Read the full notes"链接到 /examples/{slug}/ 文章页）+ 可选全览链接；无视频时渲染 null。
+ * [BOUND]: 不负责单卡交互（VideoFacade 内聚）；不做分页。
+ * [PROTOCOL]: 模板页新增视频时在 videos.ts 配 topics 即可，无需改本组件。
+ */
+import VideoFacade from './VideoFacade.astro';
+import type { VideoItem } from '../data/videos';
+interface Props { videos: VideoItem[]; heading: string; sub?: string; viewAll?: boolean }
+const { videos, heading, sub, viewAll = false } = Astro.props;
+---
+{videos.length > 0 && (
+  <section style="margin-top:2rem;">
+    <h2>{heading}</h2>
+    {sub && <p class="muted">{sub}</p>}
+    <div class="grid video-grid">
+      {videos.map((v) => (<VideoFacade {...v} href={`/examples/${v.slug}/`} />))}
+    </div>
+    {viewAll && <p style="margin-top:1rem;"><a href="/examples/">Browse all video examples →</a></p>}
+  </section>
+)}

@@ -9,7 +9,9 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import JsonLd from '../../components/JsonLd.astro';
 import RelatedPrompts from '../../components/RelatedPrompts.astro';
+import VideoGallery from '../../components/VideoGallery.astro';
 import { bySlug } from '../../data/prompts';
+import { videosFor } from '../../data/videos';
 
 const item = bySlug('ai-rap-video-couple-prompt')!;
 const articleLd = {
@@ -97,6 +99,8 @@ Template focus: Couple AI Rap Video Prompt.</pre>
     <p>Specific small memories beat grand statements: the first trip, the terrible first apartment, the song from the first date (described, never quoted). The <a href="/prompts/ai-rap-video-original-lyrics-prompt/">lyrics template</a> turns any of these into four lines.</p>
 
     <div class="notice"><strong>Compliance:</strong> original staging and lyrics only. Do not commercially bind protected recordings — including the Hotel Lobby trend audio — or celebrity likenesses. Both partners must consent to the render and to posting it.</div>
+
+    <VideoGallery videos={videosFor(item.slug)} heading="See it in action" sub="Real videos from the web built in this exact format." viewAll={true} />
 
     <RelatedPrompts slugs={item.related} />
   </article>

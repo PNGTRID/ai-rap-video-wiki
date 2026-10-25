@@ -9,7 +9,9 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import JsonLd from '../../components/JsonLd.astro';
 import RelatedPrompts from '../../components/RelatedPrompts.astro';
+import VideoGallery from '../../components/VideoGallery.astro';
 import { bySlug } from '../../data/prompts';
+import { videosFor } from '../../data/videos';
 
 const item = bySlug('ai-rap-video-vertical-tiktok-prompt')!;
 const articleLd = {
@@ -98,6 +100,8 @@ Template focus: Vertical AI Rap Video Prompt for TikTok.</pre>
     <p>Yes — the negative block explicitly refuses burned-in text so the platform's caption tools (or yours) get a clean plate. That is also why the top and bottom bands stay clear.</p>
 
     <div class="notice"><strong>Compliance:</strong> original staging and lyrics only. Do not commercially bind protected recordings — including the Hotel Lobby trend audio — or celebrity likenesses. Get consent from everyone in the photos.</div>
+
+    <VideoGallery videos={videosFor(item.slug)} heading="See it in action" sub="Real videos from the web built in this exact format." viewAll={true} />
 
     <RelatedPrompts slugs={item.related} />
   </article>

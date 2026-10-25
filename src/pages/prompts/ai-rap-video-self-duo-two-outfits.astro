@@ -9,7 +9,9 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import JsonLd from '../../components/JsonLd.astro';
 import RelatedPrompts from '../../components/RelatedPrompts.astro';
+import VideoGallery from '../../components/VideoGallery.astro';
 import { bySlug } from '../../data/prompts';
+import { videosFor } from '../../data/videos';
 
 const item = bySlug('ai-rap-video-self-duo-two-outfits')!;
 const articleLd = {
@@ -103,6 +105,8 @@ Template focus: Self-Duo AI Rap Video (Two Outfits).</pre>
     <p>Only in the script: give each version a stance (old you vs new you) with the <a href="/prompts/ai-rap-video-original-lyrics-prompt/">lyrics template</a>, tone <code>playful</code>. The video prompt stays exactly this template.</p>
 
     <div class="notice"><strong>Compliance:</strong> original staging and lyrics only. Do not commercially bind protected recordings — including the Hotel Lobby trend audio — or celebrity likenesses. This template is for your own face with your own consent.</div>
+
+    <VideoGallery videos={videosFor(item.slug)} heading="See it in action" sub="Real videos from the web built in this exact format." viewAll={true} />
 
     <RelatedPrompts slugs={item.related} />
   </article>

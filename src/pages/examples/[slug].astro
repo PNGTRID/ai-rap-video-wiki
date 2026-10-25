@@ -1,0 +1,101 @@
+---
+/**
+ * [WHY]: 视频文章页模板——每条视频一篇游戏站 wiki 深度文章（视频嵌入 + 拆解 + 模板关联 + FAQ）。
+ * [INPUT]: video-notes 集合（md frontmatter + 正文），按 videoId 合并 videos.ts 的 channel/duration/kind/topics。
+ * [OUTPUT]: /examples/{slug}/ 静态页：面包屑 + 文章正文 + 相关模板 + 相关笔记 + Article/VideoObject/Breadcrumb JSON-LD。
+ * [BOUND]: 不虚构视频内部细节（正文写主题与方法，不写"视频第几分钟做了什么"）；不自动改 md 内容。
+ * [PROTOCOL]: 改 frontmatter 字段时同步 content.config.ts schema 与本页。
+ */
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import JsonLd from '../../components/JsonLd.astro';
+import RelatedPrompts from '../../components/RelatedPrompts.astro';
+import VideoFacade from '../../components/VideoFacade.astro';
+import { bySlug as promptBySlug } from '../../data/prompts';
+import { videos, videoKinds } from '../../data/videos';
+
+export async function getStaticPaths() {
+  const notes = await getCollection('videoNotes');
+  return notes.map((note) => ({ params: { slug: note.id }, props: { note } }));
+}
+
+const { note } = Astro.props;
+const video = videos.find((v) => v.id === note.data.videoId)!;
+const kindLabel = videoKinds.find((k) => k.kind === video.kind)?.label ?? 'Video notes';
+const relatedPrompts = video.topics
+  .filter((t) => t.startsWith('ai-rap-video-'))
+  .map(promptBySlug)
+  .filter((p) => !!p);
+const relatedNotes = videos.filter((v) => v.kind === video.kind && v.id !== video.id).slice(0, 3);
+const { Content } = await render(note);
+
+const site = 'https://ai-rap-video.wiki';
+const url = `${site}/examples/${note.id}/`;
+const articleLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: note.data.title,
+  description: note.data.description,
+  url,
+  datePublished: note.data.date.toISOString(),
+  isPartOf: { '@type': 'WebSite', name: 'AI Rap Video Wiki', url: site },
+  license: 'https://opensource.org/licenses/MIT',
+  inLanguage: 'en'
+};
+const videoLd = {
+  '@context': 'https://schema.org',
+  '@type': 'VideoObject',
+  name: video.title,
+  description: video.note,
+  thumbnailUrl: [`https://i.ytimg.com/vi/${video.id}/hqdefault.jpg`],
+  uploadDate: note.data.uploadDate.toISOString(),
+  embedUrl: `https://www.youtube.com/embed/${video.id}`,
+  contentUrl: `https://www.youtube.com/watch?v=${video.id}`
+};
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AI Rap Video', item: `${site}/` },
+    { '@type': 'ListItem', position: 2, name: 'Examples', item: `${site}/examples/` },
+    { '@type': 'ListItem', position: 3, name: note.data.title, item: url }
+  ]
+};
+---
+
+<BaseLayout title={`${note.data.title} | AI Rap Video`} description={note.data.description} canonicalPath={`/examples/${note.id}/`}>
+  <JsonLd data={[articleLd, videoLd, breadcrumbLd]} />
+  <article class="prose hero">
+    <p class="tag tag-brand">{kindLabel} · video notes</p>
+    <h1>{note.data.title}</h1>
+    <p class="lead">{note.data.description}</p>
+
+    <div style="max-width:620px;margin:1.5rem 0 0;">
+      <VideoFacade {...video} />
+      <p class="muted" style="font-size:.9rem;margin:.5rem 0 0;">
+        Embedded from <a href={`https://www.youtube.com/watch?v=${video.id}`} rel="noopener nofollow" target="_blank">YouTube</a> — {video.channel}. The video belongs to its creator; these notes are ours.
+      </p>
+    </div>
+
+    <Content />
+
+    {relatedPrompts.length > 0 && <RelatedPrompts slugs={relatedPrompts.map((p) => p!.slug)} />}
+
+    {relatedNotes.length > 0 && (
+      <section>
+        <h2>Keep reading</h2>
+        <div class="grid">
+          {relatedNotes.map((v) => (
+            <a class="card" href={`/examples/${v.slug}/`}>
+              <span class="tag">{v.duration}</span>
+              <h3 style="margin-top:.55rem;">{v.title}</h3>
+              <p class="muted">{v.note}</p>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <div class="notice"><strong>Attribution:</strong> all videos are embedded via YouTube's official player and belong to their creators. Creators can request removal any time — see the <a href="/examples/">gallery page</a>.</div>
+  </article>
+</BaseLayout>

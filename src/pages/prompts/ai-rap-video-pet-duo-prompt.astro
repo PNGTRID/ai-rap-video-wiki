@@ -9,7 +9,9 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import JsonLd from '../../components/JsonLd.astro';
 import RelatedPrompts from '../../components/RelatedPrompts.astro';
+import VideoGallery from '../../components/VideoGallery.astro';
 import { bySlug } from '../../data/prompts';
+import { videosFor } from '../../data/videos';
 
 const item = bySlug('ai-rap-video-pet-duo-prompt')!;
 const articleLd = {
@@ -105,6 +107,8 @@ Template focus: Pet Duo AI Rap Video Prompt.</pre>
     <p>The smaller the animal relative to the human, the harder the scale matching. Birds handle head-bob surprisingly well; rodents tend to morph. Render short and expect selection bias — one good clip in three tries is a normal outcome for this template.</p>
 
     <div class="notice"><strong>Compliance:</strong> original staging and lyrics only; render only your own pets. Do not commercially bind protected recordings or celebrity likenesses, and don't anthropomorphize other people's pets without their sign-off.</div>
+
+    <VideoGallery videos={videosFor(item.slug)} heading="See it in action" sub="Real videos from the web built in this exact format." viewAll={true} />
 
     <RelatedPrompts slugs={item.related} />
   </article>

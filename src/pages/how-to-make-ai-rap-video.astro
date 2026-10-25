@@ -1,6 +1,19 @@
 ---
+/**
+ * [WHY]: 10 步工作流教程页——搜索量最大的 how-to 意图落地页。
+ * [INPUT]: videosFor('how-to')（全流程教程视频）。
+ * [OUTPUT]: 步骤正文 + 流程配图（astro:assets 优化）+ 教程视频区 + FAQ（含 HowTo JSON-LD）。
+ * [BOUND]: 不绑定具体工具品牌为依赖；合规口径与首页/compare 页一致。
+ * [PROTOCOL]: 改步骤结构时同步 pack/ 内对应 md 的步骤区。
+ */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import JsonLd from '../components/JsonLd.astro';
+import VideoGallery from '../components/VideoGallery.astro';
+import { videosFor } from '../data/videos';
+import { Image } from 'astro:assets';
+import studioDuet from '../assets/ai-rap-video-studio-duet.jpg';
+import photoToStage from '../assets/ai-rap-video-photo-to-stage.jpg';
+import verticalFormat from '../assets/ai-rap-video-vertical-format.jpg';
 
 const steps = [
   { name: 'Pick your performers and get permission', text: 'One face per photo, and a real yes from every person in it. Duo clips from two separate portraits are the cleanest start; two outfits of one person work too.' },
@@ -41,12 +54,43 @@ const howToLd = {
     <h1>How to make an AI rap video</h1>
     <p class="lead">A prompt-first workflow that works in any image-to-video model: prepare photos, lock left/right roles, write original bars, render an 8-12 second clip, then review it for the identity drift that ruins most first attempts. No credits, no upload queue — this wiki supplies templates, your model supplies the render.</p>
 
+    <figure style="margin:1.75rem 0 0;">
+      <Image
+        src={studioDuet}
+        alt="Two performers trading bars into a hanging microphone on a dark studio booth stage — the locked two-shot an AI rap video aims for."
+        loading="lazy"
+        style="width:100%;height:auto;border-radius:14px;border:1px solid var(--line);display:block"
+      />
+      <figcaption class="muted" style="font-size:.85rem;margin-top:.5rem;">The locked two-shot this workflow targets: two performers, one hanging mic, traded bars. (Reference still generated with AI.)</figcaption>
+    </figure>
+
     <h2>Before you start: three decisions</h2>
     <ul class="list">
       <li><strong>Duo or self-duo?</strong> Two people from two photos, or one person from two outfits. Both work; the <a href="/prompts/ai-rap-video-self-duo-two-outfits/">self-duo template</a> handles the contrast rules for one person.</li>
       <li><strong>Vertical or landscape?</strong> TikTok, Reels, and Shorts want 9:16. YouTube handles 16:9. The <a href="/prompts/ai-rap-video-vertical-tiktok-prompt/">vertical template</a> bakes the framing into the prompt.</li>
       <li><strong>What is the clip about?</strong> A birthday, a reunion, a couple milestone, a pet. The theme drives the original bars, so decide it now.</li>
     </ul>
+
+    <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:1.5rem;align-items:flex-start;">
+      <figure style="flex:1.6;min-width:240px;margin:0;">
+        <Image
+          src={photoToStage}
+          alt="Reference portrait photos beside a rendered duo performance on a booth stage, showing the photo-to-stage transformation."
+          loading="lazy"
+          style="width:100%;height:auto;border-radius:14px;border:1px solid var(--line);display:block"
+        />
+        <figcaption class="muted" style="font-size:.85rem;margin-top:.4rem;">From reference photos to a staged duo performance. (Reference still generated with AI.)</figcaption>
+      </figure>
+      <figure style="flex:1;max-width:260px;min-width:160px;margin:0;">
+        <Image
+          src={verticalFormat}
+          alt="A neon-lit vertical 9:16 booth stage frame showing how a duo rap clip is composed for TikTok, Reels, and Shorts."
+          loading="lazy"
+          style="width:100%;height:auto;border-radius:14px;border:1px solid var(--line);display:block"
+        />
+        <figcaption class="muted" style="font-size:.85rem;margin-top:.4rem;">Vertical 9:16 framing reference. (Reference still generated with AI.)</figcaption>
+      </figure>
+    </div>
 
     <h2>The 10-step workflow</h2>
     <ol class="list">
@@ -66,6 +110,13 @@ const howToLd = {
     <p>Yes, as a solo performer, or as a self-duo if you have a second photo in a different outfit. The prompt changes one block: assign the single reference and drop the left/right trade.</p>
     <h3>Why not just use a trend generator site?</h3>
     <p>Trend generators lock you to their stage, their credits, and often a specific commercial audio. Our <a href="/ai-rap-video-vs-hotel-lobby-trend/">compliance comparison</a> breaks down why prompt templates keep you in control and on the safe side of music and likeness rights.</p>
+
+    <VideoGallery
+      videos={videosFor('how-to')}
+      heading="Full workflow walkthroughs"
+      sub="End-to-end builds from real creators — watch one before your first render, or alongside the steps above."
+      viewAll={true}
+    />
 
     <div class="notice"><strong>Remember:</strong> this is an open-source prompt workflow, not a paid AI rap video generator. Original lyrics and staging only; never bind protected recordings or celebrity faces.</div>
   </article>

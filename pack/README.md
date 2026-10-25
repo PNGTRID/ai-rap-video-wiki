@@ -29,6 +29,10 @@ Open-source markdown prompts synced with https://ai-rap-video.wiki — every wik
 4. Render in any Wan-style or Seedance-style image-to-video tool — the steps section is tool-agnostic.
 5. Keep the compliance note. It travels with each file on purpose.
 
+## See the format in motion
+
+The wiki pairs every template with real video examples embedded from YouTube — trend explainers, full workflow tutorials, and Wan/Seedance deep dives: https://ai-rap-video.wiki/examples/
+
 ## Rules
 
 - Original staging and lyrics descriptions only

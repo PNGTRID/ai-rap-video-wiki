@@ -9,6 +9,7 @@ Site: https://ai-rap-video.wiki
 - Home: https://ai-rap-video.wiki/
 - How to make an AI rap video (10-step workflow): https://ai-rap-video.wiki/how-to-make-ai-rap-video/
 - AI Rap Video vs Hotel Lobby trend (compliance comparison): https://ai-rap-video.wiki/ai-rap-video-vs-hotel-lobby-trend/
+- Video examples & notes (20 real videos, each with a written breakdown): https://ai-rap-video.wiki/examples/
 - Prompt pack (12 markdown files, MIT): https://ai-rap-video.wiki/pack/
 
 ## Templates (/prompts/)
