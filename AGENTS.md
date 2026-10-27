@@ -30,7 +30,7 @@ AI Rap Video 开源提示词模板站（英文 SEO 站）。提供可复制的�
 | `src/pages/pack.astro` | 开源 pack 说明页 |
 | `src/assets/` | 页面配图素材（AI 生成参考图，经 astro:assets 构建优化为 webp） |
 | `public/images/` | 固定路径资产（`og-ai-rap-video.jpg` 等 OG/分享图，路径不参与构建优化） |
-| `reports/` | 运营周报与调研产物（每周一早 9 点自动化生成；内部文档，gitignore 不入库，不参与构建） |
+| `reports/` | 运营日报与周报、调研产物（每天早 9 点自动化生成日报，周一另出周报；内部文档，gitignore 不入库，不参与构建） |
 | `pack/*.md` | 与站内 12 条模板同步的 markdown pack（MIT） |
 
 ## 项目约定
@@ -39,6 +39,6 @@ AI Rap Video 开源提示词模板站（英文 SEO 站）。提供可复制的�
 - **内容同步**：改站内模板页必须同步 `pack/` 对应 .md，反之亦然（两处同源）。
 - **模板页最低深度**：场景说明 → 可复制主 prompt → 镜头/节拍拆解 → 负面提示 → 照片准备 → 常见翻车 → 合规备注 → 相关内链。禁止只贴一段 prompt。
 - **SEO**：首页 title/H1 死磕 `AI Rap Video`；每页 description 155-165 字符；canonical 必填。
-- **统计与站长工具**：GA4 与 GSC 验证均由 BaseLayout 条件注入，环境变量驱动（见 `.env.example`）：`PUBLIC_GA4_ID`（仅生产构建）、`PUBLIC_GSC_VERIFICATION`。未配置即零输出；正式值配在 Cloudflare Pages 环境变量里。
+- **统计与站长工具**：GA4、GSC 验证与 pvuv.ai 统计均由 BaseLayout 条件注入，环境变量驱动（见 `.env.example`）：`PUBLIC_GA4_ID`（仅生产构建）、`PUBLIC_GSC_VERIFICATION`、`PUBLIC_PVUV_SITE_ID`（仅生产构建）。未配置即零输出；正式值配在 Cloudflare Pages 环境变量里。
 - **合规红线**：只用原创歌词与原创舞台描述；不绑定 Hotel Lobby 原曲与名人脸；不出现品牌 logo。
 - **禁操作**：不主动 git commit/push、不改生产 DNS、不做付费操作（用户未授权）。
