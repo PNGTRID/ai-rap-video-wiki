@@ -1,9 +1,9 @@
 ---
 /**
  * [WHY]: 全站唯一 HTML 壳——负责 title/meta/canonical/OG 等 SEO 头部与导航、页脚。
- * [INPUT]: 每个页面传入 title、description（meta 用）、canonicalPath（规范链接路径）；环境变量 PUBLIC_GSC_VERIFICATION（GSC 验证 token）、PUBLIC_GA4_ID（GA4 Measurement ID）。
- * [OUTPUT]: 完整 HTML 文档；玻璃感 sticky 导航（品牌块 + 链接 + Pack CTA）与页脚；og:image/twitter 大图卡（public/images/og-ai-rap-video.jpg）；条件注入 GSC 验证 meta 与 GA4 gtag（未配置即零输出）。
- * [BOUND]: 不注入页面级 JSON-LD（由页面经 JsonLd 组件自行添加）；不做主题切换；移动端收起 nav-links（页脚有全量链接兜底）；GA4 仅生产构建注入。
+ * [INPUT]: 每个页面传入 title、description（meta 用）、canonicalPath（规范链接路径）；环境变量 PUBLIC_GSC_VERIFICATION（GSC 验证 token）、PUBLIC_GA4_ID（GA4 Measurement ID）、PUBLIC_PVUV_SITE_ID（pvuv.ai 统计站点 ID）。
+ * [OUTPUT]: 完整 HTML 文档；玻璃感 sticky 导航（品牌块 + 链接 + Pack CTA）与页脚；og:image/twitter 大图卡（public/images/og-ai-rap-video.jpg）；条件注入 GSC 验证 meta、GA4 gtag 与 pvuv 统计脚本（未配置即零输出）。
+ * [BOUND]: 不注入页面级 JSON-LD（由页面经 JsonLd 组件自行添加）；不做主题切换；移动端收起 nav-links（页脚有全量链接兜底）；GA4/pvuv 仅生产构建注入。
  * [PROTOCOL]: 新增导航入口或 meta 字段时更新各页面 Props 传参。
  */
 import '../styles/global.css';
@@ -15,6 +15,8 @@ const canonical = `${site}${canonicalPath.startsWith('/') ? canonicalPath : '/' 
 const gscVerification = import.meta.env.PUBLIC_GSC_VERIFICATION;
 // GA4 仅生产构建注入，避免本地开发污染统计数据
 const gaId = import.meta.env.PROD ? import.meta.env.PUBLIC_GA4_ID : undefined;
+// pvuv.ai 统计与 GA4 同一套开关逻辑：仅生产构建注入
+const pvuvSiteId = import.meta.env.PROD ? import.meta.env.PUBLIC_PVUV_SITE_ID : undefined;
 ---
 <!doctype html>
 <html lang="en">
@@ -48,6 +50,9 @@ const gaId = import.meta.env.PROD ? import.meta.env.PUBLIC_GA4_ID : undefined;
           gtag('config', gaId);
         </script>
       </>
+    )}
+    {pvuvSiteId && (
+      <script is:inline defer src="https://www.pvuv.ai/f.js" data-site={pvuvSiteId} data-api="https://in.pvuv.ai"></script>
     )}
   </head>
   <body>
