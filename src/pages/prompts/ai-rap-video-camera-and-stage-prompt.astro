@@ -48,7 +48,7 @@ const breadcrumbLd = {
     <h2>The vocabulary that controls the render</h2>
     <h3>Stage environments (pick one, name it concretely)</h3>
     <ul class="list">
-      <li><strong>Studio booth:</strong> "original studio booth, warm orange key light, dark backdrop, soft rim light" — the classic AI rap video read.</li>
+      <li><strong>Studio booth:</strong> "original studio booth, warm orange key light, dark backdrop, soft rim light" — the classic AI rap video read. It is the default for a reason: a plain backdrop, one light source, and low element density give the model the fewest things to drift, so faces stay stable longest. For the full signature version — saturated orange backdrop, color variants, and its dedicated negative block — see the <a href="/ai-rap-video-orange-backdrop/">orange backdrop guide</a>.</li>
       <li><strong>Neon warehouse:</strong> "industrial warehouse, magenta and cyan neon strips, faint haze, concrete floor" — colder, more nightlife energy.</li>
       <li><strong>Rooftop dusk:</strong> "city rooftop at dusk, practical string lights, sky gradient behind, gentle wind" — softer, works well for couple and friends variants.</li>
     </ul>
@@ -70,6 +70,7 @@ const breadcrumbLd = {
     <p><code>key light</code>, <code>rim light</code>, <code>practical lights in frame</code>, <code>haze</code>, <code>high contrast</code>, <code>soft fill</code>. Two or three of these beat a paragraph of adjectives.</p>
 
     <h2>Copy-ready staging swap block</h2>
+    <p>The block below is the <strong>studio booth version</strong> of the staging system — the one most "studio rap ai video" searches are after. Swap in the neon or rooftop lines above for the other moods.</p>
     <pre class="prompt-box">Stage (original description, no reference to any existing music video):
 - Setting: original studio booth, dark backdrop with one soft vertical light strip, faint haze.
 - Key light: warm orange from the front-left, gentle falloff; cool rim light from behind on both performers.

@@ -9,12 +9,14 @@ As a vocabulary library to steal from, or as a swap block replacing the Stage an
 
 ## Vocabulary that controls the render
 
-- **Stages:** studio booth (warm orange key light, dark backdrop, rim light) / neon warehouse (magenta-cyan strips, haze, concrete) / rooftop dusk (string lights, sky gradient, gentle wind).
+- **Stages:** studio booth (warm orange key light, dark backdrop, rim light — the default read: plain backdrop, one light source, and low element density give the model the fewest things to drift, so faces stay stable longest; the wiki's orange backdrop guide has the full saturated-orange signature version) / neon warehouse (magenta-cyan strips, haze, concrete) / rooftop dusk (string lights, sky gradient, gentle wind).
 - **Microphone:** hanging mic between performers (strongest anchor) / handhelds (more choreography, more tracking risk) / no mic (cleanest, weakest read).
 - **Camera moves:** locked (max stability) / slow push-in (the workhorse) / static + one midpoint orbit (<2s) / whip pan (only as a transition).
 - **Lighting words:** key light, rim light, practical lights, haze, high contrast, soft fill — two or three beat a paragraph.
 
 ## Staging swap block
+
+The block below is the studio booth version of the staging system — the one most "studio rap ai video" searches are after.
 
 ```text
 Stage (original description, no reference to any existing music video):

@@ -41,18 +41,51 @@ const howToLd = {
     text: s.text
   }))
 };
+
+const faqs = [
+  {
+    q: 'How long does the whole workflow take?',
+    a: 'First run: about 20 minutes of prep plus your model\'s render time. Re-runs are faster because the photos and prompt structure are already done — usually one wording tweak and one re-render.'
+  },
+  {
+    q: 'Can I make an AI rap video with just one photo?',
+    a: 'Yes, as a solo performer, or as a self-duo if you have a second photo in a different outfit. The prompt changes one block: assign the single reference and drop the left/right trade.'
+  },
+  {
+    q: 'Why not just use a trend generator site?',
+    a: 'Trend generators lock you to their stage, their credits, and often a specific commercial audio. Our compliance comparison breaks down why prompt templates keep you in control and on the safe side of music and likeness rights.'
+  },
+  {
+    q: 'How do I create an AI rap video without a paid generator?',
+    a: 'That is exactly what this workflow is. The free prompt method pairs copy-ready templates with any image-to-video model you already use — no credits, no upload queue, no subscription. The generator page breaks down the full comparison, and the compliance guide covers what to avoid in trend sites.'
+  },
+  {
+    q: 'What is the fastest way to make a rap video with AI?',
+    a: 'The two-photo duo template with prepped portraits: one front-lit photo per performer, the copy-ready prompt pasted whole, 8-12 seconds at your target aspect ratio. First render is usually usable; everything after is one-wording-at-a-time refinement.'
+  }
+];
+
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a }
+  }))
+};
 ---
 
 <BaseLayout
   title="How to Make an AI Rap Video: 10-Step Prompt Workflow"
-  description="How to make an AI rap video from photos, step by step: photo prep, left/right roles, original bars, negative prompts, rendering in any model, and fixing face mix-ups."
+  description="How to make or create an AI rap video from photos, step by step: photo prep, left/right roles, original bars, negative prompts, viral framing, and face fixes."
   canonicalPath="/how-to-make-ai-rap-video/"
 >
-  <JsonLd data={howToLd} />
+  <JsonLd data={[howToLd, faqLd]} />
   <article class="prose hero">
     <p class="tag">Workflow guide</p>
     <h1>How to make an AI rap video</h1>
-    <p class="lead">A prompt-first workflow that works in any image-to-video model: prepare photos, lock left/right roles, write original bars, render an 8-12 second clip, then review it for the identity drift that ruins most first attempts. No credits, no upload queue — this wiki supplies templates, your model supplies the render.</p>
+    <p class="lead">A prompt-first workflow that works in any image-to-video model: prepare photos, lock left/right roles, write original bars, render an 8-12 second clip, then review it for the identity drift that ruins most first attempts. No credits, no upload queue — this wiki supplies templates, your model supplies the render. If you already have a model, you can create one today; the method is free.</p>
 
     <figure style="margin:1.75rem 0 0;">
       <Image
@@ -103,13 +136,23 @@ const howToLd = {
     <h2>Which model should you use?</h2>
     <p>This wiki is deliberately tool-agnostic. The templates are written in plain descriptive English, so they port between Wan-style and Seedance-style image-to-video workflows with small wording shifts. The <a href="/prompts/ai-rap-video-wan-vs-seedance-prompts/">Wan vs Seedance prompt guide</a> covers exactly what to change — reference image handling, duration defaults, and where the negative block goes in each style.</p>
 
+    <h2>How to make your AI rap video go viral</h2>
+    <p>The clips that take off are not better rendered — they are better framed for the feed. Four things move the needle, in order:</p>
+    <ul class="list">
+      <li><strong>Hook-first first two seconds.</strong> The establishing shot <em>is</em> the hook. Faces lit, mic visible, first head nod on beat one — nothing else in frame.</li>
+      <li><strong>Vertical 9:16 with safe-area heads.</strong> Feed UI crops the top of the frame; the <a href="/prompts/ai-rap-video-vertical-tiktok-prompt/">vertical TikTok template</a> bakes the headroom in so the crop doesn't eat your performers.</li>
+      <li><strong>A loop that hides its own seam.</strong> End on the clean two-shot hold so the clip restarts invisibly — rewatches count as watch time, and watch time is what distribution listens to.</li>
+      <li><strong>Post with original audio.</strong> A viral clip bound to a commercial track gets muted mid-run, which kills it. Original bars stay up through the spike.</li>
+    </ul>
+
+    <h2>Want the celebrity or character version?</h2>
+    <p>A large share of trend searches are name searches — politician and celebrity booth clips, or fictional characters doing the same bit. Rendering those faces is the one version of this workflow that backfires: likeness rights and automated AI-content flagging make famous-face renders the fastest way to lose the clip or the account. The compliant remakes keep the entire joke and swap only the faces — the <a href="/ai-rap-video-celebrity-meme-guide/">celebrity meme guide</a> and the <a href="/ai-rap-video-character-meme-guide/">character meme guide</a> each rebuild their meme family with your own photos, and the negative blocks in every template here already block <code>celebrity lookalike</code>.</p>
+
+    <h2>Riding the trend legally</h2>
+    <p>If your goal is to join the wave rather than chase a specific meme, the trend explainer maps the whole phenomenon — format, variants, and the compliance line — in one place: <a href="/ai-rap-video-trend-meme-explained/">what the AI rap video trend is</a>.</p>
+
     <h2>FAQ</h2>
-    <h3>How long does the whole workflow take?</h3>
-    <p>First run: about 20 minutes of prep plus your model's render time. Re-runs are faster because the photos and prompt structure are already done — usually one wording tweak and one re-render.</p>
-    <h3>Can I make an AI rap video with just one photo?</h3>
-    <p>Yes, as a solo performer, or as a self-duo if you have a second photo in a different outfit. The prompt changes one block: assign the single reference and drop the left/right trade.</p>
-    <h3>Why not just use a trend generator site?</h3>
-    <p>Trend generators lock you to their stage, their credits, and often a specific commercial audio. Our <a href="/ai-rap-video-vs-hotel-lobby-trend/">compliance comparison</a> breaks down why prompt templates keep you in control and on the safe side of music and likeness rights.</p>
+    {faqs.map((f) => (<div><h3>{f.q}</h3><p>{f.a}</p></div>))}
 
     <VideoGallery
       videos={videosFor('how-to')}

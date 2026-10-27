@@ -1,0 +1,114 @@
+---
+/**
+ * [WHY]: 影视 IP 角色 meme 解读 + 合规替代指南——7 条角色词唯一承接页，讲版权红线并给原创 generic 角色替代路径。
+ * [INPUT]: 无数据依赖。
+ * [OUTPUT]: 现象解读 + 合规转向页（八段结构）；向 duo/self-duo/lyrics/stage/trend/celebrity 输出内链权重。
+ * [BOUND]: 不提供可识别角色形象的生成措辞；负面词 block 角色名与角色特征；只用原创歌词与舞台描述。
+ * [PROTOCOL]: targetKeywords 调整时对照 page-plan §4.4（7 条角色词归本页独占）。
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import JsonLd from '../components/JsonLd.astro';
+
+const articleLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: 'Harry Potter, Darth Vader AI Rap Video Memes: IP Guide',
+  description: 'Why character AI rap video memes like Harry Potter, Darth Vader, and Shrek went viral, what the IP lines are, plus original-character remakes that stay safe and fun.',
+  url: 'https://ai-rap-video.wiki/ai-rap-video-character-meme-guide/',
+  isPartOf: { '@type': 'WebSite', name: 'AI Rap Video Wiki', url: 'https://ai-rap-video.wiki/' },
+  license: 'https://opensource.org/licenses/MIT',
+  inLanguage: 'en'
+};
+
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AI Rap Video', item: 'https://ai-rap-video.wiki/' },
+    { '@type': 'ListItem', position: 2, name: 'Character Meme Guide', item: 'https://ai-rap-video.wiki/ai-rap-video-character-meme-guide/' }
+  ]
+};
+
+const ipLines = [
+  ['Protected: the recognizable design', 'The specific costume silhouette, hairstyle, props, color scheme, and voice that make a character identifiable at a glance — "the boy wizard\'s round glasses and scarf," "the dark lord\'s mask and breath." These are the copyright and trademark core.'],
+  ['Protected: the name as a brand', 'Character names in titles, captions-as-branding, and merch are trademark territory. Describing a meme phenomenon in an article is different from branding your render with the name.'],
+  ['Not protected: the archetype', 'A wizard, a dark lord, a horror clown, an ogre-ish brawler, a wisecracking sidekick — broad character archetypes belong to everyone. The fun of these memes survives the abstraction to archetype almost entirely.'],
+  ['Not protected: the format', 'Two characters trading bars in a booth is the same generic performance convention every template on this wiki uses.']
+];
+---
+
+<BaseLayout
+  title="Harry Potter, Darth Vader AI Rap Video Memes: IP Guide"
+  description="Why character AI rap video memes like Harry Potter, Darth Vader, and Shrek went viral, what the IP lines are, plus original-character remakes that stay safe and fun."
+  canonicalPath="/ai-rap-video-character-meme-guide/"
+>
+  <JsonLd data={[articleLd, breadcrumbLd]} />
+  <article class="prose hero">
+    <p class="tag">Character memes · IP lines</p>
+    <h1>Character AI rap video memes — and the original-character remake</h1>
+    <p class="lead">Beside the politician clips, the other big family of AI rap video memes puts <strong>fictional characters</strong> in the booth: a boy wizard trading bars with his potions master, a dark lord with unexpectedly clean flow, a horror clown whose second verse is somehow the funniest part. This page explains what those memes are, where the IP lines actually sit, and how to build the same joke with original characters — the version you can post without a studio's legal team noticing.</p>
+
+    <h2>What the character memes are</h2>
+    <ul class="list">
+      <li><strong>The wizard battle.</strong> Hero-and-mentor pairs from fantasy franchises trading bars — the appeal is watching two archetypal rivals discover they respect each other's flow.</li>
+      <li><strong>The dark lord verse.</strong> A famous villain rapping with unearned confidence. The comedy is the same register-clash that powers the celebrity memes: menace meets beat timing.</li>
+      <li><strong>The horror clown cameo.</strong> A nightmare figure delivering a genuinely good verse is the meme's whole punchline — one bar of actual skill and the scare is gone.</li>
+      <li><strong>The fairytale brawler.</strong> An ogre or monster character with surprisingly heartfelt bars — the "he's got range" reaction is the shareable moment.</li>
+    </ul>
+    <p>Fan communities make these for love of the characters; most viewers consume them as paint-by-numbers absurdity. Both readings explain why the format spread — and why the <a href="/ai-rap-video-trend-meme-explained/">trend explainer</a> treats character waves as a sibling of the celebrity waves rather than a separate trend.</p>
+
+    <h2>Character memes vs celebrity memes: the legal difference</h2>
+    <p>Real-person memes run on personality rights — consent-based, strict, and the reason our <a href="/ai-rap-video-celebrity-meme-guide/">celebrity guide</a> is a hard no on rendering famous faces. Character memes run on copyright and trademark instead, which gives you <strong>more replacement room, not unlimited room</strong>:</p>
+    <ul class="list">
+      {ipLines.map(([title, text]) => (
+        <li><strong>{title}.</strong> {text}</li>
+      ))}
+    </ul>
+
+    <h2>The generic-character conversion table</h2>
+    <p>The compliant remake keeps the joke by converting each recognizable element to an archetype. This is the table to work from:</p>
+    <div style="overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;font-size:.95rem;">
+        <thead><tr style="text-align:left;border-bottom:2px solid var(--line);">
+          <th style="padding:.6rem .75rem;">Instead of…</th>
+          <th style="padding:.6rem .75rem;">Prompt with…</th>
+          <th style="padding:.6rem .75rem;">The joke that survives</th>
+        </tr></thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--line);"><td style="padding:.6rem .75rem;">A boy wizard (glasses, scarf, school robes)</td><td style="padding:.6rem .75rem;">"a young sorcerer apprentice in a plain hooded cloak, round plain spectacles"</td><td style="padding:.6rem .75rem;" class="muted">The prodigy out-rapping his mentor</td></tr>
+          <tr style="border-bottom:1px solid var(--line);"><td style="padding:.6rem .75rem;">A potions-master rival (black robes, long hair)</td><td style="padding:.6rem .75rem;">"a stern senior wizard in plain dark academic robes"</td><td style="padding:.6rem .75rem;" class="muted">The reluctant mentor discovering flow</td></tr>
+          <tr style="border-bottom:1px solid var(--line);"><td style="padding:.6rem .75rem;">A masked dark lord (helmet, cape, synthesized voice)</td><td style="padding:.6rem .75rem;">"an armored dark emperor in a plain full-face mask and cape, deep booming voice"</td><td style="padding:.6rem .75rem;" class="muted">Menace meets beat timing</td></tr>
+          <tr style="border-bottom:1px solid var(--line);"><td style="padding:.6rem .75rem;">A specific horror clown (named makeup design)</td><td style="padding:.6rem .75rem;">"a vintage circus clown performer, faded costume, melancholy face paint"</td><td style="padding:.6rem .75rem;" class="muted">The scary figure who can actually rap</td></tr>
+          <tr style="border-bottom:1px solid var(--line);"><td style="padding:.6rem .75rem;">A fairytale ogre (movie-accurate design)</td><td style="padding:.6rem .75rem;">"a burly green-skinned marshland brawler in a simple tunic"</td><td style="padding:.6rem .75rem;" class="muted">Unexpected sincerity</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:.75rem;">The test for every row: cover the names, look at your prompt — if a stranger can still name the franchise, one more element needs abstracting.</p>
+
+    <h2>Copy-ready prompt: original-character booth battle</h2>
+    <pre class="prompt-box">Create an AI rap video duo performance from two separate portrait-style references of ORIGINAL characters (no existing franchise characters).
+Left performer = reference 1: a young sorcerer apprentice, plain hooded cloak, round plain spectacles, curious confident expression.
+Right performer = reference 2: a stern senior wizard, plain dark academic robes, unimpressed expression that cracks into a smirk on his verse.
+Stage: original studio booth, warm orange key light, hanging microphone centered, dark backdrop with cool rim light — a "magic study booth" mood, no school or franchise branding.
+Action: traded bars — the apprentice leads with eager fast flow, the mentor answers slow and dismissive, then concedes the final bar with a single nod.
+Camera: locked medium two-shot, slow push-in on the final shared pose.
+Audio: original playful rap cadence, call-and-response; write NEW original lyrics about a magic apprenticeship rap battle; never quote commercial songs or reference existing franchises.
+Negative: harry potter, darth vader, shrek, pennywise, recognizable franchise character, trademark costume, character name in scene, celebrity lookalike, public figure likeness, on-screen text, brand logos, NSFW.
+Duration: 8-12 seconds, clean two-shot hold.</pre>
+
+    <h2>Beat breakdown and negatives</h2>
+    <p>Same loop skeleton as every duo: establish both characters in the locked shot (0-2s), apprentice's bars (2-5s), mentor's answer (5-9s), push-in hold (9-12s) — the <a href="/prompts/ai-rap-video-camera-and-stage-prompt/">stage &amp; camera vocabulary</a> tunes the mood. The negative block matters more here than anywhere else in the wiki: character names in negatives do real work, because models trained on popular franchises will drift toward the famous design if you leave the door open. Full category library in the <a href="/prompts/ai-rap-video-negative-prompt-guide/">negative prompt guide</a>.</p>
+
+    <h2>Photo prep and common failures</h2>
+    <ul class="list">
+      <li><strong>No reference photo?</strong> Original characters can run text-only — write the character description as if it were a photo caption (age, build, wardrobe, expression) and accept an extra render or two of variance. The duo-with-photos route is still sharper; the <a href="/prompts/ai-rap-video-self-duo-two-outfits/">self-duo template</a> shows how far two inputs carry identity.</li>
+      <li><strong>"It came out looking like the actual character"</strong> → one element too specific. Run the conversion table again on whichever row you fudged — usually the silhouette or the color scheme.</li>
+      <li><strong>"The joke is gone"</strong> → the abstraction went too far; the archetype lost its contrast. Pull back one element (keep the mask, drop the cape) until the pair reads as rivals again.</li>
+      <li><strong>Cosplay photos as input</strong> → recognizable franchise costumes in your source photos undo the prompt's work. Shoot plain-clothes equivalents instead, per the <a href="/prompts/ai-rap-video-photo-prep-checklist/">photo prep checklist</a>.</li>
+    </ul>
+
+    <div class="notice"><strong>Compliance:</strong> character names appear here only to explain the meme phenomenon. This wiki's templates and prompts never instruct a model to render a recognizable franchise character — no signature costumes, hairstyles, props, or voices — and negative prompts block the names explicitly. Original characters, original staging, original lyrics only. General information, not legal advice.</div>
+
+    <p style="margin-top:2rem;">Keep reading: the <a href="/ai-rap-video-celebrity-meme-guide/">celebrity meme guide</a> covers the real-person version and its stricter rules, the <a href="/ai-rap-video-trend-meme-explained/">trend explainer</a> maps the whole wave, and the <a href="/prompts/ai-rap-video-duo-prompt/">duo template</a> is the base workflow.</p>
+  </article>
+</BaseLayout>

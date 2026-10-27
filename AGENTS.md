@@ -26,6 +26,7 @@ AI Rap Video 开源提示词模板站（英文 SEO 站）。提供可复制的�
 | `src/pages/prompts/*.astro` | 12 条深模板页，slug 与 `prompts.ts` 一一对应 |
 | `src/pages/how-to-make-ai-rap-video.astro` | How-to 长文 |
 | `src/pages/ai-rap-video-vs-hotel-lobby-trend.astro` | 合规对比页 |
+| `src/pages/ai-rap-video-{generator,orange-backdrop,celebrity-meme-guide,character-meme-guide,trend-meme-explained}.astro` | 关键词落地页（2026-10-27 SEO 扩展批；词权分工锁死在 `reports/keyword-research/2026-10-27-page-plan.md` §7.3，改词前先读） |
 | `src/pages/examples.astro` | 视频示例画廊（按类别分组 + 归属声明） |
 | `src/pages/pack.astro` | 开源 pack 说明页 |
 | `src/assets/` | 页面配图素材（AI 生成参考图，经 astro:assets 构建优化为 webp） |

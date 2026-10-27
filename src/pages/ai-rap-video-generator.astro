@@ -1,0 +1,160 @@
+---
+/**
+ * [WHY]: 工具意图唯一落地页——承接 generator/maker/creator/editor/app 全家族词，以「prompt + 你已有的模型 = 免费方案」重定义意图。
+ * [INPUT]: 无数据依赖；内容自包含（八段结构 + FAQPage JSON-LD），canonicalPath 显式传参（BaseLayout 默认 '/' 的坑）。
+ * [OUTPUT]: 完整指南页；向 duo/stage/how-to/对比页/orange/celebrity/vertical/wan-vs-seedance/troubleshooting 输出内链权重。
+ * [BOUND]: 不点名竞品品牌（revid/higgsfield 归对比页专属）；不提供渲染服务；不提供名人生成路径。
+ * [PROTOCOL]: 改 targetKeywords 布局时对照 reports/keyword-research/2026-10-27-page-plan.md §4.1 与 §7.3 词权互斥清单。
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import JsonLd from '../components/JsonLd.astro';
+
+const faqs = [
+  {
+    q: 'Is there a free AI rap video generator?',
+    a: 'Trend-generator sites advertise themselves as free but meter renders in credits and often watermark the output. The genuinely free route is a prompt method: copy a ready-made rap video prompt, add your own photos, and render in an image-to-video model you already have — no credits, no upload, no paywall.'
+  },
+  {
+    q: 'What is the best AI rap video generator?',
+    a: 'Judge any generator on four axes: render speed, how much control you keep over faces and lyrics, what you upload and to whom, and total cost. A prompt-plus-your-own-model workflow scores highest on control and cost; generator sites win on speed for people who accept the credit meter and locked stage.'
+  },
+  {
+    q: 'Can I make an AI rap video without subscribing to anything?',
+    a: 'Yes. The full method on this page needs only two portrait photos, a copy-ready prompt, and one render in an image-to-video model you already use. The wiki side — prompts, photo prep, negative prompts — is free and MIT licensed.'
+  },
+  {
+    q: 'What happens if I use a generator site\'s commercial song?',
+    a: 'Trend generators often bind renders to a trending commercial track. That binding is what gets clips muted, claimed, or taken down — platforms flag AI music videos automatically. Regenerating with original lyrics keeps your clip postable and monetizable.'
+  }
+];
+
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a }
+  }))
+};
+
+const articleLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: 'AI Rap Video Generator: Free Prompt Method for Any Model',
+  description: 'Looking for a free AI rap video generator? Copy-ready prompts turn two photos into a duo rap clip in any image-to-video model — no credits, upload, or paywall.',
+  url: 'https://ai-rap-video.wiki/ai-rap-video-generator/',
+  isPartOf: { '@type': 'WebSite', name: 'AI Rap Video Wiki', url: 'https://ai-rap-video.wiki/' },
+  license: 'https://opensource.org/licenses/MIT',
+  inLanguage: 'en'
+};
+
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AI Rap Video', item: 'https://ai-rap-video.wiki/' },
+    { '@type': 'ListItem', position: 2, name: 'AI Rap Video Generator', item: 'https://ai-rap-video.wiki/ai-rap-video-generator/' }
+  ]
+};
+
+const routes = [
+  ['Speed', 'Fastest — one form, one queue', 'One render per attempt, your machine\'s pace', 'Same as the method (the template is the slow part, not the render)'],
+  ['Control', 'Low: locked stage, fixed bar count', 'Full: you own every prompt line', 'Full: the template is plain text you can edit'],
+  ['Privacy', 'Photos upload to their queue', 'Photos stay in your model\'s normal flow', 'Nothing leaves your device'],
+  ['Cost', 'Credits per render; HD and no-watermark behind a paywall', 'Your model\'s own pricing', 'Free — MIT licensed templates, your model']
+];
+---
+
+<BaseLayout
+  title="AI Rap Video Generator: Free Prompt Method for Any Model"
+  description="Looking for a free AI rap video generator? Copy-ready prompts turn two photos into a duo rap clip in any image-to-video model — no credits, upload, or paywall."
+  canonicalPath="/ai-rap-video-generator/"
+>
+  <JsonLd data={[articleLd, breadcrumbLd, faqLd]} />
+  <article class="prose hero">
+    <p class="tag tag-brand">Generator, redefined</p>
+    <h1>AI rap video generator: the free prompt method</h1>
+    <p class="lead">You searched for an AI rap video generator and most results are trend sites that meter every render in credits. Here is the honest alternative: a <strong>copy-ready prompt plus any image-to-video model you already use</strong> turns two photos into the same duo rap clip — no credits, no upload queue, no watermark paywall. This page gives you the whole path: the method, the prompt, the render settings, and the fixes.</p>
+
+    <h2>What you are actually trying to generate</h2>
+    <p>The clip everyone is chasing is a specific format: two performers on a booth-style stage with an <a href="/ai-rap-video-orange-backdrop/">orange backdrop</a>, a single hanging mic between them, trading bars left and right in a clean 8-12 second loop. Search demand for "generator" is really demand for that output — and the output does not care whether a website's queue produced it or your own model did. Once you can describe the format in prompt language, the generator middleman becomes optional. The full trend context lives in our <a href="/ai-rap-video-trend-meme-explained/">trend explainer</a>.</p>
+
+    <h2>Three routes to the same clip</h2>
+    <div style="overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;font-size:.95rem;">
+        <thead><tr style="text-align:left;border-bottom:2px solid var(--line);">
+          <th style="padding:.6rem .75rem;">Route</th>
+          <th style="padding:.6rem .75rem;">Trend generator sites</th>
+          <th style="padding:.6rem .75rem;">Your model, your own prompts</th>
+          <th style="padding:.6rem .75rem;">This wiki's templates</th>
+        </tr></thead>
+        <tbody>
+          {routes.map(([dim, gen, own, wiki]) => (
+            <tr style="border-bottom:1px solid var(--line);">
+              <td style="padding:.6rem .75rem;"><strong>{dim}</strong></td>
+              <td style="padding:.6rem .75rem;" class="muted">{gen}</td>
+              <td style="padding:.6rem .75rem;" class="muted">{own}</td>
+              <td style="padding:.6rem .75rem;">{wiki}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:.75rem;">Generator sites bundle the workflow into a form and charge for convenience. The <a href="/ai-rap-video-vs-hotel-lobby-trend/">compliance comparison</a> covers what that convenience costs you in audio and likeness rights.</p>
+
+    <h2>Copy-ready main prompt (duo method)</h2>
+    <p>This is the shortened core of the <a href="/prompts/ai-rap-video-duo-prompt/">two-photo duo template</a> — enough to run your first generator-free render today:</p>
+    <pre class="prompt-box">Create an AI rap video duo performance from two separate portrait references.
+Left performer = photo 1, right performer = photo 2.
+Keep both faces recognizable, front-lit, and assigned to fixed sides for the whole clip.
+Stage: original studio booth, warm orange key light, a single hanging microphone centered between them, dark background with soft rim light.
+Action: energetic head nods on the beat, traded bars with clear mouth movement per line.
+Camera: locked medium two-shot framing both from the waist up, slow push-in during the final two seconds.
+Audio: original upbeat rap cadence, call-and-response — write NEW original lyrics; never quote commercial songs.
+Duration: 8-12 seconds, ending on a clean two-shot hold.</pre>
+    <p>The wiki side of this method — the prompt itself, the <a href="/prompts/ai-rap-video-photo-prep-checklist/">photo prep checklist</a>, the negative prompts — is free under MIT. What you pay is whatever your own model charges per render, and most image-to-video tools include some renders already. This wiki does not render anything.</p>
+
+    <h2>Beat &amp; camera breakdown</h2>
+    <ol class="list">
+      <li><strong>0-2s — Establish.</strong> Locked two-shot, both faces lit, the hanging mic reading clearly between them. The hook lands here — first two seconds decide whether anyone watches the rest.</li>
+      <li><strong>2-5s — Left leads.</strong> The left performer takes the opening lines: mouth movement, forward lean, right performer nodding along.</li>
+      <li><strong>5-9s — Right answers.</strong> The trade reverses; same energy from the other side.</li>
+      <li><strong>9-12s — Push-in hold.</strong> Slow push toward the mic, both performers land a final shared pose. The hold is the loop point — the <a href="/prompts/ai-rap-video-camera-and-stage-prompt/">stage &amp; camera vocabulary</a> has the full shot grammar.</li>
+    </ol>
+
+    <h2>Negative prompt (paste with the main prompt)</h2>
+    <pre class="prompt-box">identity swap, faces changing sides, merged faces, third person appearing, deformed hands, blurry faces, sunglasses, masks, on-screen lyrics or karaoke text, watermarks, brand logos, celebrity lookalike, NSFW, camera shake, scene changes</pre>
+    <p>The full category-organized version — with what each term actually prevents — is in the <a href="/prompts/ai-rap-video-negative-prompt-guide/">negative prompt guide</a>.</p>
+
+    <h2>Photo prep: the two inputs that decide quality</h2>
+    <ul class="list">
+      <li>One face per photo, cropped to roughly the same head size in both — mismatched scales are the top cause of identity drift.</li>
+      <li>Front-lit, eyes visible, plain background. The model rebuilds your stage from the prompt, not from the photo background.</li>
+      <li>Both people (or both outfits) consent to the clip. Full rules in the <a href="/prompts/ai-rap-video-photo-prep-checklist/">photo prep checklist</a>.</li>
+    </ul>
+
+    <h2>The trend and viral versions</h2>
+    <p>The clips that go viral share two properties with the method above: a loop structure that rewards rewatching, and a stage look that reads instantly in a small feed thumbnail. You do not need a special "viral generator" for that — you need the same prompt with attention to the hook-first opening and the loop ending. For feed-native framing, render with the <a href="/prompts/ai-rap-video-vertical-tiktok-prompt/">vertical TikTok template</a>; for the full phenomenon and its variants, see the <a href="/ai-rap-video-trend-meme-explained/">trend explainer</a>.</p>
+
+    <h2>Maker, creator, editor, app — same thing, different name</h2>
+    <p>Searches for an AI rap video <em>maker</em>, <em>creator</em>, <em>editor</em>, or <em>app</em> are usually the same intent wearing different words: you want a finished duo clip with minimal friction. The workflow on this page covers all of them, because a prompt method does not care what you call the tooling. The one genuinely different question is wording between models — the <a href="/prompts/ai-rap-video-wan-vs-seedance-prompts/">Wan vs Seedance prompt guide</a> covers what changes when you switch engines, and the <a href="/prompts/ai-rap-video-troubleshooting-faces/">face troubleshooting guide</a> covers the renders that come back wrong.</p>
+
+    <h2>Why people search for celebrity versions (and what we do instead)</h2>
+    <p>A slice of "ai rap video generator" searches want a specific rapper or celebrity in the booth — the meme clips behind those searches are explained in our <a href="/ai-rap-video-celebrity-meme-guide/">celebrity meme guide</a>. Rendering a famous face or voice is the one path this wiki will not help with: it imports a real person's likeness without consent, and platforms increasingly auto-flag it. The compliant version is structurally identical — your own photos, original bars, the same stage energy — and it is the only version that stays up.</p>
+
+    <h2>Common failure modes</h2>
+    <ul class="list">
+      <li><strong>Generator route, famous face or commercial song</strong> → the render gets taken down or claimed; the fix is the original-audio-and-your-own-faces method above, not a better generator.</li>
+      <li><strong>Third face appears mid-clip</strong> → the prompt left the cast ambiguous; restate "exactly two performers, one per reference photo."</li>
+      <li><strong>Faces swap sides after the push-in</strong> → add "fixed sides for the whole clip" to both the Action block and the negatives; the <a href="/prompts/ai-rap-video-troubleshooting-faces/">troubleshooting guide</a> has the full symptom table.</li>
+    </ul>
+
+    <div class="notice"><strong>Compliance:</strong> original staging and lyrics only. Do not render celebrity or artist likenesses, and do not bind protected commercial recordings to your clips. This page describes a method, not a rendering service.</div>
+
+    <h2>FAQ</h2>
+    {faqs.map((f) => (<div><h3>{f.q}</h3><p>{f.a}</p></div>))}
+
+    <p style="margin-top:2rem;">Next steps: browse the <a href="/prompts/">full prompt template index</a>, or run the whole thing start to finish with the <a href="/how-to-make-ai-rap-video/">10-step workflow</a>.</p>
+  </article>
+</BaseLayout>

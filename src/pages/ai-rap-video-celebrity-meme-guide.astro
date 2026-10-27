@@ -1,0 +1,106 @@
+---
+/**
+ * [WHY]: 名人 meme 现象解读 + 合规复刻指南——16 条 CSV 名人实体词形的唯一承接页，讲现象、讲红线、给合规替代路径。
+ * [INPUT]: 无数据依赖；trend 事实引用公开报道口径。
+ * [OUTPUT]: 现象解读 + 合规转向页（八段结构）；向 duo/lyrics/photo-prep/negative/对比页/trend/character 输出内链权重。
+ * [BOUND]: 不提供任何名人生成配方；负面词必含 celebrity lookalike / public figure likeness；现任政治人物明示不做 deepfake。
+ * [PROTOCOL]: targetKeywords 调整时对照 page-plan §4.3（16 条 CSV 实体词形全归本页独占）。
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import JsonLd from '../components/JsonLd.astro';
+
+const articleLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: 'AI Rap Video Celebrity Memes: Guide, Rules & Safe Remake',
+  description: 'Why AI rap video memes with politicians and celebrities exploded, why you should not render famous faces, and how to build a compliant version with your own photos.',
+  url: 'https://ai-rap-video.wiki/ai-rap-video-celebrity-meme-guide/',
+  isPartOf: { '@type': 'WebSite', name: 'AI Rap Video Wiki', url: 'https://ai-rap-video.wiki/' },
+  license: 'https://opensource.org/licenses/MIT',
+  inLanguage: 'en'
+};
+
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AI Rap Video', item: 'https://ai-rap-video.wiki/' },
+    { '@type': 'ListItem', position: 2, name: 'Celebrity Meme Guide', item: 'https://ai-rap-video.wiki/ai-rap-video-celebrity-meme-guide/' }
+  ]
+};
+
+const waves = [
+  ['UK politics wave', 'Angela Rayner, Kemi Badenoch (frequently paired with Andy Burnham), and Rachel Reeves clips circulated around UK political news cycles — most searches arrive as name-first queries like "angela rayner ai rap video" or its common "raynor" misspelling.',],
+  ['Canada wave', 'Pierre Poilievre clips (often shortened to just "poilievre" in search) traded on parliament-era soundbites reimagined as bars.'],
+  ['US culture wave', 'Charlie Kirk, Will Smith, Shaq, Quavo and Migos, and a "young Washington" historical-figure format each spawned their own meme loops — entertainment figures rather than officeholders.']
+];
+---
+
+<BaseLayout
+  title="AI Rap Video Celebrity Memes: Guide, Rules & Safe Remake"
+  description="Why AI rap video memes with politicians and celebrities exploded, why you should not render famous faces, and how to build a compliant version with your own photos."
+  canonicalPath="/ai-rap-video-celebrity-meme-guide/"
+>
+  <JsonLd data={[articleLd, breadcrumbLd]} />
+  <article class="prose hero">
+    <p class="tag">Meme guide · compliance first</p>
+    <h1>Celebrity AI rap video memes: what they are, and the safe remake</h1>
+    <p class="lead">A large slice of AI rap video searches are name searches: people saw a clip of a politician or celebrity "performing" in the orange-lit booth and searched the name. This page explains what those memes are, why rendering a famous face is the one version you should never make, and how to rebuild the exact same joke with your own photos and original bars — the version that stays up and stays yours.</p>
+
+    <h2>The waves, explained</h2>
+    <ul class="list">
+      {waves.map(([title, text]) => (
+        <li><strong>{title}.</strong> {text}</li>
+      ))}
+    </ul>
+    <p>Two things power all of them: the booth format's instant recognizability (the <a href="/ai-rap-video-trend-meme-explained/">trend explainer</a> breaks down why it spreads), and the comedy of contrast — a public figure known for press conferences or film roles suddenly trading bars with perfect cadence. The format is funny because the premise is absurd; that absurdity is exactly why the "real" versions are also the most legally radioactive.</p>
+
+    <h2>Why you should not render the famous version</h2>
+    <ul class="list">
+      <li><strong>It imports a real person's likeness without consent.</strong> A recognizable face or voice is a personality right, and for public figures the commercial and reputational stakes are highest. A viral clip is the worst possible place to be wrong about this.</li>
+      <li><strong>Platforms flag AI music videos automatically.</strong> Rendered music content is increasingly marked at upload; celebrity-likeness clips are the fastest route to removal, account strikes, or worse when money is involved.</li>
+      <li><strong>Sitting politicians are a hard line.</strong> Fabricated performances by current officeholders carry election-misinformation risk on top of likeness rights — this wiki's position is no deepfake of any sitting politician in any form, and no "parody" framing changes that.</li>
+      <li><strong>Generator sites that offer celebrity templates own the exposure, not you</strong> — until your render is the one that gets claimed. The <a href="/ai-rap-video-vs-hotel-lobby-trend/">compliance comparison</a> covers how that business model differs from an open prompt library.</li>
+    </ul>
+    <p>Note on names: this page names public figures only to explain the search phenomenon, as reporting does. Nothing here — no prompt, no template — instructs a model to render any of them, and our templates' negative blocks include <code>celebrity lookalike</code> and <code>public figure likeness</code> by default.</p>
+
+    <h2>The narrative structure the memes share</h2>
+    <p>Strip away the faces and every celebrity rap meme has the same three-beat comedy engine — and this is the part you can copy freely:</p>
+    <ol class="list">
+      <li><strong>The persona open.</strong> The clip starts in the figure's famous register — a speech cadence, an interview posture — for one or two bars. The mismatch between the register and the booth is the joke's setup.</li>
+      <li><strong>The handoff.</strong> The second performer answers in their own contrasting register. The back-and-forth is the same call-and-response the <a href="/prompts/ai-rap-video-duo-prompt/">duo template</a> is built on.</li>
+      <li><strong>The commitment to the bit.</strong> No winking at the camera; the clip plays it absolutely straight for 8-12 seconds. Deadpan commitment is what makes loops rewatchable.</li>
+    </ol>
+
+    <h2>The compliant remake: same structure, your faces</h2>
+    <p>Every beat above survives the swap to original material. What you keep: the booth stage, the hanging mic, the traded bars, the deadpan energy. What you replace: a public figure becomes you or a consenting friend; the famous quote becomes an original hook written <em>about</em> a recognizably funny situation — "office all-hands energy," "campaign-trail confidence," "podcast-host cadence" — without naming or imitating any real person's voice. The <a href="/prompts/ai-rap-video-original-lyrics-prompt/">original lyrics template</a> generates those bars, and the character-meme variant of this idea (fictional roles instead of real people) lives in the <a href="/ai-rap-video-character-meme-guide/">character meme guide</a>.</p>
+
+    <h2>Copy-ready prompt: the persona-swap booth (generic version)</h2>
+    <pre class="prompt-box">Create an AI rap video duo performance from two separate portrait references.
+Left performer = photo 1, right performer = photo 2.
+Both faces stay recognizable and fixed to their sides for the whole clip.
+Stage: original studio booth, warm orange key light, hanging microphone centered, dark backdrop with cool rim light.
+Opening beat: left performer starts with one line delivered in an over-the-top public-speaking cadence — podium posture, emphatic hand gesture — then drops into a confident rap flow.
+Response beat: right performer answers in a laid-back conversational cadence, as if casually dismantling the speech.
+Action: traded bars, clear mouth movement per line, deadpan commitment — no smiles at the camera.
+Camera: locked medium two-shot, slow push-in on the final line.
+Audio: original rap cadence with call-and-response; write NEW original lyrics about a generic workplace speech turning into a rap battle; never quote commercial songs or reference any real person.
+Negative: celebrity lookalike, public figure likeness, famous face, real-person resemblance.
+Duration: 8-12 seconds, clean two-shot hold.</pre>
+
+    <h2>Beat breakdown and negatives</h2>
+    <p>The persona-swap version runs the standard loop: establish the two registers in the locked shot (0-2s), left's speech-cadence bars (2-5s), right's comeback (5-9s), push-in hold on the punchline pose (9-12s). Run the full negative block from the duo template <strong>plus</strong> the likeness terms — <code>celebrity lookalike</code>, <code>public figure likeness</code>, <code>famous face</code> — because models given "podium posture" will sometimes reach for a real face if the block is missing. The <a href="/prompts/ai-rap-video-negative-prompt-guide/">negative prompt guide</a> explains where each term goes.</p>
+
+    <h2>Photo prep and common failures</h2>
+    <ul class="list">
+      <li><strong>Consent, explicitly.</strong> The comedy format makes people go semi-viral without expecting it; make sure both performers actually want the clip posted.</li>
+      <li><strong>Front-lit, similar crop scale, distinct outfits</strong> — same rules as every duo, per the <a href="/prompts/ai-rap-video-photo-prep-checklist/">photo prep checklist</a>.</li>
+      <li><strong>"It came out looking like someone famous"</strong> → the persona language drifted into imitation. Rewrite the cadence description in your own words and re-run the negative block; never keep a render that accidentally resembles a real person.</li>
+      <li><strong>"The joke didn't land"</strong> → the registers weren't contrasted enough. Push the opening cadence further from the answer's register before touching anything else.</li>
+    </ul>
+
+    <div class="notice"><strong>Compliance:</strong> this wiki does not provide celebrity or politician AI rap video generation — no famous faces, no famous voices, no deepfakes of sitting officeholders under any framing. Names appear here only as search-phenomenon context. Build the meme with your own faces, consented photos, and original bars: same joke, none of the takedown risk. General information, not legal advice.</div>
+
+    <p style="margin-top:2rem;">Keep reading: the <a href="/ai-rap-video-character-meme-guide/">character meme guide</a> covers the fictional-role version of this meme, the <a href="/ai-rap-video-trend-meme-explained/">trend explainer</a> maps the whole phenomenon, and the <a href="/prompts/ai-rap-video-duo-prompt/">duo template</a> is the base workflow every variant builds on.</p>
+  </article>
+</BaseLayout>

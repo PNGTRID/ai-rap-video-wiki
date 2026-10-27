@@ -1,0 +1,105 @@
+---
+/**
+ * [WHY]: 橙色背景视觉拆解页——meme 标志视觉的站内唯一承接页，吃 orange backdrop/background/colors 词群。
+ * [INPUT]: 无数据依赖；swap block 形态（模块化增强，主模板仍归 stage 页，避免 pack 分叉）。
+ * [OUTPUT]: 完整视觉指南页（八段）；向 stage/duo/vertical/negative/photo-prep/对比页 输出内链权重。
+ * [BOUND]: 不复刻 COLORS 品牌舞美或 logo；不引导生成名人脸；配图不使用真实演出照片。
+ * [PROTOCOL]: 若升级为完整独立模板页，须按 AGENTS.md 同步新增 pack/*.md；swap block 形态不触发。
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import JsonLd from '../components/JsonLd.astro';
+
+const articleLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: 'AI Rap Video Orange Backdrop: Prompt & Color Guide',
+  description: 'The orange backdrop is the signature look of AI rap videos. Get the exact lighting and color prompt wording, a copy-ready template, and compliance-safe staging.',
+  url: 'https://ai-rap-video.wiki/ai-rap-video-orange-backdrop/',
+  isPartOf: { '@type': 'WebSite', name: 'AI Rap Video Wiki', url: 'https://ai-rap-video.wiki/' },
+  license: 'https://opensource.org/licenses/MIT',
+  inLanguage: 'en'
+};
+
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AI Rap Video', item: 'https://ai-rap-video.wiki/' },
+    { '@type': 'ListItem', position: 2, name: 'Orange Backdrop Guide', item: 'https://ai-rap-video.wiki/ai-rap-video-orange-backdrop/' }
+  ]
+};
+
+const failures = [
+  ['Backdrop color drifts mid-clip', 'The background lacked a concrete anchor. Add "solid orange seamless backdrop, no gradients, no stage lights on the backdrop itself" to the Stage line.'],
+  ['Skin tones turn orange', 'The key light is doing double duty. Separate them: warm key from the front-left for the performers, and name the backdrop as a flat colored surface, not a light source.'],
+  ['Banner text or logos appear on the backdrop', 'Some models treat a colored wall as signage space. Add "no text, no logos, no signage anywhere in the scene" to both the prompt and the negative block.'],
+  ['Duo collapses into one performer', 'An identity problem, not a color one — but busy backdrops make it worse. Keep the backdrop minimal and check the face troubleshooting guide.']
+];
+---
+
+<BaseLayout
+  title="AI Rap Video Orange Backdrop: Prompt & Color Guide"
+  description="The orange backdrop is the signature look of AI rap videos. Get the exact lighting and color prompt wording, a copy-ready template, and compliance-safe staging."
+  canonicalPath="/ai-rap-video-orange-backdrop/"
+>
+  <JsonLd data={[articleLd, breadcrumbLd]} />
+  <article class="prose hero">
+    <p class="tag tag-brand">Signature look, decoded</p>
+    <h1>The AI rap video orange backdrop, in prompt words</h1>
+    <p class="lead">Nearly every AI rap video shares one stage: a <strong>solid orange backdrop</strong>, a hanging mic, two performers trading bars in front of it. That look is why the format reads instantly in a feed — and it is entirely reproducible with a handful of physical prompt words. This page decodes the look, gives you a copy-ready staging block, and covers the color variants and failure modes specific to rendering a saturated backdrop.</p>
+
+    <h2>Where the look comes from</h2>
+    <p>The visual grammar — warm monochrome backdrop, suspended mic, performers trading verses into it — was popularized by live-session music performances and then became the default stage of the AI rap video wave. Search interest in "colors ai rap video" and "orange backdrop" is demand for that recognition: a clip that reads as part of the trend in the first half-second. Our <a href="/ai-rap-video-vs-hotel-lobby-trend/">Hotel Lobby trend comparison</a> covers the trend's history and the compliance lines around it; this page stays on the visual layer.</p>
+
+    <h2>Copy-ready orange backdrop swap block</h2>
+    <p>Paste this over the Stage section of the <a href="/prompts/ai-rap-video-duo-prompt/">core duo prompt</a> or the <a href="/prompts/ai-rap-video-vertical-tiktok-prompt/">vertical template</a>. The full staging system it belongs to lives in the <a href="/prompts/ai-rap-video-camera-and-stage-prompt/">stage &amp; camera prompt</a>.</p>
+    <pre class="prompt-box">Stage (original description, no reference to any existing music video or session show):
+- Backdrop: solid warm orange seamless backdrop, evenly lit, no gradients, no texture, no signage.
+- Key light: warm orange key from the front-left on both performers, gentle falloff.
+- Rim light: cool subtle rim from behind, separating performers from the backdrop.
+- Prop: a single vintage-style microphone hanging on a cable, centered at chest height.
+- Floor: dark, slightly reflective; no text or logos anywhere in the scene.
+Camera: locked medium two-shot, slow push-in across the final two seconds, no cuts.</pre>
+
+    <h2>Color and lighting breakdown</h2>
+    <p>The orange read is four physical facts, and a prompt needs all of them:</p>
+    <ul class="list">
+      <li><strong>The surface.</strong> "Solid warm orange seamless backdrop" — a named color on a named surface. Vague words like "vibrant" let the model drift to red or yellow mid-clip.</li>
+      <li><strong>The source direction.</strong> "Warm orange key light from the front-left" — one direction, one falloff. Directional language keeps lighting stable across the loop.</li>
+      <li><strong>The separation.</strong> "Cool rim light from behind" — without it, performers melt into the backdrop and faces go soft at the silhouette.</li>
+      <li><strong>The atmosphere.</strong> "Faint haze" — one word that gives the light visible beams and depth. More than faint and faces start haloing.</li>
+    </ul>
+
+    <h3>Color variants and their moods</h3>
+    <ul class="list">
+      <li><strong>Warm amber</strong> — swap the backdrop to "soft amber." Calmer, friendlier read; works for couple and friends variants.</li>
+      <li><strong>Red-orange</strong> — "deep red-orange backdrop." Aggressive energy; pair with higher-contrast rim light.</li>
+      <li><strong>Split warm/cool</strong> — orange key on the left performer, cool blue rim on the right. Reads as two teams trading bars; slightly harder to keep stable.</li>
+    </ul>
+
+    <h2>Beat &amp; camera breakdown</h2>
+    <p>The orange look belongs to the standard loop structure: <strong>0-2s locked establish</strong> (backdrop and mic read instantly), <strong>2-9s traded bars on the locked frame</strong>, <strong>9-12s slow push-in</strong> to a clean hold that loops. Resist adding camera moves — a saturated backdrop shows every wobble, and the full breakdown in the <a href="/prompts/ai-rap-video-camera-and-stage-prompt/">stage prompt</a> applies unchanged.</p>
+
+    <h2>Negative prompt for the orange look</h2>
+    <pre class="prompt-box">backdrop color drift, gradient backdrop, color bleed onto faces, orange-tinted skin, backdrop signage or text, brand logos, stage lights on backdrop, backdrop pattern changes, identity swap, merged faces, third person appearing, on-screen lyrics, watermarks, celebrity lookalike, NSFW</pre>
+    <p>These are the orange-specific additions on top of the standard identity and anatomy terms in the <a href="/prompts/ai-rap-video-negative-prompt-guide/">negative prompt library</a>.</p>
+
+    <h2>Photo prep with an orange stage</h2>
+    <ul class="list">
+      <li><strong>Watch background clash.</strong> Portraits shot against warm-toned walls blend into an orange backdrop; neutral or cool backgrounds separate cleanly. If the source background is warm, compensate with a stronger rim light line.</li>
+      <li><strong>Neutral skin-friendly lighting in the source.</strong> Already-warm photos get double-warmed by the orange key and drift toward sunburn.</li>
+      <li>Everything else follows the standard <a href="/prompts/ai-rap-video-photo-prep-checklist/">photo prep checklist</a>.</li>
+    </ul>
+
+    <h2>Common failure modes</h2>
+    <ul class="list">
+      {failures.map(([symptom, fix]) => (
+        <li><strong>{symptom}</strong> → {fix}</li>
+      ))}
+    </ul>
+
+    <div class="notice"><strong>Compliance:</strong> describe the look in original physical words — colors, light sources, props. Do not instruct a model to recreate any specific show's stage design or branding, do not render celebrity likenesses, and keep every lyric original. The <a href="/ai-rap-video-vs-hotel-lobby-trend/">trend comparison</a> explains where the convention ends and the protected material begins.</div>
+
+    <p style="margin-top:2rem;">Build on it: the <a href="/prompts/ai-rap-video-duo-prompt/">duo template</a> is the base workflow, the <a href="/prompts/ai-rap-video-vertical-tiktok-prompt/">vertical template</a> shapes it for TikTok, and the <a href="/ai-rap-video-trend-meme-explained/">trend explainer</a> covers why this look went viral.</p>
+  </article>
+</BaseLayout>

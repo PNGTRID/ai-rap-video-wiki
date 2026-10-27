@@ -38,4 +38,5 @@ The wiki pairs every template with real video examples embedded from YouTube —
 - Original staging and lyrics descriptions only
 - Do not commercially bind protected Hotel Lobby recordings or celebrity faces
 - Consent from every face you render
+- Not a paid generator: the templates are the free prompt method — pair them with any image-to-video model you already use (see the wiki's generator comparison)
 - MIT License

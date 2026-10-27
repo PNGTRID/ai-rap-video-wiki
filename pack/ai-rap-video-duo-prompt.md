@@ -5,7 +5,7 @@ Wiki: https://ai-rap-video.wiki/prompts/ai-rap-video-duo-prompt/
 
 ## When to use
 
-Two people, two clear portrait photos, permission from both. The flagship left/right duo render — every other template in the pack is a variation of this structure.
+Two people, two clear portrait photos, permission from both. The flagship left/right duo render — every other template in the pack is a variation of this structure. It also doubles as the free answer to every "rap duo video generator" search: this prompt plus your own image-to-video model replaces the credit meter entirely (the wiki's generator comparison page breaks down all three routes).
 
 ## Hook & verse structure
 

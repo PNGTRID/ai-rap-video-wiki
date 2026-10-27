@@ -1,5 +1,13 @@
 ---
+/**
+ * [WHY]: 模板索引页——「ai rap video prompt」主词承接页，决策树导流 + 四件套拆解 + 使用三步。
+ * [INPUT]: prompts.ts（12 模板卡）。
+ * [OUTPUT]: 分组卡片网格 + 决策树 + prompt 四件套 + 使用步骤 + ItemList JSON-LD。
+ * [BOUND]: 索引页非 12 模板之一（pack/ 无对应文件，meta 改动不触发同步）；决策树只按人数/场景/画幅/视觉分叉，不含名人/IP 引导。
+ * [PROTOCOL]: prompts.ts 增删模板时同步分组与 ItemList 计数。
+ */
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import JsonLd from '../../components/JsonLd.astro';
 import { prompts } from '../../data/prompts';
 
 const groups: { heading: string; note: string; slugs: string[] }[] = [
@@ -10,18 +18,59 @@ const groups: { heading: string; note: string; slugs: string[] }[] = [
   { heading: 'Quality control', note: 'Prep before the render, fixes after it.', slugs: ['ai-rap-video-photo-prep-checklist', 'ai-rap-video-negative-prompt-guide', 'ai-rap-video-troubleshooting-faces', 'ai-rap-video-wan-vs-seedance-prompts'] }
 ];
 const bySlug = (s: string) => prompts.find((p) => p.slug === s)!;
+
+const itemListLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'AI Rap Video Prompt Templates',
+  description: 'All 12 free copy-ready AI rap video prompt templates: duo, vertical TikTok, original lyrics, staging, negative prompts, and face fixes.',
+  numberOfItems: prompts.length,
+  itemListElement: prompts.map((p, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: p.title,
+    url: `https://ai-rap-video.wiki/prompts/${p.slug}/`
+  }))
+};
 ---
 
 <BaseLayout
-  title="12 AI Rap Video Prompt Templates (Free, Copy-Ready)"
-  description="Browse all 12 free AI rap video prompt templates: duo from two photos, vertical TikTok framing, original lyrics, stage and camera language, negative prompts, and face fixes."
+  title="AI Rap Video Prompts: 12 Free Copy-Ready Templates"
+  description="Every AI rap video prompt you need: 12 free copy-ready templates for duo, vertical TikTok, couples and original lyrics, plus negative prompts and beat breakdowns."
   canonicalPath="/prompts/"
 >
+  <JsonLd data={[itemListLd]} />
   <section class="hero">
     <p class="tag">Template index</p>
     <h1>AI Rap Video prompt templates</h1>
-    <p class="lead">Twelve deep templates covering the full AI rap video workflow — from the core two-photo duo render to vertical social framing, original lyrics, model-specific wording, and the fixes for face mix-ups. Every page includes a copy-ready prompt, a beat and camera breakdown, negative prompts, and photo prep. All of it is on the wiki and in the MIT <a href="/pack/">markdown pack</a>.</p>
+    <p class="lead">Twelve deep templates covering the full AI rap video workflow — from the core two-photo duo render to vertical social framing, original lyrics, model-specific wording, and the fixes for face mix-ups. Every page includes a copy-ready prompt, a beat and camera breakdown, negative prompts, and photo prep. All of it is on the wiki and in the MIT <a href="/pack/">markdown pack</a>. The one AI rap video prompt structure every template shares: a lyrics direction, stage &amp; camera language, a negative block, and prepped photos.</p>
   </section>
+
+  <section style="margin-top:2rem;">
+    <h2>Which AI rap video prompt should you use?</h2>
+    <p class="muted">A 30-second decision tree — pick your first template by what you have and where it's going:</p>
+    <ul class="list">
+      <li><strong>Two people, two photos</strong> → the <a href="/prompts/ai-rap-video-duo-prompt/">duo prompt</a>. This is the base everything else varies.</li>
+      <li><strong>One person, two outfits</strong> → the <a href="/prompts/ai-rap-video-self-duo-two-outfits/">self-duo template</a> keeps both performers distinct.</li>
+      <li><strong>A couple's milestone</strong> → the <a href="/prompts/ai-rap-video-couple-prompt/">couple prompt</a> reframes the trade as a shared moment.</li>
+      <li><strong>Posting to TikTok, Reels, or Shorts</strong> → the <a href="/prompts/ai-rap-video-vertical-tiktok-prompt/">vertical 9:16 prompt</a>.</li>
+      <li><strong>Want the meme's orange stage look</strong> → the <a href="/ai-rap-video-orange-backdrop/">orange backdrop guide</a> has the signature lighting as a swap block.</li>
+      <li><strong>Lyrics but no bars written</strong> → the <a href="/prompts/ai-rap-video-original-lyrics-prompt/">original lyrics prompt</a>.</li>
+      <li><strong>A render came back wrong</strong> → the <a href="/prompts/ai-rap-video-troubleshooting-faces/">face troubleshooting guide</a> diagnoses by symptom.</li>
+    </ul>
+  </section>
+
+  <section style="margin-top:2rem;">
+    <h2>What every prompt needs</h2>
+    <p class="muted">Whichever template you pick, it decomposes into the same four controllable layers — the same ones the homepage's <a href="/#what-goes-in">methodology section</a> breaks down:</p>
+    <ul class="list">
+      <li><strong>Original lyrics direction</strong> — what the bars are about, in call-and-response roles. The <a href="/prompts/ai-rap-video-original-lyrics-prompt/">lyrics template</a> generates them.</li>
+      <li><strong>Stage &amp; camera language</strong> — booth, hanging mic, locked two-shot, push-in. The <a href="/prompts/ai-rap-video-camera-and-stage-prompt/">staging vocabulary</a> is the swap library.</li>
+      <li><strong>The negative block</strong> — identity, anatomy, branding, safety terms. The <a href="/prompts/ai-rap-video-negative-prompt-guide/">negative prompt guide</a> organizes them.</li>
+      <li><strong>Photo prep</strong> — one front-lit face per photo, matched crops. The <a href="/prompts/ai-rap-video-photo-prep-checklist/">checklist</a> covers crops, glasses, and permissions.</li>
+    </ul>
+  </section>
+
   {groups.map((g) => (
     <section style="margin-top:2rem;">
       <h2>{g.heading}</h2>
@@ -33,5 +82,16 @@ const bySlug = (s: string) => prompts.find((p) => p.slug === s)!;
       </div>
     </section>
   ))}
+
+  <section style="margin-top:2rem;">
+    <h2>How to use a prompt in your model</h2>
+    <ol class="list">
+      <li><strong>Pick a template</strong> from the decision tree above — start with the duo unless your scenario clearly differs.</li>
+      <li><strong>Paste the main prompt and the negative block</strong> into your image-to-video model (separate negative field, or append after "Avoid:"), drop in your prepped photos, set 8-12 seconds at your target aspect ratio, and render.</li>
+      <li><strong>Audit against the beat breakdown</strong> — sides stable, mouths moving on the right lines, clean loop hold — and fix one wording at a time if not.</li>
+    </ol>
+    <p>That last step has its own full guide: the <a href="/how-to-make-ai-rap-video/">10-step workflow</a> walks the entire prompt-to-posted pipeline.</p>
+  </section>
+
   <section style="margin-top:2.5rem;"><div class="notice"><strong>New here?</strong> Follow the <a href="/how-to-make-ai-rap-video/">10-step workflow</a> first, then pull templates as each step needs them.</div></section>
 </BaseLayout>

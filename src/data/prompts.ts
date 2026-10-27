@@ -16,7 +16,7 @@ export const prompts: PromptItem[] = [
     title: "AI Rap Video Duo Prompt (Two Photos)",
     intent: "core duo",
     summary: "Build a two-person AI rap video from two separate portraits.",
-    description: "The core AI rap video duo prompt: turn two separate portraits into a left/right performance clip with fixed sides, traded bars, and a clean 8-12s loop.",
+    description: "Free rap duo video generator alternative: copy this two-photo AI rap video duo prompt, lock left and right roles, and render an 8-12 second loop in any model.",
     related: ["ai-rap-video-self-duo-two-outfits", "ai-rap-video-couple-prompt", "ai-rap-video-best-friends-duo", "ai-rap-video-troubleshooting-faces"]
   },
   {
@@ -37,10 +37,10 @@ export const prompts: PromptItem[] = [
   },
   {
     slug: "ai-rap-video-camera-and-stage-prompt",
-    title: "Stage & Camera Prompt for AI Rap Video",
+    title: "Stage & Camera Prompt for AI Rap Video (Studio Booth)",
     intent: "staging",
-    summary: "Control booth stage, mic, and camera language without naming protected tracks.",
-    description: "A staging vocabulary for AI rap video prompts: booth and neon stages, hanging mics, push-ins, orbits, and whip pans — original descriptions with no protected track names.",
+    summary: "Control studio booth stage, mic, and camera language without naming protected tracks.",
+    description: "Studio rap AI video staging vocabulary: booth and neon stages, hanging mics, push-ins and orbits — safe, original descriptions with no protected track names.",
     related: ["ai-rap-video-duo-prompt", "ai-rap-video-vertical-tiktok-prompt", "ai-rap-video-wan-vs-seedance-prompts", "ai-rap-video-negative-prompt-guide"]
   },
   {
@@ -48,7 +48,7 @@ export const prompts: PromptItem[] = [
     title: "Original Lyrics Prompt for AI Rap Video",
     intent: "lyrics",
     summary: "Generate original short bars for an AI rap video without using commercial song lyrics.",
-    description: "Write original bars for an AI rap video: a 4-line hook, an 8-bar verse, call-and-response roles, and a lyric-generation prompt that never quotes commercial songs.",
+    description: "Write original lyrics for an original AI rap video: a 4-line hook, an 8-bar verse, call-and-response roles, and a prompt that never quotes commercial songs.",
     related: ["ai-rap-video-duo-prompt", "ai-rap-video-camera-and-stage-prompt", "ai-rap-video-couple-prompt", "ai-rap-video-best-friends-duo"]
   },
   {
