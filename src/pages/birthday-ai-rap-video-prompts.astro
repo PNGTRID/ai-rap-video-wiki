@@ -1,0 +1,124 @@
+---
+/**
+ * [WHY]: P1 长尾落地页——承接 birthday rap video 场景意图；给场景 prompt / 原创祝词 bars，不是出片工具。
+ * [INPUT]: videosFor('birthday')；内链 duo / photo-prep / lyrics / negative / how-to / examples。
+ * [OUTPUT]: Article + BreadcrumbList + FAQPage JSON-LD；场景结构 + 祝词样例方向 + VideoGallery + FAQ。
+ * [BOUND]: 本站不渲染、不是付费出片；强调原创 birthday bars，不商用绑定原曲与名人脸。
+ * [PROTOCOL]: 改场景结构时对照 duo / original-lyrics 模板；伪 slug 'birthday' 在 videos.ts 维护。
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import JsonLd from '../components/JsonLd.astro';
+import VideoGallery from '../components/VideoGallery.astro';
+import { videosFor } from '../data/videos';
+
+const faqs = [
+  {
+    q: 'Can this site generate a birthday AI rap video for me?',
+    a: 'No. This is a prompt template wiki, not a paid outpainting or render service. You write (or adapt) birthday bars here, then render in an image-to-video model you already use.'
+  },
+  {
+    q: 'What should birthday bars talk about?',
+    a: 'Concrete, permissioned details: age milestone, shared memory, a nickname, a toast to the year ahead. Keep it original — never paste commercial song lyrics into the prompt.'
+  },
+  {
+    q: 'Whose photos do I use?',
+    a: 'The birthday person plus a friend or partner who consented, or two outfits of one person as a self-duo. Follow the photo prep checklist before you upload to your model.'
+  },
+  {
+    q: 'Is a birthday clip different from the normal duo template?',
+    a: 'The stage and camera language stay the same. What changes is the lyric block: birthday hooks and toast-style call-and-response instead of generic flex bars. The duo prompt plus the original lyrics prompt cover both layers.'
+  },
+  {
+    q: 'Can I use a famous birthday song or a celebrity face?',
+    a: 'Do not. Protected recordings and celebrity likenesses get clips muted or taken down. Original staging and original bars are the only path this wiki supports.'
+  }
+];
+
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a }
+  }))
+};
+
+const articleLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: 'Birthday AI Rap Video Prompts: Scene Bars, Not a Generator',
+  description: 'Birthday AI rap video prompts for duo booth clips: scene structure, original toast-style bars, photo prep, and negatives — a template guide, not a paid video generator.',
+  url: 'https://ai-rap-video.wiki/birthday-ai-rap-video-prompts/',
+  isPartOf: { '@type': 'WebSite', name: 'AI Rap Video Wiki', url: 'https://ai-rap-video.wiki/' },
+  license: 'https://opensource.org/licenses/MIT',
+  inLanguage: 'en'
+};
+
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AI Rap Video', item: 'https://ai-rap-video.wiki/' },
+    { '@type': 'ListItem', position: 2, name: 'Birthday AI Rap Video Prompts', item: 'https://ai-rap-video.wiki/birthday-ai-rap-video-prompts/' }
+  ]
+};
+---
+
+<BaseLayout
+  title="Birthday AI Rap Video Prompts: Scene Bars for Duo Clips"
+  description="Birthday AI rap video prompts for duo booth clips: scene structure, original toast-style bars, photo prep, and negatives — a template guide, not a paid video generator."
+  canonicalPath="/birthday-ai-rap-video-prompts/"
+>
+  <JsonLd data={[articleLd, breadcrumbLd, faqLd]} />
+  <article class="prose hero">
+    <p class="tag">Long-tail guide · Scene prompts</p>
+    <h1>Birthday AI rap video prompts</h1>
+    <p class="lead">A <strong>birthday AI rap video</strong> search usually wants a short duo booth clip that toasts someone — not another credit-metered generator. This page gives you the scene prompt structure and original birthday bars direction. Paste into your own image-to-video model. This wiki does not render and is not a paid outpainting tool.</p>
+
+    <h2>Scene structure (keep the booth, change the bars)</h2>
+    <ol class="list">
+      <li><strong>Cast.</strong> Birthday person on one side, friend/partner on the other — or self-duo with two outfits. Consent first.</li>
+      <li><strong>Stage.</strong> Same booth language as the <a href="/prompts/ai-rap-video-duo-prompt/">duo template</a>: hanging mic, warm key light, locked two-shot, 8-12 second loop.</li>
+      <li><strong>Lyric block.</strong> Swap generic flex bars for toast-style call-and-response: hook names the occasion, verse names one real shared memory (permissioned).</li>
+      <li><strong>Negatives.</strong> Keep identity-swap, karaoke text, celebrity lookalike, and NSFW out via the <a href="/prompts/ai-rap-video-negative-prompt-guide/">negative prompt guide</a>.</li>
+    </ol>
+
+    <h2>Original birthday bars — direction, not a commercial song</h2>
+    <p>Use the <a href="/prompts/ai-rap-video-original-lyrics-prompt/">original lyrics prompt</a> as the skeleton. Fill slots like this (write your own lines; do not copy protected songs):</p>
+    <pre class="prompt-box">Hook (4 lines): name the birthday + one warm boast about the year.
+Verse A (4 bars, left): one permissioned shared memory + a toast.
+Verse B (4 bars, right): answer with a future wish + call back to the hook.
+End: both land a clean two-shot hold so the clip loops.</pre>
+    <p>Keep names and stories accurate and kind. If the birthday person would not want a detail public, leave it out.</p>
+
+    <h2>Photo prep for celebration clips</h2>
+    <ul class="list">
+      <li>Front-lit portraits, eyes visible, matched head size — see the <a href="/prompts/ai-rap-video-photo-prep-checklist/">photo prep checklist</a>.</li>
+      <li>Party hats and heavy props in source photos often confuse identity; keep source photos plain and let the prompt add stage energy.</li>
+      <li>Vertical 9:16 if the gift is a TikTok/Reels/Shorts post — the <a href="/prompts/ai-rap-video-vertical-tiktok-prompt/">vertical template</a> bakes safe headroom.</li>
+    </ul>
+
+    <h2>Related templates</h2>
+    <ul class="list">
+      <li><a href="/prompts/ai-rap-video-duo-prompt/">Duo prompt</a> — base booth performance</li>
+      <li><a href="/prompts/ai-rap-video-best-friends-duo/">Best friends duo</a> — when the second performer is a close friend</li>
+      <li><a href="/prompts/ai-rap-video-couple-prompt/">Couple prompt</a> — partner toast variant</li>
+      <li><a href="/prompts/ai-rap-video-original-lyrics-prompt/">Original lyrics prompt</a> — safe bar structure</li>
+      <li><a href="/prompts/ai-rap-video-photo-prep-checklist/">Photo prep checklist</a> · <a href="/prompts/ai-rap-video-negative-prompt-guide/">Negative prompts</a></li>
+      <li><a href="/how-to-make-ai-rap-video/">How-to workflow</a> · <a href="/examples/">Examples</a></li>
+    </ul>
+
+    <VideoGallery
+      videos={videosFor('birthday')}
+      heading="Duo workflow references for celebration clips"
+      sub="Same two-photo booth pipeline — swap in birthday bars, keep the stage language."
+      viewAll={true}
+    />
+
+    <h2>FAQ</h2>
+    {faqs.map((f) => (<div><h3>{f.q}</h3><p>{f.a}</p></div>))}
+
+    <div class="notice"><strong>Scene prompts only.</strong> This page is not a birthday video generator. Original toast bars and consenting faces; never bind Hotel Lobby audio or celebrity likenesses. This site does not render.</div>
+  </article>
+</BaseLayout>

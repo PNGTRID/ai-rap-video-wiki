@@ -1,0 +1,138 @@
+---
+/**
+ * [WHY]: P1 长尾落地页——承接 "photo to AI rap video / from photo" 意图，强调两张肖像→舞台工作流。
+ * [INPUT]: videosFor('photo-to')；内链 duo / photo-prep / lyrics / negative / how-to / examples。
+ * [OUTPUT]: HowTo + Article + BreadcrumbList + FAQPage JSON-LD；步骤正文 + VideoGallery + FAQ。
+ * [BOUND]: 本站不渲染、不是付费出片；不商用绑定 Hotel Lobby 原曲与名人脸；原创歌词/舞台描述。
+ * [PROTOCOL]: 改步骤时对照 how-to-make-ai-rap-video.astro；伪 slug 'photo-to' 在 videos.ts 维护。
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import JsonLd from '../components/JsonLd.astro';
+import VideoGallery from '../components/VideoGallery.astro';
+import { videosFor } from '../data/videos';
+
+const steps = [
+  { name: 'Gather two consenting portraits', text: 'One clear, front-lit photo per performer. Each person must agree to appear in the clip. Two outfits of one person also work as a self-duo.' },
+  { name: 'Prep and match the faces', text: 'Crop each face to roughly the same head size, eyes visible, plain background. Mismatched scales are the top cause of identity drift.' },
+  { name: 'Assign left and right roles', text: 'Photo 1 = left performer, photo 2 = right. State the mapping twice in the prompt so sides stay fixed for the whole clip.' },
+  { name: 'Write original bars for your subject', text: 'A 4-line hook plus an 8-bar verse about the people in the photos. Never paste commercial song lyrics.' },
+  { name: 'Paste the duo stage prompt', text: 'Combine lyric direction with booth stage language: hanging mic, locked two-shot, slow push-in, loop ending. Add the negative block.' },
+  { name: 'Render in your own image-to-video model', text: 'Drop both photos into any Wan-style or Seedance-style tool, set 8-12 seconds at 9:16 or 16:9, and run. This wiki does not render.' },
+  { name: 'Review and re-render if needed', text: 'Watch once for face swaps, merged faces, or a third person. Fix the layer that failed — photo prep or left/right wording — not the whole prompt.' }
+];
+
+const howToLd = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: 'Photo to AI rap video: two portraits to a duo stage clip',
+  description: 'Turn two portrait photos into an AI rap video duo performance with copy-ready prompts: photo prep, left/right roles, original bars, negatives, and render review.',
+  totalTime: 'PT20M',
+  step: steps.map((s, i) => ({
+    '@type': 'HowToStep',
+    position: i + 1,
+    name: s.name,
+    text: s.text
+  }))
+};
+
+const faqs = [
+  {
+    q: 'Can I make an AI rap video from one photo?',
+    a: 'Yes — as a solo performer, or as a self-duo if you have a second photo in a different outfit. The self-duo template handles contrast rules for one person; the classic path still prefers two separate portraits.'
+  },
+  {
+    q: 'Does this site turn my photos into a video?',
+    a: 'No. This wiki is an open-source prompt library, not a paid generator. You paste the templates into an image-to-video model you already use. Nothing uploads here and nothing renders here.'
+  },
+  {
+    q: 'What photo quality works best?',
+    a: 'Front-lit faces, eyes visible, upper body in frame, plain background, and similar head size across both photos. The photo prep checklist covers lighting, crop, and consent in full.'
+  },
+  {
+    q: 'Why do faces swap or merge mid-clip?',
+    a: 'Usually mismatched photo scales or ambiguous left/right wording. Restate fixed sides, match head crops, and paste the negative block that blocks identity swap and merged faces.'
+  },
+  {
+    q: 'Can I use a celebrity photo or Hotel Lobby audio?',
+    a: 'Do not. Templates here use original staging and original lyrics only. Binding celebrity likenesses or protected commercial recordings is how clips get muted or taken down — and we will not help with that path.'
+  }
+];
+
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a }
+  }))
+};
+
+const articleLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: 'Photo to AI Rap Video: Turn Two Portraits Into a Duo Clip',
+  description: 'How to go from photo to AI rap video with two portraits: prep, left/right roles, original bars, negative prompts, and render in any image-to-video model — not a paid generator.',
+  url: 'https://ai-rap-video.wiki/photo-to-ai-rap-video/',
+  isPartOf: { '@type': 'WebSite', name: 'AI Rap Video Wiki', url: 'https://ai-rap-video.wiki/' },
+  license: 'https://opensource.org/licenses/MIT',
+  inLanguage: 'en'
+};
+
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AI Rap Video', item: 'https://ai-rap-video.wiki/' },
+    { '@type': 'ListItem', position: 2, name: 'Photo to AI Rap Video', item: 'https://ai-rap-video.wiki/photo-to-ai-rap-video/' }
+  ]
+};
+---
+
+<BaseLayout
+  title="Photo to AI Rap Video: Two Portraits → Duo Stage Clip"
+  description="How to go from photo to AI rap video with two portraits: prep, left/right roles, original bars, negative prompts, and render in any image-to-video model — not a paid generator."
+  canonicalPath="/photo-to-ai-rap-video/"
+>
+  <JsonLd data={[articleLd, breadcrumbLd, howToLd, faqLd]} />
+  <article class="prose hero">
+    <p class="tag">Long-tail guide</p>
+    <h1>Photo to AI rap video</h1>
+    <p class="lead">Searching for <strong>photo to AI rap video</strong> usually means one thing: take two portrait photos and land a short duo booth clip. This page is the prompt-first path — prep the faces, lock left and right, write original bars, paste a stage prompt, then render in <em>your</em> image-to-video model. This wiki does not render and is not a paid outpainting or generator service.</p>
+
+    <h2>What "photo to" actually needs</h2>
+    <ul class="list">
+      <li><strong>Two portraits</strong> — one face each, consenting people, matched crop size. Start with the <a href="/prompts/ai-rap-video-photo-prep-checklist/">photo prep checklist</a>.</li>
+      <li><strong>A duo prompt</strong> — the <a href="/prompts/ai-rap-video-duo-prompt/">two-photo duo template</a> is the default; couples and best-friends variants share the same slot order.</li>
+      <li><strong>Original lyrics</strong> — use the <a href="/prompts/ai-rap-video-original-lyrics-prompt/">original lyrics prompt</a>; never paste commercial tracks.</li>
+      <li><strong>Negatives</strong> — paste the <a href="/prompts/ai-rap-video-negative-prompt-guide/">negative prompt guide</a> block so identity swap and karaoke text stay out.</li>
+    </ul>
+
+    <h2>Seven steps: photos in, stage clip out</h2>
+    <ol class="list">
+      {steps.map((s) => (<li><strong>{s.name}.</strong> {s.text}</li>))}
+    </ol>
+
+    <h2>Related templates</h2>
+    <ul class="list">
+      <li><a href="/prompts/ai-rap-video-duo-prompt/">Duo prompt</a> — classic two-photo booth performance</li>
+      <li><a href="/prompts/ai-rap-video-photo-prep-checklist/">Photo prep checklist</a> — lighting, crop, consent</li>
+      <li><a href="/prompts/ai-rap-video-original-lyrics-prompt/">Original lyrics prompt</a> — safe bars for your subject</li>
+      <li><a href="/prompts/ai-rap-video-negative-prompt-guide/">Negative prompt guide</a> — block face swaps and text overlays</li>
+      <li><a href="/how-to-make-ai-rap-video/">How to make an AI rap video</a> — full 10-step workflow</li>
+      <li><a href="/examples/">Examples gallery</a> — community two-photo walkthroughs</li>
+    </ul>
+
+    <VideoGallery
+      videos={videosFor('photo-to')}
+      heading="Two-photo workflow walkthroughs"
+      sub="Public tutorials that show portraits mapping to left/right performers — embedded from their creators' channels."
+      viewAll={true}
+    />
+
+    <h2>FAQ</h2>
+    {faqs.map((f) => (<div><h3>{f.q}</h3><p>{f.a}</p></div>))}
+
+    <div class="notice"><strong>Remember:</strong> open-source prompts only. This site does not render your photos and is not a paid AI rap video generator. Original staging and lyrics; never bind Hotel Lobby audio or celebrity faces.</div>
+  </article>
+</BaseLayout>

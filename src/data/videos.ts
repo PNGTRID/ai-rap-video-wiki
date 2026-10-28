@@ -19,7 +19,7 @@ export type VideoItem = {
   kind: VideoKind;
   /** One-line English note: why this video is relevant here. */
   note: string;
-  /** Prompt slugs plus pseudo-slugs: 'hotel-lobby-trend' | 'how-to' | 'home'. */
+  /** Prompt slugs plus pseudo-slugs: 'hotel-lobby-trend' | 'how-to' | 'home' | 'photo-to' | 'birthday' | 'suno-to'. */
   topics: string[];
 };
 
@@ -94,7 +94,7 @@ export const videos: VideoItem[] = [
     duration: '17:26',
     kind: 'workflow',
     note: 'A complete solo build from concept to export — the long-form counterpart to our render steps.',
-    topics: ['how-to', 'ai-rap-video-duo-prompt', 'home']
+    topics: ['how-to', 'ai-rap-video-duo-prompt', 'home', 'photo-to', 'birthday']
   },
   {
     id: 'D1veGFH0Vb4',
@@ -104,7 +104,7 @@ export const videos: VideoItem[] = [
     duration: '11:30',
     kind: 'workflow',
     note: 'A no-budget pipeline end to end, matching our free-tools stance: your model, our templates.',
-    topics: ['how-to', 'home']
+    topics: ['how-to', 'home', 'photo-to', 'birthday']
   },
   {
     id: '0fDTOMUFpQ8',
@@ -114,7 +114,7 @@ export const videos: VideoItem[] = [
     duration: '3:17',
     kind: 'workflow',
     note: 'The two-photo input flow in action — watch how slot order maps to left/right performers.',
-    topics: ['ai-rap-video-duo-prompt', 'ai-rap-video-photo-prep-checklist']
+    topics: ['ai-rap-video-duo-prompt', 'ai-rap-video-photo-prep-checklist', 'photo-to']
   },
   {
     id: '_xNjkvx-PdE',
@@ -124,7 +124,7 @@ export const videos: VideoItem[] = [
     duration: '5:24',
     kind: 'workflow',
     note: 'Face-forward build that keeps identity stable — same goal as our photo prep and self-duo templates.',
-    topics: ['ai-rap-video-photo-prep-checklist', 'ai-rap-video-self-duo-two-outfits', 'ai-rap-video-troubleshooting-faces']
+    topics: ['ai-rap-video-photo-prep-checklist', 'ai-rap-video-self-duo-two-outfits', 'ai-rap-video-troubleshooting-faces', 'photo-to']
   },
   {
     id: 'Wh0yENtkc2w',
@@ -134,7 +134,7 @@ export const videos: VideoItem[] = [
     duration: '3:34',
     kind: 'workflow',
     note: 'Two-person vertical renders for social — the trend cut down to a 9:16 clip.',
-    topics: ['ai-rap-video-vertical-tiktok-prompt', 'ai-rap-video-couple-prompt', 'ai-rap-video-best-friends-duo', 'hotel-lobby-trend']
+    topics: ['ai-rap-video-vertical-tiktok-prompt', 'ai-rap-video-couple-prompt', 'ai-rap-video-best-friends-duo', 'hotel-lobby-trend', 'birthday', 'photo-to']
   },
   {
     id: 'DchDUK1zP_k',
@@ -198,7 +198,7 @@ export const videos: VideoItem[] = [
     duration: '13:59',
     kind: 'music',
     note: 'Generating an original track and syncing it to video — the audio half of the original-lyrics template.',
-    topics: ['ai-rap-video-original-lyrics-prompt', 'how-to']
+    topics: ['ai-rap-video-original-lyrics-prompt', 'how-to', 'suno-to']
   },
   {
     id: 'FChKficdq5o',
@@ -208,7 +208,7 @@ export const videos: VideoItem[] = [
     duration: '12:23',
     kind: 'music',
     note: 'Original song in, music video out — a fast repeatable loop for posting cadence.',
-    topics: ['ai-rap-video-original-lyrics-prompt']
+    topics: ['ai-rap-video-original-lyrics-prompt', 'suno-to']
   },
 
   // ===== Pet experiments =====

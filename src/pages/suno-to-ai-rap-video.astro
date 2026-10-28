@@ -1,0 +1,117 @@
+---
+/**
+ * [WHY]: P1 长尾落地页——承接 Suno → AI rap / music video 意图；强调 Suno 出歌后再走 image-to-video，本站不渲染。
+ * [INPUT]: videosFor('suno-to')（music / suno 相关）；内链 lyrics / duo / photo-prep / negative / how-to / examples。
+ * [OUTPUT]: Article + BreadcrumbList + FAQPage JSON-LD；两段工作流 + VideoGallery + FAQ。
+ * [BOUND]: 本站不渲染、不是付费出片；原创歌词优先；不商用绑定 Hotel Lobby 原曲与名人脸。
+ * [PROTOCOL]: 改音频衔接时对照 original-lyrics 模板与 examples music 分区；伪 slug 'suno-to' 在 videos.ts 维护。
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import JsonLd from '../components/JsonLd.astro';
+import VideoGallery from '../components/VideoGallery.astro';
+import { videosFor } from '../data/videos';
+
+const faqs = [
+  {
+    q: 'Does this wiki generate Suno tracks or videos?',
+    a: 'No. Generate the song in Suno (or a similar tool), then use our prompt templates in a separate image-to-video model. This site supplies prompts only — no render queue, no paid outpainting.'
+  },
+  {
+    q: 'Should I paste commercial lyrics into Suno for an AI rap video?',
+    a: 'No. Write original bars (or generate original lyrics), then keep those same bars in the video prompt. Binding protected commercial recordings is how clips get muted — see the original lyrics prompt.'
+  },
+  {
+    q: 'What comes first: song or photos?',
+    a: 'Either works. Many creators lock original lyrics and a short hook in Suno first, then prep two portraits and render an 8-12 second booth clip timed to the hook. The how-to workflow covers the photo-to-stage half.'
+  },
+  {
+    q: 'How do I keep lip sync usable?',
+    a: 'Keep the clip short (8-12s), match bar length to mouth-movement language in the duo prompt, and review once for identity drift. Community music walkthroughs in the gallery show full Suno-to-video loops.'
+  },
+  {
+    q: 'Can I use Hotel Lobby or a celebrity voice?',
+    a: 'Do not. Original staging and original audio only. Celebrity likenesses and protected tracks are out of scope for this wiki and risky on platforms.'
+  }
+];
+
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a }
+  }))
+};
+
+const articleLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: 'Suno to AI Rap Video: Original Song → Image-to-Video Workflow',
+  description: 'Suno to AI rap video workflow: generate original bars in Suno-class tools, then render a duo booth clip with prompt templates in any image-to-video model — not a paid generator on this site.',
+  url: 'https://ai-rap-video.wiki/suno-to-ai-rap-video/',
+  isPartOf: { '@type': 'WebSite', name: 'AI Rap Video Wiki', url: 'https://ai-rap-video.wiki/' },
+  license: 'https://opensource.org/licenses/MIT',
+  inLanguage: 'en'
+};
+
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AI Rap Video', item: 'https://ai-rap-video.wiki/' },
+    { '@type': 'ListItem', position: 2, name: 'Suno to AI Rap Video', item: 'https://ai-rap-video.wiki/suno-to-ai-rap-video/' }
+  ]
+};
+---
+
+<BaseLayout
+  title="Suno to AI Rap Video: Original Song → Duo Clip Workflow"
+  description="Suno to AI rap video workflow: generate original bars in Suno-class tools, then render a duo booth clip with prompt templates in any image-to-video model — not a paid generator on this site."
+  canonicalPath="/suno-to-ai-rap-video/"
+>
+  <JsonLd data={[articleLd, breadcrumbLd, faqLd]} />
+  <article class="prose hero">
+    <p class="tag">Long-tail guide · Music → video</p>
+    <h1>Suno to AI rap video</h1>
+    <p class="lead"><strong>Suno to AI rap video</strong> is a two-tool workflow: make an original track in a Suno-class music generator, then drive an image-to-video duo clip with prompt templates. This wiki covers the prompt and photo half — it does not render video, host Suno, or sell paid outpainting.</p>
+
+    <h2>Half A — original song (in Suno or similar)</h2>
+    <ol class="list">
+      <li><strong>Write or generate original bars.</strong> Use the structure from the <a href="/prompts/ai-rap-video-original-lyrics-prompt/">original lyrics prompt</a>: 4-line hook + 8-bar verse. No commercial song quotes.</li>
+      <li><strong>Keep it short for the clip.</strong> Target a hook that fits an 8-12 second booth loop; you can always post a longer full track separately.</li>
+      <li><strong>Export clean audio.</strong> You will sync or layer it in your video tool — this site never hosts or sells the audio.</li>
+    </ol>
+
+    <h2>Half B — image-to-video booth clip</h2>
+    <ol class="list">
+      <li><strong>Prep two portraits</strong> with the <a href="/prompts/ai-rap-video-photo-prep-checklist/">photo prep checklist</a>.</li>
+      <li><strong>Paste the <a href="/prompts/ai-rap-video-duo-prompt/">duo prompt</a></strong> with left/right photo mapping and your original lyric direction.</li>
+      <li><strong>Add negatives</strong> from the <a href="/prompts/ai-rap-video-negative-prompt-guide/">negative prompt guide</a>.</li>
+      <li><strong>Render in your model</strong> at 9:16 or 16:9 for 8-12 seconds, then review faces. Full steps: <a href="/how-to-make-ai-rap-video/">how to make an AI rap video</a>.</li>
+    </ol>
+
+    <h2>Why split the tools</h2>
+    <p>Music generators and image-to-video engines optimize different jobs. Binding a trend site's commercial track to a face render is how clips get claimed. Original Suno-class audio plus your own photos keeps the postable path — and keeps this wiki honest: prompts only, no paid generator middleman.</p>
+
+    <h2>Related templates</h2>
+    <ul class="list">
+      <li><a href="/prompts/ai-rap-video-original-lyrics-prompt/">Original lyrics prompt</a> — bar structure for Suno and the video prompt</li>
+      <li><a href="/prompts/ai-rap-video-duo-prompt/">Duo prompt</a> — two-photo booth performance</li>
+      <li><a href="/prompts/ai-rap-video-photo-prep-checklist/">Photo prep</a> · <a href="/prompts/ai-rap-video-negative-prompt-guide/">Negatives</a></li>
+      <li><a href="/how-to-make-ai-rap-video/">How-to workflow</a> · <a href="/examples/">Examples</a> (music &amp; lip-sync section)</li>
+    </ul>
+
+    <VideoGallery
+      videos={videosFor('suno-to')}
+      heading="Suno / music-to-video walkthroughs"
+      sub="Public tutorials on original tracks and lip-sync loops — the audio half that pairs with our duo templates."
+      viewAll={true}
+    />
+
+    <h2>FAQ</h2>
+    {faqs.map((f) => (<div><h3>{f.q}</h3><p>{f.a}</p></div>))}
+
+    <div class="notice"><strong>Prompts only.</strong> Suno (or any music tool) for the song; your image-to-video model for the clip. This wiki does not render and is not a paid AI rap video generator. Original audio and faces only — never Hotel Lobby bindings or celebrity likenesses.</div>
+  </article>
+</BaseLayout>

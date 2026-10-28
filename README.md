@@ -24,6 +24,7 @@ Templates are tool-agnostic; each page notes which models it works best with.
 - **[Markdown pack](pack/)** — the same 12 templates as plain markdown, ready to paste anywhere (MIT)
 - **[How-to guide](https://ai-rap-video.wiki/how-to-make-ai-rap-video/)** — the full photo-to-video workflow, start to finish
 - **[Real examples](https://ai-rap-video.wiki/examples/)** — walkthroughs of community renders with lazy-loaded YouTube embeds
+- **Long-tail guides** — [photo to AI rap video](https://ai-rap-video.wiki/photo-to-ai-rap-video/), [birthday prompts](https://ai-rap-video.wiki/birthday-ai-rap-video-prompts/), [Suno to AI rap video](https://ai-rap-video.wiki/suno-to-ai-rap-video/)
 
 <details>
 <summary><strong>All 12 templates</strong></summary>
