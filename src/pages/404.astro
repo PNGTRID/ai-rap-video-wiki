@@ -1,0 +1,30 @@
+---
+/**
+ * [WHY]: 站点无 404.html 时 CF Pages 会把任意不存在路径 fallback 成 200+首页（soft 404），
+ *        Google 视为重复首页，稀释收录信号——本页构建出 dist/404.html 让 CF Pages 返回真 404。
+ * [INPUT]: BaseLayout 壳（noindex 置位，404 页不可索引）。
+ * [OUTPUT]: 404 状态下 serve 的引导页：返回首页 / 模板 / 示例三条导流入口。
+ * [BOUND]: 不做动态路径推断（纯静态）；不在此页挂任何 JSON-LD。
+ * [PROTOCOL]: 变更导航入口时同步 BaseLayout 的导航与页脚链接。
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Page Not Found (404) — AI Rap Video Wiki"
+  description="This page does not exist. Browse the AI rap video prompt templates, real video examples, or the how-to guide instead."
+  canonicalPath="/404.html"
+  noindex={true}
+>
+  <article class="prose hero">
+    <p class="tag">404</p>
+    <h1>Page not found</h1>
+    <p class="lead">The page you are looking for does not exist on this wiki. Everything worth reading lives in one of these three places:</p>
+    <ul class="list">
+      <li><a href="/prompts/">12 prompt templates</a> — duo, vertical, lyrics, negatives, model guides, and fixes.</li>
+      <li><a href="/examples/">Real video examples</a> — the Hotel Lobby trend and friends, broken down prompt by prompt.</li>
+      <li><a href="/how-to-make-ai-rap-video/">The how-to guide</a> — photo prep, generation, and music sync, end to end.</li>
+    </ul>
+    <div class="notice"><strong>Came from the GitHub pack?</strong> If a <code>pack/*.md</code> link brought you here, grab the files directly from the repository (<code>PNGTRID/ai-rap-video-wiki</code>) — the pack and the wiki stay in sync, so the templates are identical.</div>
+  </article>
+</BaseLayout>

@@ -28,6 +28,7 @@ AI Rap Video 开源提示词模板站（英文 SEO 站）。提供可复制的�
 | `src/pages/ai-rap-video-vs-hotel-lobby-trend.astro` | 合规对比页 |
 | `src/pages/ai-rap-video-{generator,orange-backdrop,celebrity-meme-guide,character-meme-guide,trend-meme-explained}.astro` | 关键词落地页（2026-10-27 SEO 扩展批；词权分工锁死在 `reports/keyword-research/2026-10-27-page-plan.md` §7.3，改词前先读） |
 | `src/pages/examples.astro` | 视频示例画廊（按类别分组 + 归属声明） |
+| `src/pages/404.astro` | 404 页（构建出 dist/404.html，防 CF Pages 对未知路径 soft-404 fallback；noindex，不进 sitemap） |
 | `src/pages/pack.astro` | 开源 pack 说明页 |
 | `src/assets/` | 页面配图素材（AI 生成参考图，经 astro:assets 构建优化为 webp） |
 | `public/images/` | 固定路径资产（`og-ai-rap-video.jpg` 等 OG/分享图，路径不参与构建优化） |
